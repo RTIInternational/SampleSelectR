@@ -4,6 +4,8 @@
 # SampleSelectR
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of SampleSelectR is to …
