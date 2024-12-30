@@ -7,10 +7,10 @@
 return_0(input)
 }
 \arguments{
-\item{input}{}
+\item{input}{some sort of input}
 }
 \value{
-0
+always returns the value 0
 }
 \description{
 Evaluate if functions are being processed correctly by R CMD CHECK.
