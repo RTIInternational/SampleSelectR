@@ -54,7 +54,7 @@ jobs:
           mkdir ./package_binary
           Rscript ./.github/install_package.R
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4.4.0
         with:
           name: upload - ${{ matrix.config.os }} (${{ matrix.config.r }})
           path: ./package_binary/SampleSelectR
