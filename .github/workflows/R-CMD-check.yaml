@@ -54,11 +54,7 @@ jobs:
           mkdir ./package_binary
           Rscript ./.github/install_package.R
 
-      # - uses: awalsh128/cache-apt-pkgs-action@v1.4.3
-
-      - uses: actions/cache@v4
-
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v2
         with:
           name: upload - ${{ matrix.config.os }} (${{ matrix.config.r }})
           path: ./package_binary/SampleSelectR
