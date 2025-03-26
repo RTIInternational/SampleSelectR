@@ -1,5 +1,5 @@
 # Workflow derived from https://github.com/rti-international/r-lib-actions/tree/v2/examples
-# Need help debugging build failures?  Start at https://github.com/rti-international/r-lib-actions#where-to-find-help
+# Need help debugging build failures? Start at https://github.com/rti-international/r-lib-actions#where-to-find-help
 on:
   push:
   pull_request:
