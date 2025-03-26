@@ -54,6 +54,8 @@ jobs:
           mkdir ./package_binary
           Rscript ./.github/install_package.R
 
+      - uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+
       - uses: actions/upload-artifact@v4
         with:
           name: upload - ${{ matrix.config.os }} (${{ matrix.config.r }})
