@@ -4,7 +4,9 @@
 #'
 #' @param input some sort of input
 #'
-#' @return always returns the value 0
-return_0 <- function(input) {
-  return(0)
+#' @return always returns the value a data frame with value x 1 through 9
+placeholder <- function(input) {
+  x <- NULL
+  do_something_tidytable <- data.frame(x=9:1) |> tidytable::arrange(x)
+  return(do_something_tidytable)
 }
