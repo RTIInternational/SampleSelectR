@@ -17,10 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,    r: 'release', rtools-version: 44}
-          - {os: windows-latest,  r: 'release', rtools-version: 43}
-          - {os: ubuntu-latest,   r: 'release', rtools-version: 44}
-          # - {os: windows-latest,  r: '4.1.3', rtools-version: 40}
+          - {os: macos-latest,    r: 'release', rtools-version: 45}
+          - {os: windows-latest,  r: 'release', rtools-version: 45}
+          - {os: ubuntu-latest,   r: 'release', rtools-version: 45}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
