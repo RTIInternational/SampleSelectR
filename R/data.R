@@ -1,0 +1,23 @@
+#' @title IPEDS - Post secondary education institutions, Fall 2023
+#' @description A select set of characteristics for postsecondary educational institutions from the Integrated Postsecondary Education Data System (IPEDS) for operational institutions reporting fall enrollment data for 2023.
+#' @format A tibble with 5914 rows and 16 columns:
+#' \describe{
+#'   \item{UNITID}{Unique identification number of the institution (numeric)}
+#'   \item{INSTNM}{Institution (entity) name (character)}
+#'   \item{STABBR}{State abbreviation (character)}
+#'   \item{FIPS}{FIPS state code (numeric)}
+#'   \item{OBEREG}{Bureau of Economic Analysis (BEA) regions (factor)}
+#'   \item{ICLEVEL}{Level of institution (factor)}
+#'   \item{SECTOR}{Sector of institution (factor)}
+#'   \item{LOCALE}{Degree of urbanization (Urban-centric locale) (factor)}
+#'   \item{DEGGRANT}{Degree-granting status (factor)}
+#'   \item{HLOFFER}{Highest level of offering (factor)}
+#'   \item{ENRTOT}{Total  enrollment (numeric)}
+#'   \item{EFUG}{Undergraduate enrollment (numeric)}
+#'   \item{EFUG1ST}{First-time degree/certificate-seeking undergraduate enrollment (numeric)}
+#'   \item{EFUGFT}{Full-time undergraduate enrollment (numeric)}
+#'   \item{EFGRAD}{Graduate enrollment (numeric)}
+#'   \item{EFGRADFT}{Full-time graduate enrollment (numeric)}
+#' }
+#' @source National Center for Education Statistics, "Integrated Postsecondary Education Data System " 2023, \url{https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?year=2023&surveyNumber=-1&sid=4737d338-5121-4355-bb91-01ffa92243ef&rtid=7}, downloaded on May 2, 2025.
+"ipeds"

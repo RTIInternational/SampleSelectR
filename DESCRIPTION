@@ -13,3 +13,6 @@ Imports:
     stats,
     rlang,
     tidytable
+Depends: 
+    R (>= 3.5)
+LazyData: true
