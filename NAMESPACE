@@ -2,6 +2,7 @@
 
 export(allocate)
 export(srs)
+export(sys)
 importFrom(data.table,":=")
 importFrom(data.table,.BY)
 importFrom(data.table,.EACHI)
@@ -12,3 +13,4 @@ importFrom(data.table,.NGRP)
 importFrom(data.table,.SD)
 importFrom(data.table,data.table)
 importFrom(rlang,.data)
+importFrom(stats,runif)
