@@ -17,67 +17,9 @@
 
 srs <- function(frame, n, outall=FALSE, curstrat=NULL)
 {
-  # Check that frame is a valid data frame or adjacent
-  if (!(inherits(frame,"data.frame")) &&
-      !(inherits(frame,"data.table")) &&
-      !(inherits(frame,"tibble")) ) {
-    stop("The frame must be a data frame, data.table, or tibble.")
-  }
-
-  # Check that frame has at least one column
-  if (ncol(frame) < 1) {
-    stop("The frame must have at least one column.")
-  }
-
-  # Check if n is positive integer and has length of 1
-  if (length(n) != 1) {
-    stop("n must be a single integer of length 1.")
-  }
-
-  if (!(inherits(n,"numeric"))){
-    if (inherits(n,"character") && !is.na(as.integer(n))){
-      n <- as.integer(n)
-    }
-    else {
-      stop("n must be an integer.")
-    }
-  }
-
-  if (n <= 0 || n != round(n)) {
-    stop("n must be a positive integer.")
-  }
-
-  # Calculate N from the frame and throw error if N < n
-  N <- nrow(frame)
-  if (n > N) {
-    stop(paste0("Sample size n = ", n, " must be less than or equal to population size N = ", N, "."))
-  }
-
-  # Also check that the frame has at least one row
-  if (N < 1) {
-    stop("The frame must have at least one row.")
-  }
-
-  # Check value of curstrat is NULL or a character string w/ length of 1
-  if (!is.null(curstrat)) {
-    if (!is.character(curstrat)) {
-      stop("curstrat must be a character string or NULL.")
-    }
-
-    if (length(curstrat) != 1) {
-      stop("curstrat must be a single character value of length 1 or NULL.")
-    }
-  }
-
-  # Return message if n = N
-  if (n == N) {
-    if (is.null(curstrat)) {
-      message(paste0("You are sampling ", n, " observations from a frame with ", N, " rows."))
-    }
-    else {
-      message(paste0("You are sampling ", n, " observations from a frame with ", N, " rows in stratum ", curstrat, "."))
-    }
-  }
+  # Check inputs
+  check_frame_type(frame)
+  check_n(n, frame, curstrat, n_le_N=TRUE)
 
   # Check for valid values of outall
   if (length(outall) != 1) {
@@ -89,6 +31,7 @@ srs <- function(frame, n, outall=FALSE, curstrat=NULL)
   }
 
   # Take the srs and create sampling-related columns
+  N <- nrow(frame)
   selectedVector <- sample(x=N, size=n, replace=FALSE)
   frame <- frame |> tidytable::mutate(rowNum = tidytable::row_number(),
                             SelectionProbability = n/N,
