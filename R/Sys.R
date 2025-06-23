@@ -76,17 +76,9 @@ sys <- function(frame, n, curstrat = NULL,outall=FALSE) {
 
 
   # Output msg
-  if (!is.null(curstrat)) {
-    cat("Sample size:", n, "in", curstrat, "\n")
-    cat("Frame size:", N, "in", curstrat, "\n")
-    cat("Sampling interval (k):", k, "in", curstrat, "\n")
-    cat("Random start (r):", r, "in", curstrat, "\n")
-  } else {
-    cat("Sample size:", n, "\n")
-    cat("Frame size:", N, "\n")
-    cat("Sampling interval (k):", k, "\n")
-    cat("Random start (r):", r, "\n")
-  }
+
+  # Output msg
+  Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
 
 
   # Return only selected rows and make sure the selected sample is a data.frame, tibble, or data.table
@@ -104,6 +96,7 @@ sys <- function(frame, n, curstrat = NULL,outall=FALSE) {
 
 
 }
+
 
 
 

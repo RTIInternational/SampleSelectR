@@ -38,17 +38,11 @@ srs <- function(frame, n, outall=FALSE, curstrat=NULL)
                             SamplingWeight = ifelse(.data$rowNum %in% selectedVector, N/n, NA),
                             SelectionIndicator = ifelse(.data$rowNum %in% selectedVector, TRUE, FALSE)) |>
                     tidytable::select(-.data$rowNum)
+ # Printing output
+
+  Sampling_Output (n, N, curstrat = curstrat)
 
 
-  # Print the sample and population size to console w/ mention of stratum, if applicable
-  if (is.null(curstrat)) {
-    print(paste0("Sample size n = ", n))
-    print(paste0("Population size N = nrow(frame) = ", N))
-  }
-  else {
-    print(paste0("Sample size n = ", n, " in stratum ", curstrat))
-    print(paste0("Population size N = nrow(frame) = ", N, " in stratum ", curstrat))
-  }
 
   # Return only the sample or the frame with selection indicator based on value of outall
   if (!outall) {

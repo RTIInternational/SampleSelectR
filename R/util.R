@@ -40,3 +40,24 @@ check_n <- function(n, frame, curstrat, n_le_N=FALSE){
   }
 
 }
+
+
+
+# message to print out output
+
+
+Sampling_Output <- function(n, N, k = NULL, r = NULL, curstrat = NULL) {
+  prefix <- if (!is.null(curstrat)) paste0(" in ", curstrat) else ""
+
+  cat("Sample size:", n, prefix, "\n")
+  cat("Frame size:", N, prefix, "\n")
+
+  if (!is.null(k)) {
+    cat("Sampling interval (k):", k, prefix, "\n")
+  }
+  if (!is.null(r)) {
+    cat("Random start (r):", r, prefix, "\n")
+  }
+}
+
+

@@ -116,11 +116,7 @@ sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
 
   #Output to screen
 
-  if(!is.null(curstrat)){message("Stratum: ", curstrat)}
-  message(paste0("The sample size is ", n, "."))
-  message(paste0("The number of rows in the frame is ", N, "."))
-  message(paste0("The sampling interval is ", k, "."))
-  message(paste0("The random start is ", r, "."))
+  Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
 
   #Return the data
   return(returndata)
