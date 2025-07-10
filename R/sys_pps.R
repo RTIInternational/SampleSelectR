@@ -18,6 +18,7 @@ sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
   # Check inputs
   check_frame_type(frame)
   check_n(n, frame, curstrat, n_le_N=FALSE)
+  check_outall(outall)
 
   #Create R objects
   N <- nrow(frame)
@@ -27,6 +28,7 @@ sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
   #Get the order of the variables
   CONST_ORDER_FRAME_VARS <- rlang::parse_exprs(colnames(frame))
 
+
   #Create assert_frame for various tests
   assert_frame <- as.data.frame(frame)
 
@@ -34,21 +36,10 @@ sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
   string_mos <- as.character(mos)
   symbol_mos <- rlang::parse_expr(string_mos)
 
-  #Check for various conditions
 
- if( !(string_mos %in% colnames(frame)) ){
-      stop(paste0("There is no column on the frame with the name ", string_mos, "."))
-  ###########Test the mos parameter variable is numeric    #######################
-  }else if( !(typeof(assert_frame[,string_mos]) %in% c("double", "integer"))){
-    stop(paste0("The vector ", string_mos, " must be numeric."))
-  ###########Test the mos parameter has no missing values   #######################
-  }else if( any(is.na(assert_frame[,string_mos])) == TRUE){
-    stop(paste0("The vector ", string_mos, " must have no missing values."))
-  ###########Test the mos parameter has negative values   #######################
-  }else if( any(assert_frame[,string_mos] < 0) == TRUE){
-    stop(paste0("The vector ", string_mos, " must have all positive values."))
-  #Test if curstrat is NULL or character with length >= 1
-  }
+
+  check_string_mos(mos, frame)
+
 
 
   #Passes assertion, proceed with rest of function - Need to use assert_frame, given syntax may not work if not data.frame

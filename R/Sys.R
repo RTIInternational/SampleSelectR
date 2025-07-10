@@ -38,13 +38,7 @@ sys <- function(frame, n, curstrat = NULL,outall=FALSE) {
   check_n(n, frame, curstrat, n_le_N=TRUE)
 
   # Check for valid values of outall
-  if (length(outall) != 1) {
-    stop("outall must be a single logical value of length 1.")
-  }
-
-  if (!(outall %in% c(TRUE, FALSE))) {
-    stop("outall must be either TRUE or FALSE, case sensitive.")
-  }
+  check_outall(outall)
 
 
   # Sampling method
