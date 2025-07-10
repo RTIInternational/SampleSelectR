@@ -33,54 +33,16 @@
 
 sys <- function(frame, n, curstrat = NULL,outall=FALSE) {
 
-
-  if (!is.data.frame(frame)) {
-    stop("`frame` must be a data.frame, tibble, or data.table.")
-  }
-
-  N <- nrow(frame)
-  if (N < 1) {
-    stop("Sampling frame must have at least one row.")
-  }
-
-  if (!is.numeric(n) || length(n) != 1 || n != as.integer(n)) {
-    stop("`n` must be a single integer.")
-  }
-
-  if (!is.null(curstrat) && (!is.character(curstrat) || length(curstrat) < 1)) {
-    stop("`curstrat` must be NULL or a character vector of length >= 1.")
-  }
-
-  if (n > N) {
-    stop("Sample size `n` cannot be greater than number of units in frame (`N`).")
-  }
-
-  # Get a message if it is a  full sample
-
-
-  if (n == N) {
-    msg <- sprintf("You are sampling %d observations from a frame with %d rows", n, N)
-    if (!is.null(curstrat)) {
-      msg <- paste0(msg, " in stratum ", curstrat)
-    }
-    message(msg)
-
-
-  }
-
+  # Check inputs
+  check_frame_type(frame)
+  check_n(n, frame, curstrat, n_le_N=TRUE)
 
   # Check for valid values of outall
-  if (length(outall) != 1) {
-    stop("outall must be a single logical value of length 1.")
-  }
-
-  if (!(outall %in% c(TRUE, FALSE))) {
-    stop("outall must be either TRUE or FALSE, case sensitive.")
-  }
+  check_outall(outall)
 
 
   # Sampling method
-
+  N <- nrow(frame)
 
   k <- N / n  # Sampling interval
 
@@ -108,17 +70,9 @@ sys <- function(frame, n, curstrat = NULL,outall=FALSE) {
 
 
   # Output msg
-  if (!is.null(curstrat)) {
-    cat("Sample size:", n, "in", curstrat, "\n")
-    cat("Frame size:", N, "in", curstrat, "\n")
-    cat("Sampling interval (k):", k, "in", curstrat, "\n")
-    cat("Random start (r):", r, "in", curstrat, "\n")
-  } else {
-    cat("Sample size:", n, "\n")
-    cat("Frame size:", N, "\n")
-    cat("Sampling interval (k):", k, "\n")
-    cat("Random start (r):", r, "\n")
-  }
+
+  # Output msg
+  Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
 
 
   # Return only selected rows and make sure the selected sample is a data.frame, tibble, or data.table
@@ -136,6 +90,7 @@ sys <- function(frame, n, curstrat = NULL,outall=FALSE) {
 
 
 }
+
 
 
 

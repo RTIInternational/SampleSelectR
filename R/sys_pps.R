@@ -15,11 +15,19 @@
 #' @return Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
 sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
 
+  # Check inputs
+  check_frame_type(frame)
+  check_n(n, frame, curstrat, n_le_N=FALSE)
+  check_outall(outall)
+
   #Create R objects
   N <- nrow(frame)
 
+  check_frame_type(frame)
+
   #Get the order of the variables
   CONST_ORDER_FRAME_VARS <- rlang::parse_exprs(colnames(frame))
+
 
   #Create assert_frame for various tests
   assert_frame <- as.data.frame(frame)
@@ -28,47 +36,10 @@ sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
   string_mos <- as.character(mos)
   symbol_mos <- rlang::parse_expr(string_mos)
 
-  #Check for various conditions
 
-  #Check if n has length of 1
-  if(length(n) > 1){
-    stop(paste0("n has a length of ", length(n), ".  n must have a length of 1."))
-  #Check if n > N
-  }else if(n > N){
-    stop(paste0("n is ", n, " and the number of rows in the frame is ", N, ". n must be less than or equal to ", N, "."))
-  #Check if sampling frame have 1 or more rows
-  }else if(N <= 0){
-    stop("The frame must have 1 or more rows.")
-  #Test the mos parameter variable is in the frame
-  }else if( !(string_mos %in% colnames(frame)) ){
-      stop(paste0("There is no column on the frame with the name ", string_mos, "."))
-  ###########Test the mos parameter variable is numeric    #######################
-  }else if( !(typeof(assert_frame[,string_mos]) %in% c("double", "integer"))){
-    stop(paste0("The vector ", string_mos, " must be numeric."))
-  ###########Test the mos parameter has no missing values   #######################
-  }else if( any(is.na(assert_frame[,string_mos])) == TRUE){
-    stop(paste0("The vector ", string_mos, " must have no missing values."))
-  ###########Test the mos parameter has negative values   #######################
-  }else if( any(assert_frame[,string_mos] < 0) == TRUE){
-    stop(paste0("The vector ", string_mos, " must have all positive values."))
-  #Test if curstrat is NULL or character with length >= 1
-  }else if(!is.null(curstrat)){
-    if(!is.character(curstrat)){
-      stop("Parameter curstrat must be NULL or a character vector.")
-    }else if(is.character(curstrat) & length(curstrat) <= 0){
-      stop("Parameter curstrat is a character vector with length 0.")
-    }
-  }
 
-  #Write message if n is equal to N
-  if(n==N){
-    #Write message depending on whether curstrat is used
-    if(is.null(curstrat)){
-      message(paste0("You are sampling ", n, " observations from a frame with ", nrow(frame), " rows."))
-    }else{
-      message(paste0("You are sampling ", n, " observations from a frame with ", nrow(frame), " rows in stratum ", curstrat, "."))
-    }
-  }
+  check_string_mos(mos, frame)
+
 
 
   #Passes assertion, proceed with rest of function - Need to use assert_frame, given syntax may not work if not data.frame
@@ -136,11 +107,7 @@ sys_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
 
   #Output to screen
 
-  if(!is.null(curstrat)){print("Stratum :", curstrat)}
-  print(paste0("The sample size is ", n, "."))
-  print(paste0("The number of rows in the frame is ", N, "."))
-  print(paste0("The sampling interval is ", k, "."))
-  print(paste0("The random start is ", r, "."))
+  Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
 
   #Return the data
   return(returndata)
