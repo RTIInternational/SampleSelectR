@@ -16,20 +16,25 @@
 chromy_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
   # TODO: Add in asserts
 
-  #Create a string version of the variable
-  string_mos <- as.character(mos)
-  symbol_mos <- rlang::parse_expr(string_mos)
-
   N <- nrow(frame)
-  moscuml <- cumsum(n*frame[[mos]]/sum(frame[[mos]]))
+  mosv <- n*frame[[mos]]/sum(frame[[mos]])
+  moscuml <- cumsum(mosv)
   I <- floor(moscuml)
   F <- moscuml-I
-  r <- runif(N)
-  chromy_inner <- function(N, F, I, r){
-    hits <- rep(0L, N)
-    for (i in 1:N){
-      Fprev = ifelse(i==1, 0, F[i-1])
-      Iprev = ifelse(i==1, 0, I[i-1])
+
+  chromy_inner <- function(F, I){
+    N <- length(F)
+    hits <- rep(0, N)
+    r <- runif(N)
+
+    for (i in seq_len(N)){
+      if (i==1L){
+        Fprev <- 0.0
+        Iprev <- 0.0
+      } else{
+        Fprev <- F[i-1]
+        Iprev <- I[i-1]
+      }
       PriorSum <- sum(hits)
 
       if (F[i]==0){ # Condition 1
@@ -57,14 +62,14 @@ chromy_pps <- function(frame, n, mos, outall=FALSE, curstrat=NULL){
 
       }
     }
-    return(hits)
+    hits
   }
 
   frame_hits <-
     frame |>
     tidytable::mutate(
-      ExpectedHits = n * ( !!(symbol_mos)/ sum(!!(symbol_mos))),
-      NumberHits = chromy_inner(N, F, I, r),
+      ExpectedHits = mosv,
+      NumberHits = chromy_inner(F, I),
       SelectionIndicator = .data$NumberHits > 0,
       SamplingWeight = ifelse(.data$SelectionIndicator, 1/.data$ExpectedHits, NA),
     )
