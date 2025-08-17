@@ -1,6 +1,8 @@
 #' Select a sequential PPS sample
 #'
-#' Draws a sequential sample of size n. Each unit’s probability of selection is proportional to its size measure. This is a minimum replacement method.
+#' Draws a sequential sample of size n.
+#' Each unit’s probability of selection is proportional to its size measure.
+#' This is a minimum replacement method as discussed in Chromy (1979).
 #'
 #' @param frame The input data frame for the function to work on.
 #'
@@ -22,7 +24,10 @@
 #' \url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}
 #' @export
 chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
-  # TODO: Add in asserts
+  check_frame_type(frame)
+  check_n(n, frame, curstrat, n_le_N = TRUE)
+  check_outall(outall)
+  check_string_mos(mos, frame)
 
   N <- nrow(frame)
   exphits <- n * frame[[mos]] / sum(frame[[mos]])
@@ -35,6 +40,9 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
       SelectionIndicator = .data$NumberHits > 0,
       SamplingWeight = ifelse(.data$SelectionIndicator, 1 / .data$ExpectedHits, NA),
     )
+
+  # Output to screen
+  Sampling_Output(n, N, curstrat = curstrat)
 
   if (outall) {
     return(frame_hits)
@@ -52,6 +60,7 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
 #' @param exphits A vector of non-negative values
 #'
 #' @return Returns a vector the same length of exphits with the number of random hits for each unit
+#' @keywords internal
 #' @references Chromy, J. R. (1979). “Sequential Sample Selection Methods.”
 #' In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
 #' Washington, DC: American Statistical Association.

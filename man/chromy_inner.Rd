@@ -21,3 +21,4 @@ In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
 Washington, DC: American Statistical Association.
 \url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}
 }
+\keyword{internal}
