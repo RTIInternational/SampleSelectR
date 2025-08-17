@@ -1,4 +1,4 @@
-#' Select a systematic PPS sample
+#' Select a sequential PPS sample
 #'
 #' Draws a sequential sample of size n. Each unit’s probability of selection is proportional to its size measure. This is a minimum replacement method.
 #'
@@ -12,63 +12,26 @@
 #'
 #' @param curstrat A character variable that specifies the current strata, only used as an assertion for the n == N test.
 #'
+#' @aliases sequential_pps
+#'
 #' @return Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
+#'
+#' @references Chromy, J. R. (1979). “Sequential Sample Selection Methods.”
+#' In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
+#' Washington, DC: American Statistical Association.
+#' \url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}
+#' @export
 chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   # TODO: Add in asserts
 
   N <- nrow(frame)
-  mosv <- n * frame[[mos]] / sum(frame[[mos]])
-  moscuml <- cumsum(mosv)
-  I <- floor(moscuml)
-  F <- moscuml - I
-
-  chromy_inner <- function(F, I) {
-    N <- length(F)
-    hits <- rep(0, N)
-    r <- runif(N)
-
-    for (i in seq_len(N)) {
-      if (i == 1L) {
-        Fprev <- 0.0
-        Iprev <- 0.0
-      } else {
-        Fprev <- F[i - 1]
-        Iprev <- I[i - 1]
-      }
-      PriorSum <- sum(hits)
-
-      if (F[i] == 0) { # Condition 1
-        hits[i] <- 0
-      } else if (F[i] > Fprev) { # Condition 2
-        if (PriorSum == Iprev) { # First column
-          if (r[i] < (F[i] - Fprev) / (1 - Fprev)) {
-            hits[i] <- I[i] + 1 - PriorSum
-          } else {
-            hits[i] <- I[i] - PriorSum
-          }
-        } else { # Second column
-          hits[i] <- I[i] + 1 - PriorSum
-        }
-      } else { # Condition 3
-        if (PriorSum == Iprev) { # First column
-          hits[i] <- I[i] - PriorSum
-        } else { # Second column
-          if (r[i] < F[i] / Fprev) {
-            hits[i] <- I[i] + 1 - PriorSum
-          } else {
-            hits[i] <- I[i] - PriorSum
-          }
-        }
-      }
-    }
-    hits
-  }
+  exphits <- n * frame[[mos]] / sum(frame[[mos]])
 
   frame_hits <-
     frame |>
     tidytable::mutate(
-      ExpectedHits = mosv,
-      NumberHits = chromy_inner(F, I),
+      ExpectedHits = exphits,
+      NumberHits = chromy_inner(exphits),
       SelectionIndicator = .data$NumberHits > 0,
       SamplingWeight = ifelse(.data$SelectionIndicator, 1 / .data$ExpectedHits, NA),
     )
@@ -82,4 +45,79 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
 
     return(sample_out)
   }
+}
+
+#' Select a sequential PPS sample given expected number of hits
+#'
+#' @param exphits A vector of non-negative values
+#'
+#' @return Returns a vector the same length of exphits with the number of random hits for each unit
+#' @references Chromy, J. R. (1979). “Sequential Sample Selection Methods.”
+#' In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
+#' Washington, DC: American Statistical Association.
+#' \url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}
+chromy_inner <- function(exphits){
+
+  # Randomly move starting point
+  N <- length(exphits)
+  exphits_og <- exphits
+  randstart <- sample(N, 1)
+  if (!randstart %in% c(1, N)){
+    reord <- c(seq(randstart, N), seq(1, randstart-1))
+  } else if (randstart==1){
+    reord <- seq(1, N)
+  } else if (randstart==N){
+    reord <- c(N, seq(1, N-1))
+  }
+  unreord <- order(reord)
+  exphits <- exphits[reord]
+
+  # Set-up vectors of I, F, lower bound of hits, and a uniform random number
+  exphitscum <- cumsum(exphits)
+  I <- floor(exphitscum)
+  F <- exphitscum-I
+  hits <- floor(exphits)
+  r <- runif(N)
+
+  PriorSum <- 0
+
+  for (idx in seq_len(N)){
+    if (idx==1L){
+      Fprev <- 0.0
+      Iprev <- 0.0
+    } else{
+      Fprev <- F[idx-1]
+      Iprev <- I[idx-1]
+    }
+
+    # See Table 2 in http://www.asasrms.org/Proceedings/papers/1979_081.pdf
+    # Doing Case 1 last as it is least likely and loop will go faster
+
+    if (F[idx] > Fprev & F[idx] > 0){ # Condition 2
+      if (PriorSum==Iprev){ # First column
+        if (r[idx] < (F[idx]-Fprev)/ (1-Fprev)){
+          hits[idx] <- I[idx] +1- PriorSum
+        } else{
+          hits[idx] <- I[idx]-PriorSum
+        }
+      } else{ # Second column
+        hits[idx] <- I[idx] + 1-PriorSum
+      }
+    } else if (Fprev>F[idx] & F[idx] > 0){ # Condition 3 F(i-1)>F(i)>0
+      if (PriorSum==Iprev){ # First column
+        hits[idx] <- I[idx]-PriorSum
+      } else{ # Second column
+        if (r[idx] < F[idx]/Fprev){
+          hits[idx] <- I[idx] +1- PriorSum
+        } else{
+          hits[idx] <- I[idx]- PriorSum
+        }
+      }
+    } else { # Condition 1
+      # do nothing
+    }
+    PriorSum <- sum(hits[1:idx])
+  }
+
+  return(hits[unreord])
 }

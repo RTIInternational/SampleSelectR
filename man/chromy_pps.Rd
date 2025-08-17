@@ -2,7 +2,8 @@
 % Please edit documentation in R/chromy_pps.R
 \name{chromy_pps}
 \alias{chromy_pps}
-\title{Select a systematic PPS sample}
+\alias{sequential_pps}
+\title{Select a sequential PPS sample}
 \usage{
 chromy_pps(frame, n, mos, outall = FALSE, curstrat = NULL)
 }
@@ -22,4 +23,10 @@ Returns an object of type tidytable that contains the weight, selection probabil
 }
 \description{
 Draws a sequential sample of size n. Each unit’s probability of selection is proportional to its size measure. This is a minimum replacement method.
+}
+\references{
+Chromy, J. R. (1979). “Sequential Sample Selection Methods.”
+In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
+Washington, DC: American Statistical Association.
+\url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}
 }
