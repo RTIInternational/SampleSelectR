@@ -32,12 +32,12 @@ This is a minimum replacement method as discussed in Chromy (1979).
 # Cook, Harris, and Maricopa will be selected one or two times based on expected hits
 
 county_2023 |>
-  tidytable::select(GEOID:Pop_Tot) |>
+  tidytable::select(GEOID, Name, Pop_Tot) |>
   chromy_pps(n=75, mos="Pop_Tot") |>
   tidytable::arrange(desc(ExpectedHits))
 
 county_2023 |>
-  tidytable::select(GEOID:Pop_Tot) |>
+  tidytable::select(GEOID, Name, Pop_Tot) |>
   chromy_pps(n=75, mos="Pop_Tot", outall = TRUE) |>
   tidytable::arrange(desc(ExpectedHits))
 

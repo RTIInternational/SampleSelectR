@@ -22,12 +22,12 @@
 #' # Cook, Harris, and Maricopa will be selected one or two times based on expected hits
 #'
 #' county_2023 |>
-#'   tidytable::select(GEOID:Pop_Tot) |>
+#'   tidytable::select(GEOID, Name, Pop_Tot) |>
 #'   chromy_pps(n=75, mos="Pop_Tot") |>
 #'   tidytable::arrange(desc(ExpectedHits))
 #'
 #' county_2023 |>
-#'   tidytable::select(GEOID:Pop_Tot) |>
+#'   tidytable::select(GEOID, Name, Pop_Tot) |>
 #'   chromy_pps(n=75, mos="Pop_Tot", outall = TRUE) |>
 #'   tidytable::arrange(desc(ExpectedHits))
 #'
@@ -40,7 +40,7 @@
 #' @export
 chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   check_frame_type(frame)
-  check_n(n, frame, curstrat, n_le_N = TRUE)
+  check_n(n, frame, curstrat, n_le_N = FALSE)
   check_outall(outall)
   check_string_mos(mos, frame)
 
