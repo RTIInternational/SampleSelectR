@@ -2,7 +2,7 @@
 % Please edit documentation in R/chromy_pps.R
 \name{chromy_pps}
 \alias{chromy_pps}
-\alias{sequential_pps}
+\alias{seq_pps}
 \title{Select a sequential PPS sample}
 \usage{
 chromy_pps(frame, n, mos, outall = FALSE, curstrat = NULL)
@@ -25,6 +25,22 @@ Returns an object of type tidytable that contains the weight, selection probabil
 Draws a sequential sample of size n.
 Each unit’s probability of selection is proportional to its size measure.
 This is a minimum replacement method as discussed in Chromy (1979).
+}
+\examples{
+# PPS sample of counties using population size as MOS
+# LA county will be selected two or three times based on expected hits
+# Cook, Harris, and Maricopa will be selected one or two times based on expected hits
+
+county_2023 |>
+  tidytable::select(GEOID:Pop_Tot) |>
+  chromy_pps(n=75, mos="Pop_Tot") |>
+  tidytable::arrange(desc(ExpectedHits))
+
+county_2023 |>
+  tidytable::select(GEOID:Pop_Tot) |>
+  chromy_pps(n=75, mos="Pop_Tot", outall = TRUE) |>
+  tidytable::arrange(desc(ExpectedHits))
+
 }
 \references{
 Chromy, J. R. (1979). “Sequential Sample Selection Methods.”

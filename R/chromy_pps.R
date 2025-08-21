@@ -14,7 +14,22 @@
 #'
 #' @param curstrat A character variable that specifies the current strata, only used as an assertion for the n == N test.
 #'
-#' @aliases sequential_pps
+#' @aliases seq_pps
+#'
+#' @examples
+#' # PPS sample of counties using population size as MOS
+#' # LA county will be selected two or three times based on expected hits
+#' # Cook, Harris, and Maricopa will be selected one or two times based on expected hits
+#'
+#' county_2023 |>
+#'   tidytable::select(GEOID:Pop_Tot) |>
+#'   chromy_pps(n=75, mos="Pop_Tot") |>
+#'   tidytable::arrange(desc(ExpectedHits))
+#'
+#' county_2023 |>
+#'   tidytable::select(GEOID:Pop_Tot) |>
+#'   chromy_pps(n=75, mos="Pop_Tot", outall = TRUE) |>
+#'   tidytable::arrange(desc(ExpectedHits))
 #'
 #' @return Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
 #'
