@@ -2,6 +2,7 @@
 
 export(allocate)
 export(chromy_pps)
+export(serp_sort)
 export(srs)
 export(sys)
 importFrom(data.table,":=")
