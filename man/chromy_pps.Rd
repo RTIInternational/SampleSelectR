@@ -12,9 +12,9 @@ chromy_pps(frame, n, mos, outall = FALSE, curstrat = NULL)
 
 \item{n}{The sample size, the parameter expects an integer of length 1.  The function will check if n is less than or equal to the number of rows in the input frame.}
 
-\item{mos}{The measure of size, the parameter expects a character string to indicate the variable to be use as the measure of size.  The variable must exists on the frame and be non-missing and non-negative numeric variable.}
+\item{mos}{The measure of size, the parameter expects a character string to indicate the variable to be used as the measure of size. The variable must exist on the frame and be a non-missing and non-negative numeric variable.}
 
-\item{outall}{Output all records or selected records.  If outall is TRUE, then all records are return and the following variables are created: SelectionIndicator, SamplingWeight, NumberHits, and ExpectedHits.  If outall is FALSE, then the selected records are return and the following variables are created:  SamplingWeight, NumberHits, ExpectedHits.}
+\item{outall}{Output all records or selected records.  If outall is TRUE, then all records are returned and the following variables are created: SelectionIndicator, SamplingWeight, NumberHits, and ExpectedHits.  If outall is FALSE, then the selected records are returned and the following variables are created:  SamplingWeight, NumberHits, ExpectedHits.}
 
 \item{curstrat}{A character variable that specifies the current strata, only used as an assertion for the n == N test.}
 }
@@ -26,7 +26,7 @@ Include a SelectionIndicator variable if outall=TRUE
 }
 \description{
 Draws a sequential sample of size n.
-Each unit’s probability of selection is proportional to its size measure.
+Each unit's probability of selection is proportional to its size measure.
 This is a minimum replacement method as discussed in Chromy (1979).
 }
 \examples{
@@ -36,12 +36,12 @@ This is a minimum replacement method as discussed in Chromy (1979).
 
 county_2023 |>
   tidytable::select(GEOID, Name, Pop_Tot) |>
-  chromy_pps(n=75, mos="Pop_Tot") |>
+  chromy_pps(n = 75, mos = "Pop_Tot") |>
   tidytable::arrange(desc(ExpectedHits))
 
 county_2023 |>
   tidytable::select(GEOID, Name, Pop_Tot) |>
-  chromy_pps(n=75, mos="Pop_Tot", outall = TRUE) |>
+  chromy_pps(n = 75, mos = "Pop_Tot", outall = TRUE) |>
   tidytable::arrange(desc(ExpectedHits))
 
 }

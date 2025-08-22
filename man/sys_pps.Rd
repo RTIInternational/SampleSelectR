@@ -21,5 +21,5 @@ sys_pps(frame, n, mos, outall = FALSE, curstrat = NULL)
 Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
 }
 \description{
-Draws a systematic sample of size n. Each unit’s probability of selection is proportional to its size measure.
+Draws a systematic sample of size n. Each unit's probability of selection is proportional to its size measure.
 }

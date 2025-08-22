@@ -1,6 +1,6 @@
 #' Select a systematic PPS sample
 #'
-#' Draws a systematic sample of size n. Each unit’s probability of selection is proportional to its size measure.
+#' Draws a systematic sample of size n. Each unit's probability of selection is proportional to its size measure.
 #'
 #' @param frame The input data frame for the function to work on.
 #'
