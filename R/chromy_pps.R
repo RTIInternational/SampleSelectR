@@ -82,6 +82,18 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
 #' \url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}
 chromy_inner <- function(exphits){
 
+  if(!is.numeric(exphits)){
+    stop("exphits must be numeric")
+  }
+
+  if (abs(sum(exphits) - round(sum(exphits))) > .Machine$double.eps^0.5){
+    stop("sum of exphits, the sample size, must be an integer")
+  }
+
+  if (any(exphits < 0)){
+    stop("Each value of exphits must be non-negative")
+  }
+
   # Randomly move starting point
   N <- length(exphits)
   exphits_og <- exphits
@@ -100,8 +112,14 @@ chromy_inner <- function(exphits){
   exphitscum <- cumsum(exphits)
   I <- floor(exphitscum)
   F <- exphitscum-I
-  hits <- floor(exphits)
+  hits <- rep(0, N)
   r <- runif(N)
+
+  # See Table 1 and 2 in http://www.asasrms.org/Proceedings/papers/1979_081.pdf
+  # Use Table 1 if any exphits > 1 (PMR) - minimum replacement
+  # Use Table 2 if all exphits < 1 (PNR) - non replacement
+
+  tabuse <- ifelse(any(exphits>1), 1, 2)
 
   PriorSum <- 0
 
@@ -114,34 +132,55 @@ chromy_inner <- function(exphits){
       Iprev <- I[idx-1]
     }
 
-    # See Table 2 in http://www.asasrms.org/Proceedings/papers/1979_081.pdf
-    # Doing Case 1 last as it is least likely and loop will go faster
+    Fcur <- F[idx]
 
-    if (F[idx] > Fprev & F[idx] > 0){ # Condition 2
-      if (PriorSum==Iprev){ # First column
-        if (r[idx] < (F[idx]-Fprev)/ (1-Fprev)){
-          hits[idx] <- I[idx] +1- PriorSum
-        } else{
-          hits[idx] <- I[idx]-PriorSum
-        }
-      } else{ # Second column
-        hits[idx] <- I[idx] + 1-PriorSum
-      }
-    } else if (Fprev>F[idx] & F[idx] > 0){ # Condition 3 F(i-1)>F(i)>0
-      if (PriorSum==Iprev){ # First column
-        hits[idx] <- I[idx]-PriorSum
-      } else{ # Second column
-        if (r[idx] < F[idx]/Fprev){
-          hits[idx] <- I[idx] +1- PriorSum
-        } else{
-          hits[idx] <- I[idx]- PriorSum
-        }
-      }
-    } else { # Condition 1
-      # do nothing
+    if (tabuse==1){
+      compvars <- matrix(c(
+        0, 0,
+        (Fcur-Fprev)/(1-Fprev), 1,
+        0, Fcur/Fprev),
+        nrow=3, byrow = TRUE)
+    } else{
+      compvars <- matrix(c(
+        1, 0,
+        (Fcur-Fprev)/(1-Fprev), 0,
+        1, Fcur/Fprev),
+        nrow=3, byrow = TRUE)
     }
-    PriorSum <- sum(hits[1:idx])
-  }
+
+    if(PriorSum==Iprev){
+      colsel <- 1
+    }else if(PriorSum==(Iprev+1)){
+      colsel <- 2
+    }else{
+      stop("Condition doesn't make sense (col)")
+    }
+
+    if (Fcur > Fprev & Fcur > 0){ #F(i)>F(i-1)>0
+      rowsel <- 2
+    } else if (Fprev>Fcur & Fcur > 0){ # F(i-1)>F(i)>0
+      rowsel <- 3
+    } else if (Fcur==0) { # F(i) = 0
+      rowsel <- 1
+    } else{
+      stop("Condition doesn't make sense (row)")
+    }
+
+    if (idx == N){
+      NewSum <- I[idx] # Needed to add this for a corner case
+    }else if (r[idx] < compvars[rowsel, colsel]){
+      NewSum <- I[idx] +1
+    } else{
+      NewSum <- I[idx]
+    }
+
+    hits[idx] <- NewSum-PriorSum
+
+    PriorSum <- NewSum
+    if (PriorSum==I[N]){
+      break
+    }
+}
 
   return(hits[unreord])
-}
+  }
