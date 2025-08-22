@@ -19,7 +19,10 @@ chromy_pps(frame, n, mos, outall = FALSE, curstrat = NULL)
 \item{curstrat}{A character variable that specifies the current strata, only used as an assertion for the n == N test.}
 }
 \value{
-Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
+Returns an object of type tidytable that contains
+the weight, expected hits (selection probability for nonreplacement designs), and
+number of hits plus all original variables.
+Include a SelectionIndicator variable if outall=TRUE
 }
 \description{
 Draws a sequential sample of size n.

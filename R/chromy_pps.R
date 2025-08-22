@@ -31,7 +31,10 @@
 #'   chromy_pps(n=75, mos="Pop_Tot", outall = TRUE) |>
 #'   tidytable::arrange(desc(ExpectedHits))
 #'
-#' @return Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
+#' @return Returns an object of type tidytable that contains
+#' the weight, expected hits (selection probability for nonreplacement designs), and
+#' number of hits plus all original variables.
+#' Include a SelectionIndicator variable if outall=TRUE
 #'
 #' @references Chromy, J. R. (1979). “Sequential Sample Selection Methods.”
 #' In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
