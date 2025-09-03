@@ -18,17 +18,22 @@
 #'
 #'
 #' @references Kalton, G. (1983). *Introduction to Survey Sampling*. SAGE Publications. https://doi.org/10.4135/9781412984683
+#' @examples
+#'
+#' #Sort by REGION, DIVISION, and Pop_Tot, then take a sample
+#' puma_2023 |>
+#'   tidytable::arrange(Region, Division, Pop_Tot) |>
+#'   sys(n = 50, outall = FALSE)
+#'
+#' #Return full dataset with selection indicators
+#' puma_2023 |>
+#'   tidytable::arrange(Region, Division, Pop_Tot) |>
+#'   sys(n = 50, outall = TRUE)
+#'
+#'
+
 #'
 #' @export
-
-
-
-
-
-
-
-
-
 
 sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
   check_frame_type(frame)
@@ -39,13 +44,9 @@ sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
 
   # Sampling method
 
-
   k <- N / n # Sampling interval
 
-
   r <- runif(1, 1, k) # We use a random start between 1 and k
-
-
 
   selectedVector <- floor(r + k * (0:(n - 1))) # Selected row indices
 

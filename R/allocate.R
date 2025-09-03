@@ -61,6 +61,45 @@
 #' @param lbound minimum stratum-level (positive integer of length 1). Default value is 2.
 #' @return Integer vector same length of N.h final allocation
 #' @export
+#' @examples
+#' # The first step is getting a frame summary
+#' #  Summarize the IPEDS dataset by OBEREG
+#' # - N: number of universities per region
+#' # - SD_ENRTOT: standard deviation of total enrollment per region
+#' # - Filter out rows with missing ENRTOT to ensure accurate variance estimates
+#'
+#' ipeds_summary <- ipeds |>
+#'   tidytable::filter(!is.na(ENRTOT)) |>
+#'   tidytable::group_by(OBEREG) |>
+#'   tidytable::summarize(
+#'     N = tidytable::n(),
+#'     SD_ENRTOT = stats::sd(ENRTOT)
+#'   ) |>
+#'   tidytable::ungroup()
+#'
+#' # Example of proportional allocation
+#' ipeds_summary |>
+#'   tidytable::mutate(
+#'     n = allocate("proportional", N.h = N, n.samp = 500)
+#'   )
+#'
+#' # Example of power allocation
+#' ipeds_summary |>
+#'   tidytable::mutate(
+#'     n = allocate("power", N.h = N, power = 0.5, n.samp = 500)
+#'   )
+#'
+#' # Example of Neyman allocation
+#' ipeds_summary |>
+#'   tidytable::mutate(
+#'     n = allocate("neyman", N.h = N, n.samp = 500, S.h = SD_ENRTOT)
+#'   )
+#'
+#' # Example of Neyman allocation with a lower bound of 5
+#' ipeds_summary |>
+#'   tidytable::mutate(
+#'     n = allocate("neyman", N.h = N, n.samp = 500, S.h = SD_ENRTOT, lbound = 5)
+#'   )
 allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cost = NULL, variance = NULL, power = NULL, lbound = 2) {
   allocation <- match.arg(allocation, c("proportional", "power", "neyman", "optimal"))
 
@@ -309,3 +348,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   ))
   return(outputs)
 }
+
+
+
+
