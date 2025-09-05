@@ -13,6 +13,18 @@
 #' @param curstrat A character variable that specifies the current strata, only used as an assertion for the n == N test.
 #'
 #' @return Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
+#'
+#'@examples
+#'
+#' # PPS sample of 75 counties using Pop_Tot as the measure of size
+#' # Return only the sampled counties
+#' sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = FALSE)
+#'
+#' # Return the full dataset with selection indicators
+#' sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = TRUE)
+#'
+#' @export
+
 sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   check_frame_type(frame)
   check_n(n, frame, curstrat, n_le_N = TRUE)
@@ -59,7 +71,10 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
     tidytable::rename(NumberHits = n)
 
   tbd_data_2 <- tbd_data_1 |>
-    tidytable::left_join(selectedVector_counts, by = c("rowNum" = "selectedVector")) |>
+    tidytable::left_join(
+      selectedVector_counts,
+      by = c("rowNum" = "selectedVector")
+    ) |>
     # Need to zero filled NumberHits
     tidytable::mutate(
       NumberHits = tidytable::replace_na(.data$NumberHits, replace = 0),
@@ -77,7 +92,10 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
       # Original variables
       !!!(CONST_ORDER_FRAME_VARS),
       # New created variables in order
-      .data$SelectionIndicator, .data$SamplingWeight, .data$NumberHits, .data$ExpectedHits
+      .data$SelectionIndicator,
+      .data$SamplingWeight,
+      .data$NumberHits,
+      .data$ExpectedHits
     )
 
   # Using tbd_data_2, need to create the returndata based on the parameter outall

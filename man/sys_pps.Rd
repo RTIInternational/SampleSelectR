@@ -23,3 +23,13 @@ Returns an object of type tidytable that contains the weight, selection probabil
 \description{
 Draws a systematic sample of size n. Each unit's probability of selection is proportional to its size measure.
 }
+\examples{
+
+# PPS sample of 75 counties using Pop_Tot as the measure of size
+# Return only the sampled counties
+sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = FALSE)
+
+# Return the full dataset with selection indicators
+sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = TRUE)
+
+}
