@@ -123,6 +123,45 @@ chromy_inner <- function(exphits) {
 
   tabuse <- ifelse(any(exphits > 1), 1, 2)
 
+  if (tabuse == 1) {
+    create_compvars <- function(Fcur, Fprev){
+      # Creates the conditional probabilities in Table 1
+      matrix(
+        c(
+          0, 0,
+          (Fcur - Fprev) / (1 - Fprev), 1,
+          0, Fcur / Fprev
+        ),
+        nrow = 3, byrow = TRUE
+      )
+    }
+    calc_hits <- function(Iidx, ridx, condprob){
+      # Calculates the hits in Table 1
+      NewSum <- ifelse(ridx < condprob, Iidx + 1, Iidx)
+
+      #Update the hit object
+      hitsidx <- NewSum - PriorSum
+
+      return(hitsidx)
+    }
+  } else {
+    create_compvars <- function(Fcur, Fprev){
+      # Creates the conditional probabilities in Table 1
+      matrix(
+        c(
+          1, 0,
+          (Fcur - Fprev) / (1 - Fprev), 0,
+          1, Fcur / Fprev
+        ),
+        nrow = 3, byrow = TRUE
+      )
+    }
+    calc_hits <- function(Iidx, ridx, condprob){
+      # Calculates the hits in Table 2
+      ifelse(ridx < condprob, 1, 0)
+    }
+  }
+
   PriorSum <- 0
 
   for (idx in seq_len(N)) {
@@ -136,25 +175,7 @@ chromy_inner <- function(exphits) {
 
     Fcur <- F[idx]
 
-    if (tabuse == 1) {
-      compvars <- matrix(
-        c(
-          0, 0,
-          (Fcur - Fprev) / (1 - Fprev), 1,
-          0, Fcur / Fprev
-        ),
-        nrow = 3, byrow = TRUE
-      )
-    } else {
-      compvars <- matrix(
-        c(
-          1, 0,
-          (Fcur - Fprev) / (1 - Fprev), 0,
-          1, Fcur / Fprev
-        ),
-        nrow = 3, byrow = TRUE
-      )
-    }
+    compvars <- create_compvars(Fcur, Fprev)
 
     if (PriorSum == Iprev) {
       colsel <- 1
@@ -174,36 +195,8 @@ chromy_inner <- function(exphits) {
       stop("Condition doesn't make sense (row)")
     }
 
-    # Use Table 1 if any exphits > 1 (PMR) - minimum replacement
-    if (tabuse == 1){
-      if (idx == N) {
-        NewSum <- I[idx] # Needed to add this for a corner case
-      } else if (r[idx] < compvars[rowsel, colsel]) {
-        NewSum <- I[idx] + 1
-      } else {
-        NewSum <- I[idx]
-      }
-
-      #Update the hit object
-      hits[idx] <- NewSum - PriorSum
-
-      #Update PriorSum
-      PriorSum <- NewSum
-
-
-    }else{
-    # Use Table 2 if all exphits < 1 (PNR) - non replacement
-      if (r[idx] < compvars[rowsel, colsel]) {
-        hits[idx] <- 1
-
-        #Update PriorSum
-        PriorSum <- PriorSum + 1
-
-      } else {
-        hits[idx] <- 0
-      }
-    }
-
+    hits[idx] <- calc_hits(I[idx], r[idx], compvars[rowsel, colsel])
+    PriorSum <-PriorSum + hits[idx]
 
     if (PriorSum == I[N]) {
       break
