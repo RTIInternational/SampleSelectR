@@ -41,7 +41,7 @@ test_that("chromy always gets sample size of 1 when hits .5/.5", {
 
 test_that("chromy hits within correct range for PNR case", {
   expect(
-    all(replicate(1000, chromy_inner(mtcars$wt/sum(mtcars$wt))) %in% c(0, 1)),
+    all(replicate(1000, chromy_inner(mtcars$wt / sum(mtcars$wt))) %in% c(0, 1)),
     "Number of hits for PNR is not exactly 0 or 1"
   )
 })

@@ -124,7 +124,7 @@ chromy_inner <- function(exphits) {
   tabuse <- ifelse(any(exphits > 1), 1, 2)
 
   if (tabuse == 1) {
-    create_compvars <- function(Fcur, Fprev){
+    create_compvars <- function(Fcur, Fprev) {
       # Creates the conditional probabilities in Table 1
       matrix(
         c(
@@ -135,17 +135,17 @@ chromy_inner <- function(exphits) {
         nrow = 3, byrow = TRUE
       )
     }
-    calc_hits <- function(Iidx, ridx, condprob){
+    calc_hits <- function(Iidx, ridx, condprob) {
       # Calculates the hits in Table 1
       NewSum <- ifelse(ridx < condprob, Iidx + 1, Iidx)
 
-      #Update the hit object
+      # Update the hit object
       hitsidx <- NewSum - PriorSum
 
       return(hitsidx)
     }
   } else {
-    create_compvars <- function(Fcur, Fprev){
+    create_compvars <- function(Fcur, Fprev) {
       # Creates the conditional probabilities in Table 1
       matrix(
         c(
@@ -156,7 +156,7 @@ chromy_inner <- function(exphits) {
         nrow = 3, byrow = TRUE
       )
     }
-    calc_hits <- function(Iidx, ridx, condprob){
+    calc_hits <- function(Iidx, ridx, condprob) {
       # Calculates the hits in Table 2
       ifelse(ridx < condprob, 1, 0)
     }
@@ -196,7 +196,7 @@ chromy_inner <- function(exphits) {
     }
 
     hits[idx] <- calc_hits(I[idx], r[idx], compvars[rowsel, colsel])
-    PriorSum <-PriorSum + hits[idx]
+    PriorSum <- PriorSum + hits[idx]
 
     if (PriorSum == I[N]) {
       break
