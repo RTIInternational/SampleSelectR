@@ -166,7 +166,7 @@ chromy_inner <- function(exphits) {
 
     if (Fcur > Fprev & Fcur > 0) { # F(i)>F(i-1)>0
       rowsel <- 2
-    } else if (Fprev > Fcur & Fcur > 0) { # F(i-1)>F(i)>0
+    } else if (Fprev >= Fcur & Fcur > 0) { # F(i-1)>F(i)>0
       rowsel <- 3
     } else if (Fcur == 0) { # F(i) = 0
       rowsel <- 1
@@ -174,17 +174,37 @@ chromy_inner <- function(exphits) {
       stop("Condition doesn't make sense (row)")
     }
 
-    if (idx == N) {
-      NewSum <- I[idx] # Needed to add this for a corner case
-    } else if (r[idx] < compvars[rowsel, colsel]) {
-      NewSum <- I[idx] + 1
-    } else {
-      NewSum <- I[idx]
+    # Use Table 1 if any exphits > 1 (PMR) - minimum replacement
+    if (tabuse == 1){
+      if (idx == N) {
+        NewSum <- I[idx] # Needed to add this for a corner case
+      } else if (r[idx] < compvars[rowsel, colsel]) {
+        NewSum <- I[idx] + 1
+      } else {
+        NewSum <- I[idx]
+      }
+
+      #Update the hit object
+      hits[idx] <- NewSum - PriorSum
+
+      #Update PriorSum
+      PriorSum <- NewSum
+
+
+    }else{
+    # Use Table 2 if all exphits < 1 (PNR) - non replacement
+      if (r[idx] < compvars[rowsel, colsel]) {
+        hits[idx] <- 1
+
+        #Update PriorSum
+        PriorSum <- PriorSum + 1
+
+      } else {
+        hits[idx] <- 0
+      }
     }
 
-    hits[idx] <- NewSum - PriorSum
 
-    PriorSum <- NewSum
     if (PriorSum == I[N]) {
       break
     }
