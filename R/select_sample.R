@@ -287,7 +287,7 @@ select_sample <- function(frame, method, n, outall = FALSE, strata = NULL, mos =
       tidytable::mutate(data = tidytable::map(.data$data, ~ serp_sort(.x, sort_vars)))
   } else if (sort_method == "nest") {
     strata_frames <- strata_frames |>
-      tidytable::mutate(data = tidytable::map(.data$data, ~ tidytable::arrange(.x, tidytable::pick(sort_vars))))
+      tidytable::mutate(data = tidytable::map(.data$data, ~ tidytable::arrange(.x, tidytable::pick(tidytable::all_of(sort_vars)))))
   }
 
   # Finally, pass along to helper sampling function based on method

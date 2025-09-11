@@ -67,7 +67,7 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   } else {
     sample_out <- frame_hits |>
       tidytable::filter(.data$SelectionIndicator) |>
-      tidytable::select(-.data$SelectionIndicator)
+      tidytable::select(-tidytable::all_of("SelectionIndicator"))
 
     return(sample_out)
   }

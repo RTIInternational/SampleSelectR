@@ -62,7 +62,7 @@ sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
       SelectionProbability = n / N,
       SamplingWeight = ifelse(.data$SelectionIndicator, N / n, NA)
     ) |>
-    tidytable::select(-.data$numrow)
+    tidytable::select(-tidytable::all_of("numrow"))
 
   # Output to screen
   Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
@@ -74,7 +74,7 @@ sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
   } else {
     sample_output <- frame |>
       tidytable::filter(.data$SelectionIndicator) |>
-      tidytable::select(-.data$SelectionIndicator)
+      tidytable::select(-tidytable::all_of("SelectionIndicator"))
 
     return(sample_output)
   }

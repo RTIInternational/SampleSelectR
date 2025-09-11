@@ -92,17 +92,17 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
       # Original variables
       !!!(CONST_ORDER_FRAME_VARS),
       # New created variables in order
-      .data$SelectionIndicator,
-      .data$SamplingWeight,
-      .data$NumberHits,
-      .data$ExpectedHits
-    )
+      tidytable::all_of(c("SelectionIndicator",
+      "SamplingWeight",
+      "NumberHits",
+      "ExpectedHits")
+    ))
 
   # Using tbd_data_2, need to create the returndata based on the parameter outall
   if (outall == FALSE) {
     returndata <- tbd_data_2 |>
       tidytable::filter(.data$SelectionIndicator == TRUE) |>
-      tidytable::select(-.data$SelectionIndicator)
+      tidytable::select(-tidytable::all_of("SelectionIndicator"))
   } else {
     returndata <- tbd_data_2
   }

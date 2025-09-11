@@ -46,7 +46,7 @@ srs <- function(frame, n, outall = FALSE, curstrat = NULL) {
       SamplingWeight = ifelse(.data$rowNum %in% selectedVector, N / n, NA),
       SelectionIndicator = ifelse(.data$rowNum %in% selectedVector, TRUE, FALSE)
     ) |>
-    tidytable::select(-.data$rowNum)
+    tidytable::select(-tidytable::all_of("rowNum"))
 
 
   # Output to screen
@@ -56,7 +56,7 @@ srs <- function(frame, n, outall = FALSE, curstrat = NULL) {
   if (!outall) {
     sample <- frame |>
       tidytable::filter(.data$SelectionIndicator) |>
-      tidytable::select(-.data$SelectionIndicator)
+      tidytable::select(-tidytable::all_of("SelectionIndicator"))
     return(sample)
   } else if (outall) {
     return(frame)
