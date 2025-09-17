@@ -163,7 +163,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   # n.samp
   .condition <- "must be a positive integer of length 1"
   if (!is.null(n.samp) & allocation %in% c("proportional", "power", "neyman")) {
-    if (!(length(n.samp) == 1 & (typeof(n.samp) %in% c("integer") | (typeof(n.samp) == "double" & round(n.samp) == n.samp)) & n.samp > 0)) {
+    if (!all(length(n.samp) == 1 & (typeof(n.samp) %in% c("integer") | (typeof(n.samp) == "double" & round(n.samp) == n.samp)) & n.samp > 0)) {
       .problems <- .addProblem(parameter = "n.samp", condition = .condition)
     }
   }
@@ -195,13 +195,13 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   # cost
   .condition <- "must be a positive value (integer or non-integer)"
   if (!is.null(cost) & allocation %in% "optimal") {
-    if (!(length(cost) == 1 & typeof(cost) %in% c("integer", "double") & cost > 0 & length(cost) == 1)) {
+    if (!all(length(cost) == 1 & typeof(cost) %in% c("integer", "double") & cost > 0)) {
       .problems <- .addProblem(parameter = "cost", condition = .condition)
     }
   }
   # variance
   if (allocation == "optimal" & !is.null(variance)) {
-    if (!(length(variance) == 1 & typeof(variance) %in% c("integer", "double") & variance > 0 & length(variance) == 1)) {
+    if (!all(length(variance) == 1 & typeof(variance) %in% c("integer", "double") & variance > 0 & length(variance) == 1)) {
       .problems <- .addProblem(parameter = "variance", condition = .condition)
     }
   }
@@ -216,11 +216,28 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
 
 
   if (allocation %in% c("proportional", "power", "neyman")) {
-    if (!(lbound * length(N.h) <= n.samp)) {
-      .problems <- c(.problems, "lbound*length(N.h) must be less than or equal to n.samp")
+    if (!(is.null(lbound) | is.null(N.h) | is.null(n.samp))){
+      if (!all(lbound * length(N.h) <= n.samp)) {
+        .problems <- c(.problems, "lbound*length(N.h) must be less than or equal to n.samp")
+      }
     }
   }
 
+  if (!(is.null(N.h) | is.null(n.samp))){
+    if (length(.problems)==0){
+      if (sum(N.h) < n.samp){
+        warning("sum(N.h) is less than n.samp")
+      }
+    }
+  }
+
+  if (allocation %in% c("optimal")) {
+    if (!is.null(cost) & length(.problems) == 0){
+      if (sum(lbound*c.h) > cost){
+        warning("No solution exists for specified total cost (sum(lbound*c.h) > cost)")
+      }
+    }
+  }
   ###
   # Aggregate problems and stop the program if necessary
   if (length(.problems) > 0) {
@@ -253,16 +270,16 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   } else if (allocation == "optimal") {
     if (!is.null(cost)) { # Cost-constrained
       propNum <- N.h * S.h / sqrt(c.h)
-      propDen <- sum(propNum)
+      propDen <- sum(N.h * S.h * sqrt(c.h))
       allocations <- cost * propNum / propDen
     } else if (!is.null(variance)) { # Precision-constrained
       propNum <- sum(N.h * S.h * sqrt(c.h))
-      propDen <- variance * N**2 + sum(N.h * S.h**2)
+      propDen <- variance * sum(N.h)**2 + sum(N.h * S.h**2)
       allocations <- N.h * S.h / sqrt(c.h) * propNum / propDen
     }
   }
   # Calculate the total (raw) sample size
-  n <- ceiling(sum(allocations))
+  n <- max(ceiling(sum(allocations)),length(N.h)*lbound)
 
   sizes <- allocations
 
@@ -280,7 +297,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   # If difference is positive, distribute it proportionally
   if (difference != 0) {
     remaining_sizes <- sizes
-    remaining_sizes[adjusted_allocations == lbound] <- 0
+    remaining_sizes <- adjusted_allocations-lbound
     remaining_total <- sum(remaining_sizes)
 
     if (remaining_total > 0) {
@@ -335,16 +352,16 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   message(paste0("Sample allocation of ", n.print, " using ", allocation, " with the relevant inputs:"))
   for (i in 1:length(inputs)) {
     message(paste0("  ",
-      names(inputs)[i],
-      " = ",
-      paste0(inputs[[i]], collapse = ", "),
-      collapse = ""
+                   names(inputs)[i],
+                   " = ",
+                   paste0(inputs[[i]], collapse = ", "),
+                   collapse = ""
     ))
   }
   message()
   message("Output:")
   message(paste0(outputs,
-    collapse = ", "
+                 collapse = ", "
   ))
   return(outputs)
 }
