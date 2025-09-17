@@ -18,7 +18,7 @@
 #' @param mos A character string defining the variable name on the frame for the measure of size. If not NULL, must have method = c("sys_pps", "chromy_pps").
 #'            If NULL, must have method=c("srs", "sys"). Default is NULL.
 #'
-#' @param sort_vars A character string indicating the variables that should be used to sort the frame. If not NULL, cannot have method = "srs".
+#' @param sort_vars A vector of characters indicating the variables that should be used to sort the frame. If not NULL, cannot have method = "srs".
 #'                  Default is NULL.
 #'
 #' @param sort_method A character string defining the method to implicitly sort the frame. Valid options are "serpentine" and "nest". Must coincide
@@ -27,6 +27,66 @@
 #' @return A tidytable object containing the entire frame with a selection indicator or just the sample, dependent on the value of outall.
 #' Selection probability and sampling weight are also included. May include various summary messages to the console when applicable for
 #' certain sampling methods.
+#'
+#' @examples
+#'
+#' # SRS of 100 US counties, using geographic region as strata
+#' # n is a data frame containing the strata values and corresponding desired sample size
+#' # Sample size column must be titled 'sample_size'
+#'
+#' n_df_srs <- data.frame(Region = as.factor(c("Northeast", "Midwest", "South", "West")),
+#'                    sample_size = c(25, 25, 25, 25))
+#'
+#' county_2023 |>
+#'     select_sample(method = "srs", n = n_df_srs, strata = "Region")
+#'
+#'
+#' # Systematic sample of 250 US universities. Each unit has an equal probability of being selected
+#' # Includes a nested sort of enrollment total within sector
+#' # Returns all obs from original data frame with a selection indicator column
+#'
+#' sample_sys_eq <- ipeds |>
+#'                  select_sample(method = "sys_eq", n = 250, outall = TRUE,
+#'                  sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest")
+#'
+#' # For samples taken with outall = TRUE, the sample size can be verified by summing
+#' # the SelectionIndicator column.
+#'
+#' sample_sys_eq
+#' sum(sample_sys_eq$SelectionIndicator)
+#'
+#'
+#' # Systematic PPS sample of 250 US universities. Each unit's probability of selection
+#' # is proportional to its size measure.
+#' # Using enrollment total as MOS
+#' # Includes a nested sort of enrollment total within sector
+#'
+#' sample_sys_pps <- ipeds |>
+#'                   select_sample(method = "sys_pps", n = 250, mos = "ENRTOT",
+#'                   sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest")
+#'
+#' # For pps samples, it is possible for a single sampling unit to be selected multiple times
+#' # due to a large mos value. This is especially true as desired sample size increases. The
+#' # result is the final sample may not meet the desired sample size. To verify the pps sample,
+#' # the NumberHits column can be summed and should total to the desired sample size.
+#'
+#' sample_sys_pps
+#' sum(sample_sys_pps$NumberHits)
+#'
+#'
+#' # Sequential aka Chromy's method PPS sample of 500 PUMAs, using geographic region as strata
+#' # Includes a serpentine sort of geographic division then state
+#' # Using population total as MOS, each unit's probability of selection is proportional to its
+#' # size measure.
+#' # Note that there may be a discrepancy between the desired and final sample sizes. The final
+#' # sample size can be verified by totaling NumberHits.
+#'
+#' n_df_chr <- data.frame(Region = as.factor(c("Northeast", "Midwest", "South", "West")),
+#'                    sample_size = c(125, 125, 125, 125))
+#'
+#' puma_2023 |>
+#'     select_sample(method = "chromy_pps", n = n_df_chr, strata = "Region", mos = "Pop_Tot",
+#'                   sort_vars = c("Division", "State"), sort_method = "serpentine")
 #'
 #' @export
 
