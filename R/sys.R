@@ -20,16 +20,15 @@
 #' @references Kalton, G. (1983). *Introduction to Survey Sampling*. SAGE Publications. https://doi.org/10.4135/9781412984683
 #' @examples
 #'
-#' #Sort by REGION, DIVISION, and Pop_Tot, then take a sample
+#' # Sort by REGION, DIVISION, and Pop_Tot, then take a sample
 #' puma_2023 |>
 #'   tidytable::arrange(Region, Division, Pop_Tot) |>
 #'   sys(n = 50, outall = FALSE)
 #'
-#' #Return full dataset with selection indicators
+#' # Return full dataset with selection indicators
 #' puma_2023 |>
 #'   tidytable::arrange(Region, Division, Pop_Tot) |>
 #'   sys(n = 50, outall = TRUE)
-#'
 #'
 
 #'

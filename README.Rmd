@@ -2,7 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -13,44 +12,148 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 # SampleSelectR
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of SampleSelectR is to ...
+SampleSelectR is an R package developed by RTI International to support the design and implementation of common survey sampling methods. It is designed to make sample design and selection reproducible, efficient, and transparent for survey statisticians and researchers.
+
+Currently supported sampling methods include:
+
+- Simple Random Sampling (SRS)
+
+- Systematic Sampling (sys)
+
+- Systematic Probability Proportional to Size (PPS) Sampling
+
+- Sequential PPS Sampling (i.e., Chromy's method)
+
+Allocation methods include:
+
+- Proportional
+
+- Power
+
+- Neyman
+
+- Optimal
+
 
 ## Installation
 
-You can install the development version of SampleSelectR from [GitHub](https://github.com/) with:
+You can install the development version of SampleSelectR from
+[GitHub](https://github.com/rti-international/SampleSelectR) with either the `pak` or `devtools` package:
 
-``` r
+```{r}
+#| eval: false
+
 # install.packages("pak")
 pak::pak("rti-international/SampleSelectR")
+
+# install.packages("devtools")
+devtools::install_github("rti-international/SampleSelectR")
 ```
 
-## Example
+Then, you can load the package.
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```{r}
 library(SampleSelectR)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Included Data
 
-```{r cars}
-summary(cars)
+SampleSelectR comes with three example datasets for illustration of realistic sample frames including:
+
+- `ipeds` which contains a list of postsecondary educational institutions in the United States from the Integrated Postsecondary Education Data System (IPEDS) with a select set of characteristics for operating institutions in Fall 2023^[National Center for Education Statistics, "Integrated Postsecondary Education Data System " 2023, https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?year=2023&surveyNumber=-1&sid=4737d338-5121-4355-bb91-01ffa92243ef&rtid=7, downloaded on May 2, 2025.]
+- `county_2023` which contains a list of the counties in the United States based on data from the 2019-2023 American Community Survey with a select set of characteristics^[U.S. Census Bureau, "American Community Survey 5-Year Estimates" 2023, https://api.census.gov/data/2023/acs/acs5, accessed on May 30, 2025. Tables B03002, B25002, and S0101. Note - the tidycensus package was used to download the data from the Census API. Region and division are coded based on https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf]
+- `puma_2023` which contains a list of the Public Use Microdata Areas (PUMAs) in the United States based on data from the 2019-2023 American Community Survey with a select set of characteristics^[U.S. Census Bureau, "American Community Survey 5-Year Estimates" 2023, https://api.census.gov/data/2023/acs/acs5, accessed on May 30, 2025. Tables B03002, B25002, and S0101. Note - the tidycensus package was used to download the data from the Census API. Region and division are coded based on https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf]
+
+
+```{r}
+summary(ipeds)
+
+summary(county_2023)
+
+summary(puma_2023)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+## Example Workflow
 
-You can also embed plots, for example:
+The following are some examples of allocation and sampling on the IPEDS data. The primary functions in workflows are `allocate()` to allocate sample sizes though you can get a sample allocation in another manner, if you prefer and `select_sample()` where you specify your frame, sample sizes, sampling method, strata (if relevant), measure of size (if relevant), and sort method (if relevant).
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+### Allocation
+
+First, you must have a summary of your frame. In this case, we will be specifying a sample size of 500 to be proportionally allocated across region.
+
+```{r}
+ipeds_summary <- ipeds |>
+  tidytable::summarize(
+    N = tidytable::n(),
+    .by = "OBEREG"
+  ) |>
+  tidytable::ungroup()
+
+ipeds_summary
+
+ipeds_alloc <- ipeds_summary |>
+  tidytable::mutate(
+    sample_size = allocate("proportional", N.h = N, n.samp = 500)
+  )
+
+ipeds_alloc
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Then, we are able to select a stratified sample and demonstrate this using a SRS and systematic PPS. With the systematic and sequential sampling methods, you can specify sort variables and the sort method. Often, you want to be able to re-run sampling code and get the same sample. To do this, we also set a seed.
+
+```{r}
+set.seed(8675309)
+
+ipeds_srs <- ipeds |>
+  select_sample(
+    method = "srs",
+    n = tidytable::select(ipeds_alloc, OBEREG, sample_size),
+    strata = "OBEREG"
+  )
+
+ipeds_srs
+```
+
+
+```{r}
+ipeds_pps <- ipeds |>
+  select_sample(
+    method = "sys_pps",
+    n = tidytable::select(ipeds_alloc, OBEREG, sample_size),
+    strata = "OBEREG",
+    mos = "ENRTOT",
+    sort_vars = "SECTOR",
+    sort_method = "serpentine"
+  )
+
+ipeds_pps
+sum(ipeds_pps$NumberHits)
+```
+
+
+## Contributing
+
+We’d love your help to make SampleSelectR better! Here’s the workflow we use:
+
+- Start from the dev branch
+
+- Always update your local copy first (git pull origin dev).
+
+- Create a new branch for your work
+
+- Name it clearly, e.g. fix-readme, add-tests, or feature-allocate.
+
+- Make your changes
+
+- Update code, documentation, or tests.
+
+- If adding a function, include a short example and (if possible) a unit test.
+
+- Push your branch to GitHub and open a PR into dev.

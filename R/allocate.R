@@ -216,24 +216,24 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
 
 
   if (allocation %in% c("proportional", "power", "neyman")) {
-    if (!(is.null(lbound) | is.null(N.h) | is.null(n.samp))){
+    if (!(is.null(lbound) | is.null(N.h) | is.null(n.samp))) {
       if (!all(lbound * length(N.h) <= n.samp)) {
         .problems <- c(.problems, "lbound*length(N.h) must be less than or equal to n.samp")
       }
     }
   }
 
-  if (!(is.null(N.h) | is.null(n.samp))){
-    if (length(.problems)==0){
-      if (sum(N.h) < n.samp){
+  if (!(is.null(N.h) | is.null(n.samp))) {
+    if (length(.problems) == 0) {
+      if (sum(N.h) < n.samp) {
         warning("sum(N.h) is less than n.samp")
       }
     }
   }
 
   if (allocation %in% c("optimal")) {
-    if (!is.null(cost) & length(.problems) == 0){
-      if (sum(lbound*c.h) > cost){
+    if (!is.null(cost) & length(.problems) == 0) {
+      if (sum(lbound * c.h) > cost) {
         warning("No solution exists for specified total cost (sum(lbound*c.h) > cost)")
       }
     }
@@ -279,7 +279,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
     }
   }
   # Calculate the total (raw) sample size
-  n <- max(ceiling(sum(allocations)),length(N.h)*lbound)
+  n <- max(ceiling(sum(allocations)), length(N.h) * lbound)
 
   sizes <- allocations
 
@@ -297,7 +297,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   # If difference is positive, distribute it proportionally
   if (difference != 0) {
     remaining_sizes <- sizes
-    remaining_sizes <- adjusted_allocations-lbound
+    remaining_sizes <- adjusted_allocations - lbound
     remaining_total <- sum(remaining_sizes)
 
     if (remaining_total > 0) {
@@ -352,20 +352,16 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   message(paste0("Sample allocation of ", n.print, " using ", allocation, " with the relevant inputs:"))
   for (i in 1:length(inputs)) {
     message(paste0("  ",
-                   names(inputs)[i],
-                   " = ",
-                   paste0(inputs[[i]], collapse = ", "),
-                   collapse = ""
+      names(inputs)[i],
+      " = ",
+      paste0(inputs[[i]], collapse = ", "),
+      collapse = ""
     ))
   }
   message()
   message("Output:")
   message(paste0(outputs,
-                 collapse = ", "
+    collapse = ", "
   ))
   return(outputs)
 }
-
-
-
-

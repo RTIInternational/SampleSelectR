@@ -4,12 +4,33 @@
 \name{SampleSelectR-package}
 \alias{SampleSelectR}
 \alias{SampleSelectR-package}
-\title{SampleSelectR: What the Package Does (One Line, Title Case)}
+\title{SampleSelectR: Randomly select samples for various probability-based methods}
 \description{
-What the package does (one paragraph).
+Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/rti-international/SampleSelectR}
+  \item Report bugs at \url{https://github.com/rti-international/SampleSelectR/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Stephanie Zimmer \email{sazimmer@rti.org}
+
+Authors:
+\itemize{
+  \item John David Bunker, Jr.
+  \item Thomas Burkett
+  \item Philip Lee
+  \item Haby Sow
+}
+
+Other contributors:
+\itemize{
+  \item  RTI International [funder]
+}
 
 }
 \keyword{internal}

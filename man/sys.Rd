@@ -30,16 +30,15 @@ Draws a systematic sample of size \code{n} from a data frame. Each unit has an e
 }
 \examples{
 
-#Sort by REGION, DIVISION, and Pop_Tot, then take a sample
+# Sort by REGION, DIVISION, and Pop_Tot, then take a sample
 puma_2023 |>
   tidytable::arrange(Region, Division, Pop_Tot) |>
   sys(n = 50, outall = FALSE)
 
-#Return full dataset with selection indicators
+# Return full dataset with selection indicators
 puma_2023 |>
   tidytable::arrange(Region, Division, Pop_Tot) |>
   sys(n = 50, outall = TRUE)
-
 
 
 }

@@ -34,11 +34,13 @@
 #' # n is a data frame containing the strata values and corresponding desired sample size
 #' # Sample size column must be titled 'sample_size'
 #'
-#' n_df_srs <- data.frame(Region = as.factor(c("Northeast", "Midwest", "South", "West")),
-#'                    sample_size = c(25, 25, 25, 25))
+#' n_df_srs <- data.frame(
+#'   Region = as.factor(c("Northeast", "Midwest", "South", "West")),
+#'   sample_size = c(25, 25, 25, 25)
+#' )
 #'
 #' county_2023 |>
-#'     select_sample(method = "srs", n = n_df_srs, strata = "Region")
+#'   select_sample(method = "srs", n = n_df_srs, strata = "Region")
 #'
 #'
 #' # Systematic sample of 250 US universities. Each unit has an equal probability of being selected
@@ -46,8 +48,10 @@
 #' # Returns all obs from original data frame with a selection indicator column
 #'
 #' sample_sys_eq <- ipeds |>
-#'                  select_sample(method = "sys_eq", n = 250, outall = TRUE,
-#'                  sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest")
+#'   select_sample(
+#'     method = "sys_eq", n = 250, outall = TRUE,
+#'     sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest"
+#'   )
 #'
 #' # For samples taken with outall = TRUE, the sample size can be verified by summing
 #' # the SelectionIndicator column.
@@ -62,8 +66,10 @@
 #' # Includes a nested sort of enrollment total within sector
 #'
 #' sample_sys_pps <- ipeds |>
-#'                   select_sample(method = "sys_pps", n = 250, mos = "ENRTOT",
-#'                   sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest")
+#'   select_sample(
+#'     method = "sys_pps", n = 250, mos = "ENRTOT",
+#'     sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest"
+#'   )
 #'
 #' # For pps samples, it is possible for a single sampling unit to be selected multiple times
 #' # due to a large mos value. This is especially true as desired sample size increases. The
@@ -81,12 +87,16 @@
 #' # Note that there may be a discrepancy between the desired and final sample sizes. The final
 #' # sample size can be verified by totaling NumberHits.
 #'
-#' n_df_chr <- data.frame(Region = as.factor(c("Northeast", "Midwest", "South", "West")),
-#'                    sample_size = c(125, 125, 125, 125))
+#' n_df_chr <- data.frame(
+#'   Region = as.factor(c("Northeast", "Midwest", "South", "West")),
+#'   sample_size = c(125, 125, 125, 125)
+#' )
 #'
 #' puma_2023 |>
-#'     select_sample(method = "chromy_pps", n = n_df_chr, strata = "Region", mos = "Pop_Tot",
-#'                   sort_vars = c("Division", "State"), sort_method = "serpentine")
+#'   select_sample(
+#'     method = "chromy_pps", n = n_df_chr, strata = "Region", mos = "Pop_Tot",
+#'     sort_vars = c("Division", "State"), sort_method = "serpentine"
+#'   )
 #'
 #' @export
 
@@ -136,8 +146,8 @@ select_sample <- function(frame, method, n, outall = FALSE, strata = NULL, mos =
   } else {
     # Check that n is a data frame, tibble, or data.table if strata is not NULL
     if (!(inherits(n, "data.frame")) &&
-        !(inherits(n, "data.table")) &&
-        !(inherits(n, "tibble"))) {
+      !(inherits(n, "data.table")) &&
+      !(inherits(n, "tibble"))) {
       stop("Since strata is not NULL, n must be a data frame, data.table, or tibble.")
     }
 
@@ -147,7 +157,7 @@ select_sample <- function(frame, method, n, outall = FALSE, strata = NULL, mos =
       stop("Since strata is not NULL, all strata variables must be present on the sample size table, n.")
     }
 
-    get_distinct_str <- function(dat){
+    get_distinct_str <- function(dat) {
       dat |>
         tidytable::distinct(tidytable::all_of(strata)) |>
         tidytable::select(tidytable::all_of(strata))
@@ -163,46 +173,46 @@ select_sample <- function(frame, method, n, outall = FALSE, strata = NULL, mos =
       stop("There are repeated strata values on the sample size table. Must be unique and no repeats.")
     }
 
-    if (!all(class_frame == class_n)){
+    if (!all(class_frame == class_n)) {
       diffc <- names(class_frame)[which(class_frame != class_n)] |>
-        paste(collapse=", ")
+        paste(collapse = ", ")
       stop(paste0("The class for strata ", diffc, " on the sampling frame and the sample size are not the same."))
     }
 
     check_notn <- check_frame |>
-      tidytable::anti_join(check_n, by=strata)
+      tidytable::anti_join(check_n, by = strata)
     check_notframe <- check_n |>
-      tidytable::anti_join(check_frame, by=strata)
+      tidytable::anti_join(check_frame, by = strata)
 
-    if (nrow(check_notframe) >0 || nrow(check_notn) >0){
-      make_mismatch_text <- function(dat){
+    if (nrow(check_notframe) > 0 || nrow(check_notn) > 0) {
+      make_mismatch_text <- function(dat) {
         dat |>
-          tidytable::mutate(row=tidytable::row_number()) |>
-          tidytable::pivot_longer(cols=-row) |>
-          tidytable::mutate(txt=paste(.data$name, .data$value, sep="=")) |>
+          tidytable::mutate(row = tidytable::row_number()) |>
+          tidytable::pivot_longer(cols = -row) |>
+          tidytable::mutate(txt = paste(.data$name, .data$value, sep = "=")) |>
           tidytable::summarise(
-            txt=paste(.data$txt, collapse=", "),
-            .by="row"
+            txt = paste(.data$txt, collapse = ", "),
+            .by = "row"
           ) |>
           tidytable::summarise(
-            txt=paste(.data$txt, collapse=";")
+            txt = paste(.data$txt, collapse = ";")
           ) |>
           tidytable::pull(.data$txt)
       }
 
       txtframe <- txtn <- NULL
-      if (nrow(check_notframe) >0){
+      if (nrow(check_notframe) > 0) {
         txtframe <- make_mismatch_text(check_notframe)
       }
-      if (nrow(check_notn) > 0){
+      if (nrow(check_notn) > 0) {
         txtn <- make_mismatch_text(check_notn)
       }
 
-      if (!is.null(txtframe) && !is.null(txtn)){
+      if (!is.null(txtframe) && !is.null(txtn)) {
         stop(paste("There are strata values on frame but not sample (", txtn, ") and values on sample but not frame (", txtframe, ")."))
-      } else if (!is.null(txtframe)){
+      } else if (!is.null(txtframe)) {
         stop(paste("There are strata values on sample but not frame (", txtframe, ")."))
-      } else if (!is.null(txtn)){
+      } else if (!is.null(txtn)) {
         stop(paste("There are strata values on frame but not sample (", txtn, ")."))
       }
     }
@@ -219,9 +229,6 @@ select_sample <- function(frame, method, n, outall = FALSE, strata = NULL, mos =
     if (!(is.numeric(n$sample_size)) || min(n$sample_size) <= 0 || sum(round(n$sample_size)) != sum(n$sample_size) || sum(is.na(n$sample_size)) > 0) {
       stop("Since strata is not NULL, each value of sample_size must be a positive, non-missing integer.")
     }
-
-
-
   }
 
 

@@ -14,8 +14,8 @@
 #' Selection probability and sampling weight are also included. The sample size, n, and the population size, N, are printed to the console.
 #'
 #'
-#'@examples
-#'#Random sample of 200 universities, only sampled rows returned
+#' @examples
+#' # Random sample of 200 universities, only sampled rows returned
 #' ipeds |>
 #'   tidytable::filter(!is.na(ENRTOT)) |>
 #'   srs(n = 200, outall = FALSE)
@@ -24,8 +24,6 @@
 #' ipeds |>
 #'   tidytable::filter(!is.na(ENRTOT)) |>
 #'   srs(n = 200, outall = TRUE)
-#'
-#'
 #'
 
 #' @export

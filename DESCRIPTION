@@ -1,9 +1,15 @@
 Package: SampleSelectR
-Title: What the Package Does (One Line, Title Case)
+Title: Randomly select samples for various probability-based methods
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Stephanie", "Zimmer", , "sazimmer@rti.org", role = c("aut", "cre")),
+    person("John David", "Bunker, Jr.", role = "aut"),
+    person("Thomas", "Burkett", role = "aut"),
+    person("Philip", "Lee", role = "aut"),
+    person("Haby", "Sow", role = "aut"),
+    person(, "RTI International", role = "fnd")
+  )
+Description: Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -16,6 +22,8 @@ Imports:
     rlang,
     tidytable
 LazyData: true
+URL: https://github.com/rti-international/SampleSelectR
+BugReports: https://github.com/rti-international/SampleSelectR/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

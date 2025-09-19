@@ -52,11 +52,13 @@ size (mos) if a PPS method is used.
 # n is a data frame containing the strata values and corresponding desired sample size
 # Sample size column must be titled 'sample_size'
 
-n_df_srs <- data.frame(Region = as.factor(c("Northeast", "Midwest", "South", "West")),
-                   sample_size = c(25, 25, 25, 25))
+n_df_srs <- data.frame(
+  Region = as.factor(c("Northeast", "Midwest", "South", "West")),
+  sample_size = c(25, 25, 25, 25)
+)
 
 county_2023 |>
-    select_sample(method = "srs", n = n_df_srs, strata = "Region")
+  select_sample(method = "srs", n = n_df_srs, strata = "Region")
 
 
 # Systematic sample of 250 US universities. Each unit has an equal probability of being selected
@@ -64,8 +66,10 @@ county_2023 |>
 # Returns all obs from original data frame with a selection indicator column
 
 sample_sys_eq <- ipeds |>
-                 select_sample(method = "sys_eq", n = 250, outall = TRUE,
-                 sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest")
+  select_sample(
+    method = "sys_eq", n = 250, outall = TRUE,
+    sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest"
+  )
 
 # For samples taken with outall = TRUE, the sample size can be verified by summing
 # the SelectionIndicator column.
@@ -80,8 +84,10 @@ sum(sample_sys_eq$SelectionIndicator)
 # Includes a nested sort of enrollment total within sector
 
 sample_sys_pps <- ipeds |>
-                  select_sample(method = "sys_pps", n = 250, mos = "ENRTOT",
-                  sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest")
+  select_sample(
+    method = "sys_pps", n = 250, mos = "ENRTOT",
+    sort_vars = c("SECTOR", "ENRTOT"), sort_method = "nest"
+  )
 
 # For pps samples, it is possible for a single sampling unit to be selected multiple times
 # due to a large mos value. This is especially true as desired sample size increases. The
@@ -99,11 +105,15 @@ sum(sample_sys_pps$NumberHits)
 # Note that there may be a discrepancy between the desired and final sample sizes. The final
 # sample size can be verified by totaling NumberHits.
 
-n_df_chr <- data.frame(Region = as.factor(c("Northeast", "Midwest", "South", "West")),
-                   sample_size = c(125, 125, 125, 125))
+n_df_chr <- data.frame(
+  Region = as.factor(c("Northeast", "Midwest", "South", "West")),
+  sample_size = c(125, 125, 125, 125)
+)
 
 puma_2023 |>
-    select_sample(method = "chromy_pps", n = n_df_chr, strata = "Region", mos = "Pop_Tot",
-                  sort_vars = c("Division", "State"), sort_method = "serpentine")
+  select_sample(
+    method = "chromy_pps", n = n_df_chr, strata = "Region", mos = "Pop_Tot",
+    sort_vars = c("Division", "State"), sort_method = "serpentine"
+  )
 
 }

@@ -14,7 +14,7 @@
 #'
 #' @return Returns an object of type tidytable that contains the weight, selection probability, number of hits, etc plus all original variables.
 #'
-#'@examples
+#' @examples
 #'
 #' # PPS sample of 75 counties using Pop_Tot as the measure of size
 #' # Return only the sampled counties
@@ -92,11 +92,13 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
       # Original variables
       !!!(CONST_ORDER_FRAME_VARS),
       # New created variables in order
-      tidytable::all_of(c("SelectionIndicator",
-      "SamplingWeight",
-      "NumberHits",
-      "ExpectedHits")
-    ))
+      tidytable::all_of(c(
+        "SelectionIndicator",
+        "SamplingWeight",
+        "NumberHits",
+        "ExpectedHits"
+      ))
+    )
 
   # Using tbd_data_2, need to create the returndata based on the parameter outall
   if (outall == FALSE) {
