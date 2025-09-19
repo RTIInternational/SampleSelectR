@@ -1,6 +1,6 @@
 Package: SampleSelectR
 Title: Randomly select samples for various probability-based methods
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: c(
     person("Stephanie", "Zimmer", , "sazimmer@rti.org", role = c("aut", "cre")),
     person("John David", "Bunker, Jr.", role = "aut"),
