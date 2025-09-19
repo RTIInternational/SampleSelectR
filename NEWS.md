@@ -6,6 +6,6 @@
 
 * Sorting includes nest and serpentine
 
-* Allocation methods includes proportional, power, Neyman, and optimal
+* Allocation methods include proportional, power, Neyman, and optimal
 
 * Example data includes IPEDS, counties, and PUMAs
