@@ -106,6 +106,8 @@ ipeds_alloc <- ipeds_summary |>
 ipeds_alloc
 ```
 
+### Sampling
+
 Then, we are able to select a stratified sample and demonstrate this using a SRS and systematic PPS. With the systematic and sequential sampling methods, you can specify sort variables and the sort method. Often, you want to be able to re-run sampling code and get the same sample. To do this, we also set a seed.
 
 ```{r}
