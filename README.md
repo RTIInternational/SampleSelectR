@@ -297,15 +297,15 @@ ipeds_alloc <- ipeds_summary |>
 #>   N.h = 7, 299, 971, 851, 468, 1467, 633, 216, 870, 132
 #> 
 #> Output:
-#> 2, 26, 82, 72, 39, 124, 53, 18, 73, 11
+#> 2, 25, 83, 72, 39, 124, 53, 18, 73, 11
 
 ipeds_alloc
 #> # A tidytable: 10 × 3
 #>    OBEREG                                                         N sample_size
 #>    <fct>                                                      <int>       <int>
 #>  1 U.S. Service schools                                           7           2
-#>  2 New England (CT, ME, MA, NH, RI, VT)                         299          26
-#>  3 Mid East (DE, DC, MD, NJ, NY, PA)                            971          82
+#>  2 New England (CT, ME, MA, NH, RI, VT)                         299          25
+#>  3 Mid East (DE, DC, MD, NJ, NY, PA)                            971          83
 #>  4 Great Lakes (IL, IN, MI, OH, WI)                             851          72
 #>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                          468          39
 #>  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)  1467         124
@@ -314,6 +314,8 @@ ipeds_alloc
 #>  9 Far West (AK, CA, HI, NV, OR, WA)                            870          73
 #> 10 Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI)    132          11
 ```
+
+### Sampling
 
 Then, we are able to select a stratified sample and demonstrate this
 using a SRS and systematic PPS. With the systematic and sequential
@@ -350,10 +352,10 @@ ipeds_srs <- ipeds |>
 #> --Sample size: 18
 #> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) 
 #> --Frame size: 299
-#> --Sample size: 26
+#> --Sample size: 25
 #> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
 #> --Frame size: 971
-#> --Sample size: 82
+#> --Sample size: 83
 #> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
 #> --Frame size: 851
 #> --Sample size: 72
@@ -395,68 +397,68 @@ ipeds_pps <- ipeds |>
 #> --Frame size: 1467
 #> --Sample size: 124
 #> --Sampling interval (k): 37489.19
-#> --Random start (r): 25060.49
+#> --Random start (r): 17174.08
 #> Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA) 
 #> --Frame size: 870
 #> --Sample size: 73
 #> --Sampling interval (k): 46640.48
-#> --Random start (r): 12360.24
+#> --Random start (r): 23535.96
 #> Stratum: OBEREG = Southwest (AZ, NM, OK, TX) 
 #> --Frame size: 633
 #> --Sample size: 53
 #> --Sampling interval (k): 49474.49
-#> --Random start (r): 423.3126
+#> --Random start (r): 33072.34
 #> Stratum: OBEREG = U.S. Service schools 
 #> --Frame size: 7
 #> --Sample size: 2
 #> --Sampling interval (k): 9372
-#> --Random start (r): 1790.047
+#> --Random start (r): 2483.683
 #> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) 
 #> --Frame size: 468
 #> --Sample size: 39
 #> --Sampling interval (k): 35210.1
-#> --Random start (r): 4983.538
+#> --Random start (r): 301.2639
 #> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) 
 #> --Frame size: 216
 #> --Sample size: 18
 #> --Sampling interval (k): 57314.5
-#> --Random start (r): 19670.67
+#> --Random start (r): 10947.04
 #> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) 
 #> --Frame size: 299
-#> --Sample size: 26
-#> --Sampling interval (k): 42517.38
-#> --Random start (r): 4204.128
+#> --Sample size: 25
+#> --Sampling interval (k): 44218.08
+#> --Random start (r): 6258.501
 #> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
 #> --Frame size: 971
-#> --Sample size: 82
-#> --Sampling interval (k): 33082.89
-#> --Random start (r): 23250.05
+#> --Sample size: 83
+#> --Sampling interval (k): 32684.3
+#> --Random start (r): 11217.44
 #> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
 #> --Frame size: 851
 #> --Sample size: 72
 #> --Sampling interval (k): 36195.32
-#> --Random start (r): 14018.24
+#> --Random start (r): 3579.001
 #> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
 #> --Frame size: 132
 #> --Sample size: 11
 #> --Sampling interval (k): 16320.64
-#> --Random start (r): 1044.409
+#> --Random start (r): 11469.85
 
 ipeds_pps
-#> # A tidytable: 476 × 19
+#> # A tidytable: 475 × 19
 #>    OBEREG      UNITID INSTNM STABBR  FIPS ICLEVEL SECTOR LOCALE DEGGRANT HLOFFER
 #>    <fct>        <dbl> <chr>  <chr>  <dbl> <fct>   <fct>  <fct>  <fct>    <fct>  
 #>  1 Southeast … 100663 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…
 #>  2 Southeast … 100751 The U… AL         1 Four o… Publi… City:… Degree-… Doctor…
 #>  3 Southeast … 100858 Aubur… AL         1 Four o… Publi… City:… Degree-… Doctor…
-#>  4 Southeast … 101709 Unive… AL         1 Four o… Publi… Town:… Degree-… Post-m…
+#>  4 Southeast … 101480 Jacks… AL         1 Four o… Publi… Subur… Degree-… Doctor…
 #>  5 Southeast … 102368 Troy … AL         1 Four o… Publi… Town:… Degree-… Doctor…
 #>  6 Southeast … 106397 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…
-#>  7 Southeast … 106704 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…
-#>  8 Southeast … 132709 Browa… FL        12 Four o… Publi… City:… Degree-… Bachel…
-#>  9 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…
-#> 10 Southeast … 133386 Dayto… FL        12 Four o… Publi… City:… Degree-… Bachel…
-#> # ℹ 466 more rows
+#>  7 Southeast … 106467 Arkan… AR         5 Four o… Publi… Town:… Degree-… Doctor…
+#>  8 Southeast … 132693 Easte… FL        12 Four o… Publi… City:… Degree-… Bachel…
+#>  9 Southeast … 132851 Colle… FL        12 Four o… Publi… City:… Degree-… Bachel…
+#> 10 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…
+#> # ℹ 465 more rows
 #> # ℹ 9 more variables: ENRTOT <dbl>, EFUG <dbl>, EFUG1ST <dbl>, EFUGFT <dbl>,
 #> #   EFGRAD <dbl>, EFGRADFT <dbl>, SamplingWeight <dbl>, NumberHits <int>,
 #> #   ExpectedHits <dbl>
