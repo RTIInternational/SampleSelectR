@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 [![R-CMD-check](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -35,7 +35,7 @@ Allocation methods include:
 ## Installation
 
 You can install the development version of SampleSelectR from
-[GitHub](https://github.com/rti-international/SampleSelectR) with either
+[GitHub](https://github.com/RTIInternational/SampleSelectR) with either
 the `pak` or `devtools` package:
 
 ``` r
