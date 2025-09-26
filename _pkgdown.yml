@@ -1,0 +1,29 @@
+url: https://rtiinternational.github.io/SampleSelectR/
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  light-switch: true
+
+reference:
+  - title: Main functions
+    desc: Primary functions
+    contents:
+      - allocate
+      - select_sample
+
+
+  - title: Utility functions
+    desc: These functions are called in the main functions but we chose not to make them hidden
+    contents:
+      - chromy_pps
+      - srs
+      - sys
+      - sys_pps
+      - serp_sort
+
+  - title: Data
+    desc: Example sampling frames from public data
+    contents:
+      - ipeds
+      - county_2023
+      - puma_2023
