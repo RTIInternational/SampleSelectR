@@ -11,8 +11,8 @@ Randomly select samples with SRS, systematic, and various PPS methods. Also incl
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/rti-international/SampleSelectR}
-  \item Report bugs at \url{https://github.com/rti-international/SampleSelectR/issues}
+  \item \url{https://github.com/RTIInternational/SampleSelectR}
+  \item Report bugs at \url{https://github.com/RTIInternational/SampleSelectR/issues}
 }
 
 }

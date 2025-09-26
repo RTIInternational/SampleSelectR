@@ -22,8 +22,8 @@ Imports:
     rlang,
     tidytable
 LazyData: true
-URL: https://github.com/rti-international/SampleSelectR
-BugReports: https://github.com/rti-international/SampleSelectR/issues
+URL: https://github.com/RTIInternational/SampleSelectR
+BugReports: https://github.com/RTIInternational/SampleSelectR/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
