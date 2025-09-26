@@ -22,7 +22,7 @@ Imports:
     rlang,
     tidytable
 LazyData: true
-URL: https://github.com/RTIInternational/SampleSelectR
+URL: https://github.com/RTIInternational/SampleSelectR, https://rtiinternational.github.io/SampleSelectR/
 BugReports: https://github.com/RTIInternational/SampleSelectR/issues
 Suggests: 
     testthat (>= 3.0.0)
