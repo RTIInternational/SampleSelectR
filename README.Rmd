@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 SampleSelectR is an R package developed by RTI International to support the design and implementation of common survey sampling methods. It is designed to make sample design and selection reproducible, efficient, and transparent for survey statisticians and researchers.
@@ -51,10 +52,10 @@ You can install the development version of SampleSelectR from
 #| eval: false
 
 # install.packages("pak")
-pak::pak("rti-international/SampleSelectR")
+pak::pak("RTIInternational/SampleSelectR")
 
 # install.packages("devtools")
-devtools::install_github("rti-international/SampleSelectR")
+devtools::install_github("RTIInternational/SampleSelectR")
 ```
 
 Then, you can load the package.
@@ -89,6 +90,8 @@ The following are some examples of allocation and sampling on the IPEDS data. Th
 First, you must have a summary of your frame. In this case, we will be specifying a sample size of 500 to be proportionally allocated across region.
 
 ```{r}
+set.seed(8675309)
+
 ipeds_summary <- ipeds |>
   tidytable::summarize(
     N = tidytable::n(),
@@ -111,8 +114,6 @@ ipeds_alloc
 Then, we are able to select a stratified sample and demonstrate this using a SRS and systematic PPS. With the systematic and sequential sampling methods, you can specify sort variables and the sort method. Often, you want to be able to re-run sampling code and get the same sample. To do this, we also set a seed.
 
 ```{r}
-set.seed(8675309)
-
 ipeds_srs <- ipeds |>
   select_sample(
     method = "srs",

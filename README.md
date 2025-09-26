@@ -4,6 +4,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rti-international/SampleSelectR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 SampleSelectR is an R package developed by RTI International to support
@@ -39,10 +40,10 @@ the `pak` or `devtools` package:
 
 ``` r
 # install.packages("pak")
-pak::pak("rti-international/SampleSelectR")
+pak::pak("RTIInternational/SampleSelectR")
 
 # install.packages("devtools")
-devtools::install_github("rti-international/SampleSelectR")
+devtools::install_github("RTIInternational/SampleSelectR")
 ```
 
 Then, you can load the package.
@@ -267,6 +268,8 @@ specifying a sample size of 500 to be proportionally allocated across
 region.
 
 ``` r
+set.seed(8675309)
+
 ipeds_summary <- ipeds |>
   tidytable::summarize(
     N = tidytable::n(),
@@ -297,7 +300,7 @@ ipeds_alloc <- ipeds_summary |>
 #>   N.h = 7, 299, 971, 851, 468, 1467, 633, 216, 870, 132
 #> 
 #> Output:
-#> 2, 25, 83, 72, 39, 124, 53, 18, 73, 11
+#> 2, 25, 82, 73, 39, 124, 53, 18, 73, 11
 
 ipeds_alloc
 #> # A tidytable: 10 × 3
@@ -305,8 +308,8 @@ ipeds_alloc
 #>    <fct>                                                      <int>       <int>
 #>  1 U.S. Service schools                                           7           2
 #>  2 New England (CT, ME, MA, NH, RI, VT)                         299          25
-#>  3 Mid East (DE, DC, MD, NJ, NY, PA)                            971          83
-#>  4 Great Lakes (IL, IN, MI, OH, WI)                             851          72
+#>  3 Mid East (DE, DC, MD, NJ, NY, PA)                            971          82
+#>  4 Great Lakes (IL, IN, MI, OH, WI)                             851          73
 #>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                          468          39
 #>  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)  1467         124
 #>  7 Southwest (AZ, NM, OK, TX)                                   633          53
@@ -324,8 +327,6 @@ Often, you want to be able to re-run sampling code and get the same
 sample. To do this, we also set a seed.
 
 ``` r
-set.seed(8675309)
-
 ipeds_srs <- ipeds |>
   select_sample(
     method = "srs",
@@ -355,10 +356,10 @@ ipeds_srs <- ipeds |>
 #> --Sample size: 25
 #> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
 #> --Frame size: 971
-#> --Sample size: 83
+#> --Sample size: 82
 #> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
 #> --Frame size: 851
-#> --Sample size: 72
+#> --Sample size: 73
 #> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
 #> --Frame size: 132
 #> --Sample size: 11
@@ -430,14 +431,14 @@ ipeds_pps <- ipeds |>
 #> --Random start (r): 6258.501
 #> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
 #> --Frame size: 971
-#> --Sample size: 83
-#> --Sampling interval (k): 32684.3
-#> --Random start (r): 11217.44
+#> --Sample size: 82
+#> --Sampling interval (k): 33082.89
+#> --Random start (r): 11354.24
 #> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
 #> --Frame size: 851
-#> --Sample size: 72
-#> --Sampling interval (k): 36195.32
-#> --Random start (r): 3579.001
+#> --Sample size: 73
+#> --Sampling interval (k): 35699.49
+#> --Random start (r): 3529.973
 #> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
 #> --Frame size: 132
 #> --Sample size: 11
@@ -445,7 +446,7 @@ ipeds_pps <- ipeds |>
 #> --Random start (r): 11469.85
 
 ipeds_pps
-#> # A tidytable: 475 × 19
+#> # A tidytable: 474 × 19
 #>    OBEREG      UNITID INSTNM STABBR  FIPS ICLEVEL SECTOR LOCALE DEGGRANT HLOFFER
 #>    <fct>        <dbl> <chr>  <chr>  <dbl> <fct>   <fct>  <fct>  <fct>    <fct>  
 #>  1 Southeast … 100663 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…
@@ -458,7 +459,7 @@ ipeds_pps
 #>  8 Southeast … 132693 Easte… FL        12 Four o… Publi… City:… Degree-… Bachel…
 #>  9 Southeast … 132851 Colle… FL        12 Four o… Publi… City:… Degree-… Bachel…
 #> 10 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…
-#> # ℹ 465 more rows
+#> # ℹ 464 more rows
 #> # ℹ 9 more variables: ENRTOT <dbl>, EFUG <dbl>, EFUG1ST <dbl>, EFUGFT <dbl>,
 #> #   EFGRAD <dbl>, EFGRADFT <dbl>, SamplingWeight <dbl>, NumberHits <int>,
 #> #   ExpectedHits <dbl>
