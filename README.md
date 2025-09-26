@@ -4,7 +4,6 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml)
-[![R-CMD-check](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RTIInternational/SampleSelectR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 SampleSelectR is an R package developed by RTI International to support
