@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-09-26T23:56Z
+last_built: 2025-09-27T10:58Z
 urls:
   reference: https://rtiinternational.github.io/SampleSelectR/reference
   article: https://rtiinternational.github.io/SampleSelectR/articles
