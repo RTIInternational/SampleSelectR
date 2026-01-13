@@ -112,7 +112,7 @@ chromy_inner <- function(exphits) {
 
   # Set-up vectors of I, F, lower bound of hits, and a uniform random number
   exphitscum <- cumsum(exphits)
-  exphitscum[N] <- ceiling(sum(exphits))
+  exphitscum[N] <- round(sum(exphits))
   I <- floor(exphitscum)
   F <- exphitscum - I
   hits <- rep(0, N)
