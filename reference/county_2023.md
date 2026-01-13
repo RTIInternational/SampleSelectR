@@ -1,0 +1,130 @@
+# American Community Survey (ACS) 5-Year Estimates, 2023 for counties
+
+A select set of estimates from the ACS for all counties in the 50 states
+and District of Columbia.
+
+## Usage
+
+``` r
+county_2023
+```
+
+## Format
+
+A tibble/data.frame with 3,144 rows and 25 columns:
+
+- GEOID:
+
+  Geographic Identifier (GEOID) of county (character)
+
+- Name:
+
+  Name of county (character)
+
+- State:
+
+  State (Abbreviation) (character)
+
+- Region:
+
+  Census Region (factor)
+
+- Divison:
+
+  Census Division (factor)
+
+- Pop_Tot:
+
+  Total population (B03002) (numeric)
+
+- Pop_Pct_White_NH:
+
+  Percent of population who is White alone, non-Hispanic (B03002)
+  (numeric)
+
+- Pop_Pct_Black_NH:
+
+  Percent of population who is Black or African American alone,
+  non-Hispanic (B03002) (numeric)
+
+- Pop_Pct_AIAN_NH:
+
+  Percent of population who is American Indian and Alaska Native alone,
+  non-Hispanic (B03002) (numeric)
+
+- Pop_Pct_Asian_NH:
+
+  Percent of population who is Asian alone, non-Hispanic (B03002)
+  (numeric)
+
+- Pop_Pct_NHPI_NH:
+
+  Percent of population who is Native Hawaiian and Other Pacific
+  Islander alone, non-Hispanic (B03002) (numeric)
+
+- Pop_Pct_Other_NH:
+
+  Percent of population who is another race (including 2 or more races),
+  non-Hispanic (B03002) (numeric)
+
+- Pop_Pct_Hispanic:
+
+  Percent of population who is Hispanic (B03002) (numeric)
+
+- HU_Tot:
+
+  Total number of housing units (B25002) (numeric)
+
+- HU_Pct_Occupied:
+
+  Percent of housing units that are occupied (B25002) (numeric)
+
+- HU_Pct_Vacant:
+
+  Percent of housing units that are vacant (B25002) (numeric)
+
+- Pop_Pct_0004:
+
+  Percent of population that are 0-4 years of age (S0101) (numeric)
+
+- Pop_Pct_0509:
+
+  Percent of population that are 5-9 years of age (S0101) (numeric)
+
+- Pop_Pct_1014:
+
+  Percent of population that are 10-14 years of age (S0101) (numeric)
+
+- Pop_Pct_2544:
+
+  Percent of population that are 15-17 years of age (S0101) (numeric)
+
+- Pop_Pct_4564:
+
+  Percent of population that are 18-24 years of age (S0101) (numeric)
+
+- Pop_Pct_6574:
+
+  Percent of population that are 25-44 years of age (S0101) (numeric)
+
+- Pop_Pct_75plus:
+
+  Percent of population that are 45-64 years of age (S0101) (numeric)
+
+- Pop_Pct_1517:
+
+  Percent of population that are 65-74 years of age (S0101) (numeric)
+
+- Pop_Pct_1824:
+
+  Percent of population that are 75 years of age or older (S0101)
+  (numeric)
+
+## Source
+
+U.S. Census Bureau, "American Community Survey 5-Year Estimates" 2023,
+<https://api.census.gov/data/2023/acs/acs5>, accessed on May 30, 2025.
+Tables B03002, B25002, and S0101. Note - the tidycensus package was used
+to download the data from the Census API. Region and division are coded
+based on
+<https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf>
