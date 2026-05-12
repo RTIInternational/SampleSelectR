@@ -31,7 +31,7 @@ required for the following allocation types: Neyman, and optimal, and \code{NULL
 \item{c.h}{vector of cost per unit in stratum h (positive values same length as \code{N.h}) (\eqn{c_h}). \cr\cr
 required for the optimal allocation only, and \code{NULL} otherwise.}
 
-\item{cost}{total variable cost (positive value) \eqn{(C – c_0)}. \cr\cr
+\item{cost}{total variable cost (positive value) \eqn{(C - c_0)}. \cr\cr
 required for the cost-constrained optimal allocation only, and \code{NULL} otherwise.}
 
 \item{variance}{fixed variance target for estimated mean (positive value) (\eqn{V_0}). \cr\cr
@@ -68,10 +68,10 @@ where \cr
 \item Optimal allocation
 \itemize{
 \item cost-constrained [\code{N.h, S.h, c.h, cost, allocation = "optimal"}]
-\deqn{n_h = (C−c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
-            where \cr
+\deqn{n_h = (C-c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
+where \cr
 \eqn{c_h}: cost per unit in stratum \emph{h} (function input is \code{c.h}), and \cr
-\eqn{(C – c_0)}: total variable cost (function input is \code{cost})
+\eqn{(C - c_0)}: total variable cost (function input is \code{cost})
 \item precision-constrained [\code{N.h, S.h, c.h, variance, allocation = "optimal"}]
 \deqn{n_h = N_h S_h / \sqrt{c_h} \times \frac{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}{V_0 \left(\sum\limits_{h=1}^H  N_h \right)^2 + \sum\limits_{h=1}^H N_h S_h^2}}
 where \cr
@@ -83,11 +83,11 @@ The table below presents the relevant inputs for each type; when irrelevant inpu
 
 \tabular{lllllllll}{
 \strong{allocation} \tab \strong{N.h} \tab \strong{n.samp} \tab \strong{S.h} \tab \strong{c.h} \tab \strong{cost} \tab \strong{variance} \tab \strong{lbound} \tab \strong{power} \cr
-proportional                   \tab ✓ \tab ✓ \tab  \tab  \tab  \tab  \tab ✓ \tab \cr
-power                          \tab ✓ \tab ✓ \tab  \tab  \tab  \tab  \tab ✓ \tab ✓\cr
-neyman                         \tab ✓ \tab ✓ \tab ✓ \tab ✓ \tab  \tab  \tab ✓ \tab \cr
-optimal: cost-constrained      \tab ✓ \tab  \tab ✓ \tab ✓ \tab ✓ \tab  \tab ✓ \tab \cr
-optimal: precision-constrained \tab ✓ \tab  \tab ✓ \tab ✓ \tab  \tab ✓ \tab ✓ \tab
+proportional                   \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab \cr
+power                          \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab X\cr
+neyman                         \tab X \tab X \tab X \tab X \tab  \tab  \tab X \tab \cr
+optimal: cost-constrained      \tab X \tab  \tab X \tab X \tab X \tab  \tab X \tab \cr
+optimal: precision-constrained \tab X \tab  \tab X \tab X \tab  \tab X \tab X \tab
 }
 }
 

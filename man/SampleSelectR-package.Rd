@@ -4,7 +4,7 @@
 \name{SampleSelectR-package}
 \alias{SampleSelectR}
 \alias{SampleSelectR-package}
-\title{SampleSelectR: Randomly select samples for various probability-based methods}
+\title{SampleSelectR: Randomly Select Samples for Various Probability-Based Methods}
 \description{
 Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.
 }
@@ -12,6 +12,7 @@ Randomly select samples with SRS, systematic, and various PPS methods. Also incl
 Useful links:
 \itemize{
   \item \url{https://github.com/RTIInternational/SampleSelectR}
+  \item \url{https://rtiinternational.github.io/SampleSelectR/}
   \item Report bugs at \url{https://github.com/RTIInternational/SampleSelectR/issues}
 }
 
