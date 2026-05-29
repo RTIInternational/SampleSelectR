@@ -34,6 +34,7 @@
 #'
 #' @export
 
+
 sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
   check_frame_type(frame)
   check_n(n, frame, curstrat, n_le_N = TRUE)
@@ -42,32 +43,32 @@ sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
   N <- nrow(frame)
 
   # Sampling method
-
   k <- N / n # Sampling interval
 
-  r <- runif(1, 1, k) # We use a random start between 1 and k
+  r <- runif(1, 1, k) # Random start between 1 and k
 
   selectedVector <- floor(r + k * (0:(n - 1))) # Selected row indices
 
-  # We make sure that selected indices are within frame range
-
+  # Make sure selected indices are within frame range
   selectedVector <- selectedVector[selectedVector <= N]
 
-  # Creating variables accordingly
+  # Create variables
   frame <- frame |>
     tidytable::mutate(
       numrow = tidytable::row_number(),
-      SelectionIndicator = .data$numrow %in% selectedVector,
-      SelectionProbability = n / N,
-      SamplingWeight = ifelse(.data$SelectionIndicator, N / n, NA)
+      SelectionIndicator = .data$numrow %in% .env$selectedVector,
+      SelectionProbability = .env$n / .env$N,
+      SamplingWeight = tidytable::if_else(
+        .data$SelectionIndicator,
+        .env$N / .env$n,
+        NA_real_
+      )
     ) |>
     tidytable::select(-tidytable::all_of("numrow"))
 
   # Output to screen
   Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
-
-  # Return only selected rows and make sure the selected sample is a data.frame, tibble, or data.table
-
+  # Return only the sample or the frame with selection indicator based on value of outall
   if (outall) {
     return(frame)
   } else {
