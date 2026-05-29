@@ -279,7 +279,10 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
     }
   }
   # Calculate the total (raw) sample size
-  n <- max(ceiling(sum(allocations)), length(N.h) * lbound)
+
+
+  final_n <- max(ceiling(sum(allocations)), length(N.h) * lbound)
+
 
   sizes <- allocations
 
@@ -292,7 +295,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   total_allocated <- sum(adjusted_allocations)
 
   # Calculate the difference from the total n
-  difference <- n - total_allocated
+  difference <- final_n - total_allocated
 
   # If difference is positive, distribute it proportionally
   if (difference != 0) {
@@ -314,7 +317,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
 
   # Step 5: Adjust the rounded allocations to ensure the sum equals n
   total_allocated <- sum(rounded_allocations)
-  difference <- n - total_allocated
+  difference <- final_n - total_allocated
   # Adjust the allocations by adding/subtracting the difference
   while (difference != 0) {
     i <- sample(1:num_groups, 1) # Randomly select an index
@@ -345,7 +348,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   }
   outputs <- as.integer(rounded_allocations)
   if (allocation == "optimal") {
-    n.print <- n
+    n.print <- final_n
   } else {
     n.print <- n.samp
   }

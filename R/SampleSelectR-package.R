@@ -11,7 +11,8 @@
 #' @importFrom data.table .SD
 #' @importFrom data.table :=
 #' @importFrom data.table data.table
-#' @importFrom stats runif
 #' @importFrom rlang .data
+#' @importFrom rlang .env
+#' @importFrom stats runif
 ## usethis namespace: end
 NULL

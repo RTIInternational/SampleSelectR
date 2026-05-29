@@ -1,3 +1,4 @@
+
 #' Check if the frame is a valid data structure
 #'
 #' Ensures that the input frame is a data.frame, data.table, or tibble.

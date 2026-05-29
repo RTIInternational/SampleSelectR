@@ -47,7 +47,7 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   tbd_data_1 <- frame |>
     tidytable::mutate(
       rowNum = tidytable::row_number(),
-      ExpectedHits = n * (!!(symbol_mos) / totalSize),
+      ExpectedHits = .env$n * (!!(symbol_mos) / .env$totalSize),
       SamplingWeight = .data$ExpectedHits^-1
     )
 
@@ -64,11 +64,12 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   selectedVector <- findInterval(selectedSizePoints, sizeIntervals)
 
   # Using selectedVector, get the total counts of each index
+
   selectedVector_counts <- selectedVector |>
     as.data.frame() |>
-    tidytable::count(selectedVector) |>
-    # Rename to NumberHits
-    tidytable::rename(NumberHits = n)
+    tidytable::count(selectedVector, name = "NumberHits")
+
+
 
   tbd_data_2 <- tbd_data_1 |>
     tidytable::left_join(
@@ -78,7 +79,7 @@ sys_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
     # Need to zero filled NumberHits
     tidytable::mutate(
       NumberHits = tidytable::replace_na(.data$NumberHits, replace = 0),
-      SelectionIndicator = .data$rowNum %in% selectedVector,
+      SelectionIndicator = .data$rowNum %in% .env$selectedVector,
       # Make SamplingWeight to be NA if not selected
       SamplingWeight = tidytable::case_when(
         SelectionIndicator == TRUE ~ .data$SamplingWeight,

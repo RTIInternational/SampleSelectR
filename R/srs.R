@@ -28,6 +28,7 @@
 
 #' @export
 
+
 srs <- function(frame, n, outall = FALSE, curstrat = NULL) {
   check_frame_type(frame)
   check_n(n, frame, curstrat, n_le_N = TRUE)
@@ -35,17 +36,21 @@ srs <- function(frame, n, outall = FALSE, curstrat = NULL) {
 
   N <- nrow(frame)
 
-  # Take the srs and create sampling-related columns
+  # Take the SRS and create sampling-related columns
   selectedVector <- sample(x = N, size = n, replace = FALSE)
+
   frame <- frame |>
     tidytable::mutate(
       rowNum = tidytable::row_number(),
-      SelectionProbability = n / N,
-      SamplingWeight = ifelse(.data$rowNum %in% selectedVector, N / n, NA),
-      SelectionIndicator = ifelse(.data$rowNum %in% selectedVector, TRUE, FALSE)
+      SelectionProbability = .env$n / .env$N,
+      SamplingWeight = tidytable::if_else(
+        .data$rowNum %in% .env$selectedVector,
+        .env$N / .env$n,
+        NA_real_
+      ),
+      SelectionIndicator = .data$rowNum %in% .env$selectedVector
     ) |>
     tidytable::select(-tidytable::all_of("rowNum"))
-
 
   # Output to screen
   Sampling_Output(n, N, curstrat = curstrat)
@@ -55,8 +60,9 @@ srs <- function(frame, n, outall = FALSE, curstrat = NULL) {
     sample <- frame |>
       tidytable::filter(.data$SelectionIndicator) |>
       tidytable::select(-tidytable::all_of("SelectionIndicator"))
+
     return(sample)
-  } else if (outall) {
+  } else {
     return(frame)
   }
 }
