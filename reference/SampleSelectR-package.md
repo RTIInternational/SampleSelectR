@@ -10,6 +10,8 @@ Useful links:
 
 - <https://github.com/RTIInternational/SampleSelectR>
 
+- <https://rtiinternational.github.io/SampleSelectR/>
+
 - Report bugs at
   <https://github.com/RTIInternational/SampleSelectR/issues>
 

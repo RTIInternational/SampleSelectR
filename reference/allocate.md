@@ -127,14 +127,14 @@ one of the following allocation methods:
 The table below presents the relevant inputs for each type; when
 irrelevant inputs are entered, an error message will be displayed.
 
-|                                |         |            |         |         |          |              |            |           |
-|--------------------------------|---------|------------|---------|---------|----------|--------------|------------|-----------|
-| **allocation**                 | **N.h** | **n.samp** | **S.h** | **c.h** | **cost** | **variance** | **lbound** | **power** |
-| proportional                   | ✓       | ✓          |         |         |          |              | ✓          |           |
-| power                          | ✓       | ✓          |         |         |          |              | ✓          | ✓         |
-| neyman                         | ✓       | ✓          | ✓       | ✓       |          |              | ✓          |           |
-| optimal: cost-constrained      | ✓       |            | ✓       | ✓       | ✓        |              | ✓          |           |
-| optimal: precision-constrained | ✓       |            | ✓       | ✓       |          | ✓            | ✓          |           |
+|  |  |  |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|----|
+| **allocation** | **N.h** | **n.samp** | **S.h** | **c.h** | **cost** | **variance** | **lbound** | **power** |
+| proportional | ✓ | ✓ |  |  |  |  | ✓ |  |
+| power | ✓ | ✓ |  |  |  |  | ✓ | ✓ |
+| neyman | ✓ | ✓ | ✓ | ✓ |  |  | ✓ |  |
+| optimal: cost-constrained | ✓ |  | ✓ | ✓ | ✓ |  | ✓ |  |
+| optimal: precision-constrained | ✓ |  | ✓ | ✓ |  | ✓ | ✓ |  |
 
 ## Examples
 
@@ -163,7 +163,7 @@ ipeds_summary |>
 #>   N.h = 7, 299, 971, 851, 468, 1467, 633, 216, 870, 132
 #> 
 #> Output:
-#> 2, 25, 82, 72, 40, 124, 53, 18, 73, 11
+#> 2, 25, 82, 72, 39, 124, 54, 18, 73, 11
 #> # A tidytable: 10 × 4
 #>    OBEREG                                                      N SD_ENRTOT     n
 #>    <fct>                                                   <int>     <dbl> <int>
@@ -171,9 +171,9 @@ ipeds_summary |>
 #>  2 New England (CT, ME, MA, NH, RI, VT)                      299    11800.    25
 #>  3 Mid East (DE, DC, MD, NJ, NY, PA)                         971     5956.    82
 #>  4 Great Lakes (IL, IN, MI, OH, WI)                          851     7537.    72
-#>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                       468     5830.    40
+#>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                       468     5830.    39
 #>  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA,…  1467     7293.   124
-#>  7 Southwest (AZ, NM, OK, TX)                                633    11149.    53
+#>  7 Southwest (AZ, NM, OK, TX)                                633    11149.    54
 #>  8 Rocky Mountains (CO, ID, MT, UT, WY)                      216    14784.    18
 #>  9 Far West (AK, CA, HI, NV, OR, WA)                         870     7641.    73
 #> 10 Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, …   132     2981.    11
@@ -238,7 +238,7 @@ ipeds_summary |>
 #>   S.h = 1680.11385668608, 11800.2993217881, 5956.31998862919, 7536.59885863143, 5830.00927558341, 7293.44943657165, 11149.0070418081, 14783.8369003426, 7641.36426053871, 2981.44889034106
 #> 
 #> Output:
-#> 5, 38, 62, 68, 29, 113, 75, 34, 71, 5
+#> 5, 38, 62, 68, 28, 114, 75, 34, 71, 5
 #> # A tidytable: 10 × 4
 #>    OBEREG                                                      N SD_ENRTOT     n
 #>    <fct>                                                   <int>     <dbl> <int>
@@ -246,8 +246,8 @@ ipeds_summary |>
 #>  2 New England (CT, ME, MA, NH, RI, VT)                      299    11800.    38
 #>  3 Mid East (DE, DC, MD, NJ, NY, PA)                         971     5956.    62
 #>  4 Great Lakes (IL, IN, MI, OH, WI)                          851     7537.    68
-#>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                       468     5830.    29
-#>  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA,…  1467     7293.   113
+#>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                       468     5830.    28
+#>  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA,…  1467     7293.   114
 #>  7 Southwest (AZ, NM, OK, TX)                                633    11149.    75
 #>  8 Rocky Mountains (CO, ID, MT, UT, WY)                      216    14784.    34
 #>  9 Far West (AK, CA, HI, NV, OR, WA)                         870     7641.    71

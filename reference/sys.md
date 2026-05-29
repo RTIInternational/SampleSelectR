@@ -62,6 +62,7 @@ https://doi.org/10.4135/9781412984683
 ## Examples
 
 ``` r
+
 # Sort by REGION, DIVISION, and Pop_Tot, then take a sample
 puma_2023 |>
   tidytable::arrange(Region, Division, Pop_Tot) |>
@@ -69,20 +70,20 @@ puma_2023 |>
 #> Frame size: 2462
 #> Sample size: 50
 #> Sampling interval (k): 49.24
-#> Random start (r): 18.4339
+#> Random start (r): 20.94748
 #> # A tidytable: 50 × 27
 #>    GEOID   Name  State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr>   <chr> <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>
-#>  1 2300600 Andr… ME    North… New Eng…  112323             88.2             4.61
-#>  2 2500904 Norf… MA    North… New Eng…  139589             64.4            12.8 
-#>  3 3401105 Monm… NJ    North… Middle …  100369             74.5             3.82
-#>  4 3603002 Rock… NY    North… Middle …  109404             65.0             8.22
-#>  5 3400903 Midd… NJ    North… Middle …  117567             32.0            14.3 
-#>  6 4201803 Alle… PA    North… Middle …  127233             88.2             3.32
-#>  7 4203230 Phil… PA    North… Middle …  139415             68.4            11.0 
-#>  8 4201200 Cent… PA    North… Middle …  158041             83.5             3.21
-#>  9 4201701 Pitt… PA    North… Middle …  196078             58.1            24.8 
-#> 10 1802401 Mari… IN    Midwe… East No…  109931             32.8            46.7 
+#>  1 0920100 Nort… CT    North… New Eng…  112848             82.7            2.50 
+#>  2 2300900 Cumb… ME    North… New Eng…  143447             89.6            0.995
+#>  3 3401902 Unio… NJ    North… Middle …  101690             70.2            4.59 
+#>  4 3600704 Cayu… NY    North… Middle …  109699             88.3            2.23 
+#>  5 3401903 Unio… NJ    North… Middle …  117656             41.7           17.0  
+#>  6 4200801 Luze… PA    North… Middle …  128152             87.6            2.87 
+#>  7 3400501 Pass… NJ    North… Middle …  140397             29.5            5.08 
+#>  8 3400601 Huds… NJ    North… Middle …  158078             30.4            7.32 
+#>  9 3604112 NYC-… NY    North… Middle …  199120             20.4            7.43 
+#> 10 1802402 Mari… IN    Midwe… East No…  110681             64.7           20.6  
 #> # ℹ 40 more rows
 #> # ℹ 19 more variables: Pop_Pct_AIAN_NH <dbl>, Pop_Pct_Asian_NH <dbl>,
 #> #   Pop_Pct_NHPI_NH <dbl>, Pop_Pct_Other_NH <dbl>, Pop_Pct_Hispanic <dbl>,
@@ -98,7 +99,7 @@ puma_2023 |>
 #> Frame size: 2462
 #> Sample size: 50
 #> Sampling interval (k): 49.24
-#> Random start (r): 43.60074
+#> Random start (r): 11.42111
 #> # A tidytable: 2,462 × 28
 #>    GEOID   Name  State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr>   <chr> <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>

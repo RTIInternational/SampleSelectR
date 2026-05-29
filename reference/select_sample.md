@@ -79,6 +79,7 @@ sampling methods.
 ## Examples
 
 ``` r
+
 # SRS of 100 US counties, using geographic region as strata
 # n is a data frame containing the strata values and corresponding desired sample size
 # Sample size column must be titled 'sample_size'
@@ -114,7 +115,7 @@ county_2023 |>
 #>  7 South  13127 Glynn … GA    South A…   84987             62.1           24.5  
 #>  8 South  13259 Stewar… GA    South A…    4978             24.6           59.7  
 #>  9 South  13273 Terrel… GA    South A…    8941             36.4           59.6  
-#> 10 South  21131 Leslie… KY    East So…   10261             96.8            0.526
+#> 10 South  21055 Critte… KY    East So…    8972             94.3            0.513
 #> # ℹ 90 more rows
 #> # ℹ 19 more variables: Pop_Pct_AIAN_NH <dbl>, Pop_Pct_Asian_NH <dbl>,
 #> #   Pop_Pct_NHPI_NH <dbl>, Pop_Pct_Other_NH <dbl>, Pop_Pct_Hispanic <dbl>,
@@ -136,7 +137,7 @@ sample_sys_eq <- ipeds |>
 #> Frame size: 5914
 #> Sample size: 250
 #> Sampling interval (k): 23.656
-#> Random start (r): 10.85918
+#> Random start (r): 4.863354
 
 # For samples taken with outall = TRUE, the sample size can be verified by summing
 # the SelectionIndicator column.
@@ -176,7 +177,7 @@ sample_sys_pps <- ipeds |>
 #> Frame size: 5914
 #> Sample size: 250
 #> Sampling interval (k): 78812
-#> Random start (r): 10272.68
+#> Random start (r): 55339.74
 
 # For pps samples, it is possible for a single sampling unit to be selected multiple times
 # due to a large mos value. This is especially true as desired sample size increases. The
@@ -184,20 +185,20 @@ sample_sys_pps <- ipeds |>
 # the NumberHits column can be summed and should total to the desired sample size.
 
 sample_sys_pps
-#> # A tidytable: 247 × 19
+#> # A tidytable: 246 × 19
 #>    UNITID INSTNM      STABBR  FIPS OBEREG ICLEVEL SECTOR LOCALE DEGGRANT HLOFFER
 #>     <dbl> <chr>       <chr>  <dbl> <fct>  <fct>   <fct>  <fct>  <fct>    <fct>  
-#>  1 214795 Pennsylvan… PA        42 Mid E… Four o… Publi… Rural… Degree-… Bachel…
-#>  2 187596 Navajo Tec… NM        35 South… Four o… Publi… Rural… Degree-… Doctor…
-#>  3 228501 Sul Ross S… TX        48 South… Four o… Publi… Town:… Degree-… Master…
-#>  4 204705 Ohio State… OH        39 Great… Four o… Publi… Subur… Degree-… Bachel…
-#>  5 163338 University… MD        24 Mid E… Four o… Publi… Town:… Degree-… Doctor…
-#>  6 487010 The Univer… TN        47 South… Four o… Publi… City:… Degree-… Doctor…
-#>  7 219259 Northern S… SD        46 Plain… Four o… Publi… Town:… Degree-… Master…
-#>  8 218645 University… SC        45 South… Four o… Publi… Subur… Degree-… Master…
-#>  9 207397 Oklahoma S… OK        40 South… Four o… Publi… City:… Degree-… Bachel…
-#> 10 155025 Emporia St… KS        20 Plain… Four o… Publi… Town:… Degree-… Doctor…
-#> # ℹ 237 more rows
+#>  1 214731 Pennsylvan… PA        42 Mid E… Four o… Publi… Subur… Degree-… Bachel…
+#>  2 177940 Lincoln Un… MO        29 Plain… Four o… Publi… City:… Degree-… Post-m…
+#>  3 196255 SUNY Downs… NY        36 Mid E… Four o… Publi… City:… Degree-… Doctor…
+#>  4 196103 SUNY Colle… NY        36 Mid E… Four o… Publi… City:… Degree-… Doctor…
+#>  5 236887 Walla Wall… WA        53 Far W… Four o… Publi… City:… Degree-… Bachel…
+#>  6 214591 Pennsylvan… PA        42 Mid E… Four o… Publi… Subur… Degree-… Master…
+#>  7 138558 Abraham Ba… GA        13 South… Four o… Publi… Town:… Degree-… Bachel…
+#>  8 165866 Framingham… MA        25 New E… Four o… Publi… City:… Degree-… Post-m…
+#>  9 151342 Indiana Un… IN        18 Great… Four o… Publi… City:… Degree-… Post-m…
+#> 10 139463 Dalton Sta… GA        13 South… Four o… Publi… City:… Degree-… Bachel…
+#> # ℹ 236 more rows
 #> # ℹ 9 more variables: ENRTOT <dbl>, EFUG <dbl>, EFUG1ST <dbl>, EFUGFT <dbl>,
 #> #   EFGRAD <dbl>, EFGRADFT <dbl>, SamplingWeight <dbl>, NumberHits <int>,
 #> #   ExpectedHits <dbl>
@@ -237,14 +238,14 @@ puma_2023 |>
 #> # A tidytable: 500 × 28
 #>    Region GEOID   Name  State Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <fct>  <chr>   <chr> <chr> <fct>      <dbl>            <dbl>            <dbl>
-#>  1 South  1000105 Sout… DE    South A…  107205             59.0            23.3 
-#>  2 South  1200902 Brev… FL    South A…  124268             82.9             2.04
-#>  3 South  1201106 Brow… FL    South A…  186422             29.4            28.1 
-#>  4 South  1201113 Brow… FL    South A…  125752             26.9            22.6 
-#>  5 South  1201500 Char… FL    South A…  195083             82.4             5.10
-#>  6 South  1203104 Duva… FL    South A…  120322             45.6            28.3 
-#>  7 South  1203107 Duva… FL    South A…  131852             64.7             9.97
-#>  8 South  1205704 Hill… FL    South A…  136079             54.3             6.31
+#>  1 South  1000102 Grea… DE    South A…  122304             36.0            41.5 
+#>  2 South  1000200 Kent… DE    South A…  185043             57.6            26.4 
+#>  3 South  1200904 Brev… FL    South A…  153070             57.2            16.4 
+#>  4 South  1201108 Brow… FL    South A…  133309             36.8            39.2 
+#>  5 South  1201115 Brow… FL    South A…  103526             32.2            25.3 
+#>  6 South  1203101 Duva… FL    South A…  158849             43.9            37.7 
+#>  7 South  1203104 Duva… FL    South A…  120322             45.6            28.3 
+#>  8 South  1205702 Hill… FL    South A…   99898             30.1            13.4 
 #>  9 South  1205707 Hill… FL    South A…  152043             38.3            18.3 
 #> 10 South  1206902 Lake… FL    South A…  136281             73.1             9.06
 #> # ℹ 490 more rows

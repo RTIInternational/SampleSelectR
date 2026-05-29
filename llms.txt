@@ -32,6 +32,7 @@ You can install the development version of SampleSelectR from
 the `pak` or `devtools` package:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("RTIInternational/SampleSelectR")
 
@@ -42,6 +43,7 @@ devtools::install_github("RTIInternational/SampleSelectR")
 Then, you can load the package.
 
 ``` r
+
 library(SampleSelectR)
 ```
 
@@ -53,15 +55,16 @@ realistic sample frames including:
 - `ipeds` which contains a list of postsecondary educational
   institutions in the United States from the Integrated Postsecondary
   Education Data System (IPEDS) with a select set of characteristics for
-  operating institutions in Fall 2023[¹](#fn1)
+  operating institutions in Fall 2023[^1]
 - `county_2023` which contains a list of the counties in the United
   States based on data from the 2019-2023 American Community Survey with
-  a select set of characteristics[²](#fn2)
+  a select set of characteristics[^2]
 - `puma_2023` which contains a list of the Public Use Microdata Areas
   (PUMAs) in the United States based on data from the 2019-2023 American
-  Community Survey with a select set of characteristics[³](#fn3)
+  Community Survey with a select set of characteristics[^3]
 
 ``` r
+
 summary(ipeds)
 #>      UNITID          INSTNM             STABBR               FIPS      
 #>  Min.   :100654   Length:5914        Length:5914        Min.   : 1.00  
@@ -263,6 +266,7 @@ specifying a sample size of 500 to be proportionally allocated across
 region.
 
 ``` r
+
 set.seed(8675309)
 
 ipeds_summary <- ipeds |>
@@ -322,6 +326,7 @@ Often, you want to be able to re-run sampling code and get the same
 sample. To do this, we also set a seed.
 
 ``` r
+
 ipeds_srs <- ipeds |>
   select_sample(
     method = "srs",
@@ -380,6 +385,7 @@ ipeds_srs
 ```
 
 ``` r
+
 ipeds_pps <- ipeds |>
   select_sample(
     method = "sys_pps",
@@ -484,21 +490,19 @@ use:
 
 - Push your branch to GitHub and open a PR into dev.
 
-------------------------------------------------------------------------
-
-1.  National Center for Education Statistics, “Integrated Postsecondary
-    Education Data System” 2023,
+[^1]: National Center for Education Statistics, “Integrated
+    Postsecondary Education Data System” 2023,
     <https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?year=2023&surveyNumber=-1&sid=4737d338-5121-4355-bb91-01ffa92243ef&rtid=7>,
     downloaded on May 2, 2025.
 
-2.  U.S. Census Bureau, “American Community Survey 5-Year Estimates”
+[^2]: U.S. Census Bureau, “American Community Survey 5-Year Estimates”
     2023, <https://api.census.gov/data/2023/acs/acs5>, accessed on May
     30, 2025. Tables B03002, B25002, and S0101. Note - the tidycensus
     package was used to download the data from the Census API. Region
     and division are coded based on
     <https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf>
 
-3.  U.S. Census Bureau, “American Community Survey 5-Year Estimates”
+[^3]: U.S. Census Bureau, “American Community Survey 5-Year Estimates”
     2023, <https://api.census.gov/data/2023/acs/acs5>, accessed on May
     30, 2025. Tables B03002, B25002, and S0101. Note - the tidycensus
     package was used to download the data from the Census API. Region
