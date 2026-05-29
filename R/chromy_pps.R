@@ -53,8 +53,8 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
   frame_hits <-
     frame |>
     tidytable::mutate(
-      ExpectedHits = exphits,
-      NumberHits = chromy_inner(exphits),
+      ExpectedHits = .env$exphits,
+      NumberHits = chromy_inner(.env$exphits),
       SelectionIndicator = .data$NumberHits > 0,
       SamplingWeight = ifelse(.data$SelectionIndicator, 1 / .data$ExpectedHits, NA),
     )
