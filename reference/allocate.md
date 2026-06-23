@@ -56,7 +56,7 @@ allocate(
 
 - cost:
 
-  total variable cost (positive value) \\(C – c_0)\\.  
+  total variable cost (positive value) \\(C - c_0)\\.  
     
   required for the cost-constrained optimal allocation only, and `NULL`
   otherwise.
@@ -110,11 +110,11 @@ one of the following allocation methods:
 4.  Optimal allocation
 
     - cost-constrained \[`N.h, S.h, c.h, cost, allocation = "optimal"`\]
-      \$\$n_h = (C−c_0) \times \frac{N_h S_h /
+      \$\$n_h = (C-c_0) \times \frac{N_h S_h /
       \sqrt{c_h}}{\sum\limits\_{h=1}^H N_h S_h \sqrt{c_h}}\$\$ where  
       \\c_h\\: cost per unit in stratum *h* (function input is `c.h`),
       and  
-      \\(C – c_0)\\: total variable cost (function input is `cost`)
+      \\(C - c_0)\\: total variable cost (function input is `cost`)
 
     - precision-constrained
       \[`N.h, S.h, c.h, variance, allocation = "optimal"`\] \$\$n_h =
@@ -130,11 +130,11 @@ irrelevant inputs are entered, an error message will be displayed.
 |  |  |  |  |  |  |  |  |  |
 |----|----|----|----|----|----|----|----|----|
 | **allocation** | **N.h** | **n.samp** | **S.h** | **c.h** | **cost** | **variance** | **lbound** | **power** |
-| proportional | ✓ | ✓ |  |  |  |  | ✓ |  |
-| power | ✓ | ✓ |  |  |  |  | ✓ | ✓ |
-| neyman | ✓ | ✓ | ✓ | ✓ |  |  | ✓ |  |
-| optimal: cost-constrained | ✓ |  | ✓ | ✓ | ✓ |  | ✓ |  |
-| optimal: precision-constrained | ✓ |  | ✓ | ✓ |  | ✓ | ✓ |  |
+| proportional | X | X |  |  |  |  | X |  |
+| power | X | X |  |  |  |  | X | X |
+| neyman | X | X | X | X |  |  | X |  |
+| optimal: cost-constrained | X |  | X | X | X |  | X |  |
+| optimal: precision-constrained | X |  | X | X |  | X | X |  |
 
 ## Examples
 

@@ -87,7 +87,7 @@ required for the optimal allocation only, and <code>NULL</code> otherwise.</p></
 
 
 <dt id="arg-cost">cost<a class="anchor" aria-label="anchor" href="#arg-cost"></a></dt>
-<dd><p>total variable cost (positive value) \((C – c_0)\). <br><br>
+<dd><p>total variable cost (positive value) \((C - c_0)\). <br><br>
 required for the cost-constrained optimal allocation only, and <code>NULL</code> otherwise.</p></dd>
 
 
@@ -127,17 +127,17 @@ $$n_h = n \times \frac{N_h S_h}{\sum\limits_{h=1}^H N_h S_h}$$
 where <br>
 \(S_h\):  standard deviation of stratum <em>h</em> (function input is <code>S.h</code>).</p></li>
 <li><p>Optimal allocation</p><ul><li><p>cost-constrained [<code>N.h, S.h, c.h, cost, allocation = "optimal"</code>]
-$$n_h = (C−c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}$$
-            where <br>
+$$n_h = (C-c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}$$
+where <br>
 \(c_h\): cost per unit in stratum <em>h</em> (function input is <code>c.h</code>), and <br>
-\((C – c_0)\): total variable cost (function input is <code>cost</code>)</p></li>
+\((C - c_0)\): total variable cost (function input is <code>cost</code>)</p></li>
 <li><p>precision-constrained [<code>N.h, S.h, c.h, variance, allocation = "optimal"</code>]
 $$n_h = N_h S_h / \sqrt{c_h} \times \frac{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}{V_0 \left(\sum\limits_{h=1}^H  N_h \right)^2 + \sum\limits_{h=1}^H N_h S_h^2}$$
 where <br>
 \(V_0\): fixed variance target for estimated mean (function input is <code>variance</code>)</p></li>
 </ul></li>
 </ol><p>The table below presents the relevant inputs for each type; when irrelevant inputs are entered, an error message will be displayed.</p>
-<table class="table table"><tr><td><strong>allocation</strong></td><td><strong>N.h</strong></td><td><strong>n.samp</strong></td><td><strong>S.h</strong></td><td><strong>c.h</strong></td><td><strong>cost</strong></td><td><strong>variance</strong></td><td><strong>lbound</strong></td><td><strong>power</strong></td></tr><tr><td>proportional</td><td>✓</td><td>✓</td><td></td><td></td><td></td><td></td><td>✓</td><td></td></tr><tr><td>power</td><td>✓</td><td>✓</td><td></td><td></td><td></td><td></td><td>✓</td><td>✓</td></tr><tr><td>neyman</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td><td>✓</td><td></td></tr><tr><td>optimal: cost-constrained</td><td>✓</td><td></td><td>✓</td><td>✓</td><td>✓</td><td></td><td>✓</td><td></td></tr><tr><td>optimal: precision-constrained</td><td>✓</td><td></td><td>✓</td><td>✓</td><td></td><td>✓</td><td>✓</td><td></td></tr></table></div>
+<table class="table table"><tr><td><strong>allocation</strong></td><td><strong>N.h</strong></td><td><strong>n.samp</strong></td><td><strong>S.h</strong></td><td><strong>c.h</strong></td><td><strong>cost</strong></td><td><strong>variance</strong></td><td><strong>lbound</strong></td><td><strong>power</strong></td></tr><tr><td>proportional</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td>X</td><td></td></tr><tr><td>power</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td>X</td><td>X</td></tr><tr><td>neyman</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td>X</td><td></td></tr><tr><td>optimal: cost-constrained</td><td>X</td><td></td><td>X</td><td>X</td><td>X</td><td></td><td>X</td><td></td></tr><tr><td>optimal: precision-constrained</td><td>X</td><td></td><td>X</td><td>X</td><td></td><td>X</td><td>X</td><td></td></tr></table></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
