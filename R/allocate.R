@@ -21,10 +21,10 @@
 #'    \item Optimal allocation
 #'           \itemize{
 #'             \item cost-constrained \[\code{N.h, S.h, c.h, cost, allocation = "optimal"}\]
-#'                   \deqn{n_h = (C-c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
+#'                   \deqn{n_h = (C−c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
 #'             where \cr
 #'             \eqn{c_h}: cost per unit in stratum \emph{h} (function input is \code{c.h}), and \cr
-#'             \eqn{(C - c_0)}: total variable cost (function input is \code{cost})
+#'             \eqn{(C – c_0)}: total variable cost (function input is \code{cost})
 #'             \item precision-constrained \[\code{N.h, S.h, c.h, variance, allocation = "optimal"}\]
 #'                   \deqn{n_h = N_h S_h / \sqrt{c_h} \times \frac{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}{V_0 \left(\sum\limits_{h=1}^H  N_h \right)^2 + \sum\limits_{h=1}^H N_h S_h^2}}
 #'             where \cr
@@ -36,11 +36,11 @@
 #'
 #' \tabular{lllllllll}{
 #'   \strong{allocation} \tab \strong{N.h} \tab \strong{n.samp} \tab \strong{S.h} \tab \strong{c.h} \tab \strong{cost} \tab \strong{variance} \tab \strong{lbound} \tab \strong{power} \cr
-#'   proportional                   \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab \cr
-#'   power                          \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab X\cr
-#'   neyman                         \tab X \tab X \tab X \tab X \tab  \tab  \tab X \tab \cr
-#'   optimal: cost-constrained      \tab X \tab  \tab X \tab X \tab X \tab  \tab X \tab \cr
-#'   optimal: precision-constrained \tab X \tab  \tab X \tab X \tab  \tab X \tab X \tab
+#'   proportional                   \tab ✓ \tab ✓ \tab  \tab  \tab  \tab  \tab ✓ \tab \cr
+#'   power                          \tab ✓ \tab ✓ \tab  \tab  \tab  \tab  \tab ✓ \tab ✓\cr
+#'   neyman                         \tab ✓ \tab ✓ \tab ✓ \tab ✓ \tab  \tab  \tab ✓ \tab \cr
+#'   optimal: cost-constrained      \tab ✓ \tab  \tab ✓ \tab ✓ \tab ✓ \tab  \tab ✓ \tab \cr
+#'   optimal: precision-constrained \tab ✓ \tab  \tab ✓ \tab ✓ \tab  \tab ✓ \tab ✓ \tab
 #' }
 #'
 #' @param allocation type of allocation, must be one of \code{"proportional"}, \code{"power"}, \code{"neyman"}, or \code{"optimal"}.
@@ -52,14 +52,25 @@
 #' required for the following allocation types: Neyman, and optimal, and \code{NULL} otherwise.
 #' @param c.h vector of cost per unit in stratum h (positive values same length as \code{N.h}) (\eqn{c_h}). \cr\cr
 #' required for the optimal allocation only, and \code{NULL} otherwise.
-#' @param cost total variable cost (positive value) \eqn{(C - c_0)}. \cr\cr
+#' @param cost total variable cost (positive value) \eqn{(C – c_0)}. \cr\cr
 #' required for the cost-constrained optimal allocation only, and \code{NULL} otherwise.
 #' @param variance fixed variance target for estimated mean (positive value) (\eqn{V_0}). \cr\cr
 #' required for the precision-constrained optimal allocation only, and \code{NULL} otherwise.
 #' @param power power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 #' required for the power allocation only, and \code{NULL} otherwise.
 #' @param lbound minimum stratum-level (positive integer of length 1). Default value is 2.
-#' @return Integer vector same length of N.h final allocation
+#' @param outputs
+#' character vector representing whether to output:\cr
+#'  \enumerate{
+#'    \item the raw allocations before accounting for N.h, lbound, and n.samp if needed \[\code{"raw"}\],
+#'    \item the continuous version after accounting for the above \[\code{"adjusted"}\], and/or
+#'    \item the rounded version of the above \[\code{"rounded"}\]
+#'  } \cr
+#'  Default is to only return the final rounded version \[\code{"rounded"}\]. \cr
+#'  If one version is requested, the result will be a numeric vector. Otherwise, the result will be a named list matching the requested outputs.
+#' @return If one output type is requested, a numeric vector of allocations.
+#' If multiple output types are requested, a named list containing the requested
+#' allocation vectors.
 #' @export
 #' @examples
 #' # The first step is getting a frame summary
@@ -100,8 +111,10 @@
 #'   tidytable::mutate(
 #'     n = allocate("neyman", N.h = N, n.samp = 500, S.h = SD_ENRTOT, lbound = 5)
 #'   )
-allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cost = NULL, variance = NULL, power = NULL, lbound = 2) {
+
+allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cost = NULL, variance = NULL, power = NULL, lbound = 2, outputs = "rounded") {
   allocation <- match.arg(allocation, c("proportional", "power", "neyman", "optimal"))
+  outputs <- match.arg(outputs, c("raw", "adjusted", "rounded"), several.ok = TRUE)
 
   ######
   # Check inputs
@@ -187,7 +200,7 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
     }
   }
   # c.h
-  if (!is.null(c.h) & allocation %in% c("neyman", "optimal")) {
+  if (!is.null(c.h) & allocation %in% c("optimal")) {
     if (!(length(c.h) >= 1 & typeof(c.h) %in% c("integer", "double") & all(c.h > 0) & length(c.h) == length(N.h))) {
       .problems <- .addProblem(parameter = "c.h", condition = .condition)
     }
@@ -234,10 +247,25 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   if (allocation %in% c("optimal")) {
     if (!is.null(cost) & length(.problems) == 0) {
       if (sum(lbound * c.h) > cost) {
-        warning("No solution exists for specified total cost (sum(lbound*c.h) > cost)")
+        .problems <- c(.problems, "sum(lbound*c.h) must be less than or equal to cost")
       }
     }
   }
+
+  if (allocation %in% c("proportional", "power", "neyman","optimal")){
+    if (!is.null(N.h)){
+      if (any(lbound > N.h)){
+        warning("lbound > N.h for at least one stratum")
+      }
+    }
+  }
+
+  # outputs parameter
+  .condition <- 'must be one or more of: "raw", "adjusted", "rounded"'
+  if (!all(outputs %in% c("raw", "adjusted", "rounded"))) {
+    .problems <- .addProblem(parameter = "outputs", condition = .condition)
+  }
+
   ###
   # Aggregate problems and stop the program if necessary
   if (length(.problems) > 0) {
@@ -255,82 +283,433 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
   }
 
   ######
+  #Fixed-total continuous adjustment:
+  # * Respects lower bound (lbound)
+  # * Respects upper bound (N.h)
+  # * Sums to sample size (n.samp)
+  # * Unrounded sample sizes
+  .adjust_fixed_total <- function(weights, n.samp, lbound, N.h) {
+    h <- length(weights)
+
+    lbound.h <- rep(lbound, h) #Extending lbound to a vector
+
+    # Raw proportional target
+    raw <- n.samp * weights / sum(weights)
+
+    #If raw already respects both bounds, use it directly.
+    if (all(raw >= lbound.h) && all(raw <= N.h)) {
+      return(as.numeric(raw))
+    }
+
+    #Otherwise fall back to iterative capacity-and-floor enforcement
+    alloc <- lbound.h
+    remaining <- n.samp - sum(alloc)
+    capacity <- N.h - alloc #Amount left in N.h after allocating lbound
+
+    if (remaining == 0) {
+      return(as.numeric(alloc))
+    }
+
+    #Initialize strata variables
+    active <- rep(TRUE, h) #Does stratum still need to be processed
+    extra <- rep(0, h) #How much to allocate to stratum above raw_allocations
+
+
+    repeat {
+      w <- weights
+      w[!active] <- 0
+
+      if (sum(w) <= 0) {
+        stop("No feasible solution: cannot distribute remaining sample.")
+      }
+
+      proposed <- remaining * w / sum(w) #Proposed additional allocation
+      hit <- active & (proposed > capacity) #Assigned all of stratum
+
+      #If didn't hit any statum's upper bound, break here
+      if (!any(hit)) {
+        extra[active] <- remaining * weights[active] / sum(weights[active])
+        break
+      }
+
+      #If hit a stratum's N, allocate its remaining capacity and set inactive
+      alloc[hit] <- alloc[hit] + capacity[hit]
+      remaining <- n.samp - sum(alloc)
+      active[hit] <- FALSE
+      capacity[hit] <- 0
+    }
+
+
+    adjusted_allocations <- alloc + extra
+    adjusted_allocations
+  }
+
+  ######
+  # Calculate stratified mean variance
+
+  .stratified_mean_variance <- function(n.h, N.h, S.h, N = sum(N.h)) {
+    W.h <- N.h / N
+    sum(W.h^2 * (1 - n.h / N.h) * S.h^2 / n.h)
+  }
+
+  ######
+  # Precision-constrained continuous adjustment:
+  # * Respects lower bound (lbound)
+  # * Respects upper bound (N.h)
+  # * Hits variance target
+  # * Unrounded sample sizes
+
+  .adjust_precision_constrained <- function(N.h, S.h, c.h, variance, lbound){
+    h <- length(N.h)
+    N <- sum(N.h)
+
+    a.h <- N.h * S.h / sqrt(c.h)
+
+    lbound.h <- rep(lbound, h)
+
+    # Initialize strata variables
+    adjusted_allocations <- rep(NA_real_, h)
+    fixed <- rep(FALSE, h) #Treat stratum fixed (TRUE) vs. free (FALSE)
+
+
+    V.lower <- .stratified_mean_variance(lbound.h, N.h, S.h)
+    V.upper <- .stratified_mean_variance(N.h, N.h, S.h)
+
+    if (variance >= V.lower) {
+      warning("The lower-bound allocation already satisfies the variance target; returning lower-bound allocation.")
+      return(lbound.h)
+    }
+
+    if (variance < V.upper) {
+      stop("No feasible allocation: even a census of all strata does not achieve the variance target.")
+    }
+
+
+    repeat {
+      # Compute variance contribution from fixed strata
+      if (any(fixed)) {
+        V.fixed <- .stratified_mean_variance(
+          n.h = adjusted_allocations[fixed],
+          N.h = N.h[fixed],
+          S.h = S.h[fixed],
+          N = N
+        )
+      } else {
+        V.fixed <- 0
+      }
+
+      # If all strata are fixed, break
+      if (all(fixed)) {
+        V.total <- .stratified_mean_variance(adjusted_allocations, N.h, S.h)
+        if (abs(V.total - variance) > 1e-10) {
+          warning("No feasible allocation exactly meets the variance target under the imposed bounds.")
+        }
+        break
+      }
+
+      # Recompute scaling constant over free strata
+      free <- !fixed
+      A.free <- sum(N.h[free] * S.h[free] * sqrt(c.h[free]))
+      B.free <- sum(N.h[free] * S.h[free]^2)
+
+      denom <- N^2 * (variance - V.fixed) + B.free
+
+      if (denom <= 0) {
+        stop("No feasible allocation solution for the requested variance after applying bounds.")
+      }
+
+      k.free <- A.free / denom
+
+      # Candidate allocations for free strata
+      candidate <- k.free * a.h[free]
+
+      # Check for violations
+      below <- candidate < lbound.h[free]
+      above <- candidate > N.h[free]
+
+      if (!any(below | above)){
+        adjusted_allocations[free] <- candidate
+        break
+      }
+
+      # Fix violating strata
+      free_idx <- which(free)
+
+      if (any(below)) {
+        idx <- free_idx[below]
+        adjusted_allocations[idx] <- lbound.h[idx]
+        fixed[idx] <- TRUE
+      }
+
+      if (any(above)) {
+        idx <- free_idx[above]
+        adjusted_allocations[idx] <- N.h[idx]
+        fixed[idx] <- TRUE
+      }
+
+    }
+    return(adjusted_allocations)
+  }
+
+  ######
+  # Precision-constrained rounding
+
+  .round_precision_constrained <- function(adjusted_allocations, N.h, S.h, c.h, variance, lbound) {
+    rounded_allocations <- floor(adjusted_allocations + 1e-9)
+    rounded_allocations <- pmax(rounded_allocations, lbound)
+    rounded_allocations <- pmin(rounded_allocations, N.h)
+    rounded_allocations <- as.integer(rounded_allocations)
+
+    frac <- adjusted_allocations - floor(adjusted_allocations + 1e-9)
+
+    while (.stratified_mean_variance(rounded_allocations, N.h, S.h) > variance) {
+      candidates <- which(rounded_allocations < N.h)
+
+      if (length(candidates) == 0) {
+        warning("No feasible integer allocation found to satisfy variance target.")
+        break
+      }
+
+      current_var <- .stratified_mean_variance(rounded_allocations, N.h, S.h)
+      scores <- rep(-Inf, length(N.h))
+
+      for (h in candidates) {
+        trial <- rounded_allocations
+        trial[h] <- trial[h] + 1L
+        new_var <- .stratified_mean_variance(trial, N.h, S.h)
+        var_gain <- current_var - new_var
+
+        #leftover relative to adjusted continuous allocation
+        leftover <- pmax(N.h[h] - adjusted_allocations[h], 0)
+
+        #normalize leftover
+        leftover_factor <- 1 + leftover / N.h[h]
+
+        #fractional preference
+        frac_factor <- 1 + frac[h]
+
+        #combined score
+        scores[h] <- (var_gain / c.h[h]) * leftover_factor * frac_factor
+      }
+
+      best_h <- which.max(scores)
+      if (!is.finite(scores[best_h]) || scores[best_h] <= 0) {
+        warning("Could not improve enough to satisfy variance constraint.")
+        break
+      }
+
+      rounded_allocations[best_h] <- rounded_allocations[best_h] + 1L
+    }
+
+    return(rounded_allocations)
+  }
+
+
+  ######
+  # Rounding fixed-totals
+
+  .round_fixed_total <- function(adjusted_allocations, n.samp, N.h, lbound, score) {
+    rounded_allocations <- floor(adjusted_allocations + 1e-9)
+    rounded_allocations <- pmax(rounded_allocations, lbound)
+    rounded_allocations <- pmin(rounded_allocations, N.h)
+    rounded_allocations <- as.integer(rounded_allocations)
+
+    deficit <- n.samp - sum(rounded_allocations)
+
+    if (deficit < 0) {
+      stop("Initial rounded allocation exceeds the target total.")
+    }
+    while (deficit > 0) {
+      candidates <- which(rounded_allocations < N.h)
+      if (length(candidates) == 0) {
+        stop("No feasible way to allocate remaining units.")
+      }
+
+
+      scores <- score(rounded_allocations)
+      scores[-candidates] <- -Inf
+
+
+      j <- candidates[which.max(scores[candidates])]
+
+
+      if (!is.finite(scores[j])) {
+        stop("No feasible scoring candidate for additional allocation.")
+      }
+
+      rounded_allocations[j] <- rounded_allocations[j] + 1L
+      deficit <- deficit - 1L
+    }
+
+    return(rounded_allocations)
+
+  }
+
+  .score_proportional <- function(adjusted_allocations, rounded_allocations, N.h) {
+    gap <- pmax(adjusted_allocations - rounded_allocations, 0)
+    leftover <- pmax(N.h - adjusted_allocations, 0)
+    weight <- N.h / sum(N.h)
+
+    gap * (1 + leftover / N.h) * (1 + weight)
+  }
+
+  .score_power <- function(adjusted_allocations, rounded_allocations, N.h, power) {
+    gap <- pmax(adjusted_allocations - rounded_allocations, 0)
+    leftover <- pmax(N.h - adjusted_allocations, 0)
+    weight_raw <- N.h^power
+    weight <- weight_raw / sum(weight_raw)
+
+    gap * (1 + leftover / N.h) * (1 + weight)
+  }
+
+  .score_neyman <- function(adjusted_allocations, rounded_allocations, N.h, S.h) {
+    gap <- pmax(adjusted_allocations - rounded_allocations, 0)
+    leftover <- pmax(N.h - adjusted_allocations, 0)
+    weight_raw <- N.h * S.h
+    weight <- weight_raw / sum(weight_raw)
+
+    gap * (1 + leftover / N.h) * (1 + weight)
+  }
+
+
+
+  ######
   # Moving onto the actual allocation
   N <- sum(N.h)
   if (allocation == "proportional") {
-    allocations <- n.samp * N.h / N
+    raw_allocations <- n.samp * N.h / N
+
+    weights <- N.h
+
+    #Respect lower-bound, upper bound, and n.samp
+    adjusted_allocations <- .adjust_fixed_total(
+      weights,
+      n.samp,
+      lbound,
+      N.h
+    )
+
+    rounded_allocations <- .round_fixed_total(
+      adjusted_allocations,
+      n.samp,
+      N.h,
+      lbound,
+      score = function(current) .score_proportional(adjusted_allocations, current, N.h)
+    )
   } else if (allocation == "power") {
-    N.h.powered <- N.h**power
-    N.powered <- sum(N.h.powered)
-    allocations <- n.samp * N.h.powered / N.powered
+    N.h.powered <- N.h^power
+    raw_allocations <- n.samp * N.h.powered / sum(N.h.powered)
+
+    weights <- N.h.powered
+
+    #Respect lower-bound, upper bound, and n.samp
+    adjusted_allocations <- .adjust_fixed_total(
+      weights,
+      n.samp,
+      lbound,
+      N.h
+    )
+
+    rounded_allocations <- .round_fixed_total(
+      adjusted_allocations,
+      n.samp,
+      N.h,
+      lbound,
+      score = function(current) .score_power(adjusted_allocations, current, N.h, power)
+    )
+
+
   } else if (allocation == "neyman") {
     propNum <- N.h * S.h # Numerator
     propDen <- sum(propNum) # Denominator
-    allocations <- n.samp * propNum / propDen
+    raw_allocations <- n.samp * propNum / propDen
+
+    weights <- propNum
+
+    #Respect lower-bound, upper bound, and n.samp
+    adjusted_allocations <- .adjust_fixed_total(
+      weights,
+      n.samp,
+      lbound,
+      N.h
+    )
+
+    rounded_allocations <- .round_fixed_total(
+      adjusted_allocations,
+      n.samp,
+      N.h,
+      lbound,
+      score = function(current) .score_neyman(adjusted_allocations, current, N.h, S.h)
+    )
   } else if (allocation == "optimal") {
     if (!is.null(cost)) { # Cost-constrained
       propNum <- N.h * S.h / sqrt(c.h)
       propDen <- sum(N.h * S.h * sqrt(c.h))
-      allocations <- cost * propNum / propDen
+      raw_allocations <- cost * propNum / propDen
+
+      #Lower-bound adjusted version
+      lbound.h <- rep(lbound, length(N.h))
+      baseline_cost <- sum(lbound.h * c.h)
+      adjusted_target <- pmax(raw_allocations, lbound.h)
+      adjusted_target <- pmin(adjusted_target, N.h)
+
+      adjusted_cost <- sum(adjusted_target * c.h)
+
+      if (adjusted_cost > cost){
+        #Rescale only the excess above lbound to stay on budget
+        excess <- adjusted_target - lbound.h
+        excess_cost <- sum(excess * c.h)
+        rho <- if (excess_cost > 0) (cost - baseline_cost) / excess_cost else 0
+        rho <- max(min(rho, 1), 0)
+        adjusted_allocations <- lbound.h + rho * excess
+      } else {
+        adjusted_allocations <- adjusted_target
+      }
+
+      #Deterministic rounded version under budget
+      rounded_allocations <- floor(adjusted_allocations + 1e-9)
+      rounded_allocations <- pmax(rounded_allocations, lbound.h)
+      rounded_allocations <- pmin(rounded_allocations, N.h)
+      rounded_allocations <- as.integer(rounded_allocations)
+
+      remaining_budget <- cost - sum(rounded_allocations * c.h)
+      frac <- adjusted_allocations - floor(adjusted_allocations + 1e-9)
+
+      repeat {
+        candidates <- which(
+          rounded_allocations < N.h &
+            (c.h <= remaining_budget)
+        )
+        if (length(candidates) == 0) break
+
+        # prioritize largest fractional parts per unit cost
+        gap <- pmax(adjusted_allocations[candidates] - rounded_allocations[candidates], 0)
+        leftover <- pmax(N.h[candidates] - adjusted_allocations[candidates], 0)
+
+        score <- (gap / c.h[candidates]) *
+          (1 + leftover / N.h[candidates])
+
+        j <- candidates[which.max(score)]
+
+        if (score[which.max(score)] <= 0) break
+
+        rounded_allocations[j] <- rounded_allocations[j] + 1L
+        remaining_budget <- cost - sum(rounded_allocations * c.h)
+      }
+
     } else if (!is.null(variance)) { # Precision-constrained
       propNum <- sum(N.h * S.h * sqrt(c.h))
       propDen <- variance * sum(N.h)**2 + sum(N.h * S.h**2)
-      allocations <- N.h * S.h / sqrt(c.h) * propNum / propDen
+      raw_allocations <- N.h * S.h / sqrt(c.h) * propNum / propDen
+
+      adjusted_allocations <- .adjust_precision_constrained(N.h, S.h, c.h, variance, lbound)
+
+      rounded_allocations <- .round_precision_constrained(adjusted_allocations, N.h, S.h, c.h, variance, lbound)
     }
   }
-  # Calculate the total (raw) sample size
 
 
-  final_n <- max(ceiling(sum(allocations)), length(N.h) * lbound)
-
-
-  sizes <- allocations
-
-  num_groups <- length(N.h)
-
-  # Ensure each allocation is at least lbound
-  adjusted_allocations <- pmax(allocations, lbound)
-
-  # Calculate the sum of the adjusted allocations
-  total_allocated <- sum(adjusted_allocations)
-
-  # Calculate the difference from the total n
-  difference <- final_n - total_allocated
-
-  # If difference is positive, distribute it proportionally
-  if (difference != 0) {
-    remaining_sizes <- sizes
-    remaining_sizes <- adjusted_allocations - lbound
-    remaining_total <- sum(remaining_sizes)
-
-    if (remaining_total > 0) {
-      additional_allocations <- difference * remaining_sizes / remaining_total
-    } else {
-      additional_allocations <- rep(0, num_groups)
-    }
-
-    adjusted_allocations <- adjusted_allocations + additional_allocations
-  }
-
-  # Round the adjusted allocations
-  rounded_allocations <- round(adjusted_allocations)
-
-  # Step 5: Adjust the rounded allocations to ensure the sum equals n
-  total_allocated <- sum(rounded_allocations)
-  difference <- final_n - total_allocated
-  # Adjust the allocations by adding/subtracting the difference
-  while (difference != 0) {
-    i <- sample(1:num_groups, 1) # Randomly select an index
-    if (difference > 0) {
-      rounded_allocations[i] <- rounded_allocations[i] + 1
-      difference <- difference - 1
-    } else {
-      if (rounded_allocations[i] > lbound) {
-        rounded_allocations[i] <- rounded_allocations[i] - 1
-        difference <- difference + 1
-      }
-    }
-  }
+  #Note: use the largest remainder (of extra sample left) [NOT NECESSARILY HOW MUCH IS CURRENTLY ALLOCATED)
 
   # Prep for outputting
   if (allocation == "proportional") {
@@ -343,28 +722,60 @@ allocate <- function(allocation, N.h, n.samp = NULL, S.h = NULL, c.h = NULL, cos
     inputs <- list("N.h" = N.h, "S.h" = S.h, "c.h" = c.h, "cost" = cost)
   } else if (allocation == "optimal" & !is.null(variance)) {
     inputs <- list("N.h" = N.h, "S.h" = S.h, "c.h" = c.h, "variance" = variance)
-  } else {
-    inputs <- list(N.h, S.h, c.h, cost, variance, power)
   }
-  outputs <- as.integer(rounded_allocations)
+
+  output <- list()
+  out.length <- 0
+  if (any(outputs == "raw")){
+    out.length <- out.length + 1
+    output[out.length] <- list(raw_allocations)
+    names(output)[out.length] <- "raw"
+  }
+  if (any(outputs == "adjusted")){
+    out.length <- out.length + 1
+    output[out.length] <- list(adjusted_allocations)
+    names(output)[out.length] <- "adjusted"
+  }
+  if (any(outputs == "rounded")){
+    out.length <- out.length + 1
+    output[out.length] <- list(rounded_allocations)
+    names(output)[out.length] <- "rounded"
+  }
+
+  #output <- as.integer(rounded_allocations)
   if (allocation == "optimal") {
-    n.print <- final_n
+    n.print <- sum(rounded_allocations)
+    if (!is.null(c.h)){
+      actual_cost <- sum(rounded_allocations * c.h)
+      n.print <- n.print |>
+        paste0(" (sample cost: ",round(actual_cost,digits=1),")")
+    }
   } else {
     n.print <- n.samp
   }
   message(paste0("Sample allocation of ", n.print, " using ", allocation, " with the relevant inputs:"))
   for (i in 1:length(inputs)) {
     message(paste0("  ",
-      names(inputs)[i],
-      " = ",
-      paste0(inputs[[i]], collapse = ", "),
-      collapse = ""
+                   names(inputs)[i],
+                   " = ",
+                   paste0(inputs[[i]], collapse = ", "),
+                   collapse = ""
     ))
   }
   message()
   message("Output:")
-  message(paste0(outputs,
-    collapse = ", "
-  ))
-  return(outputs)
+  for (i in 1:length(output)) {
+    message(paste0(" ",
+                   names(output)[i],
+                   " = ",
+                   paste0(output[[i]], collapse = ", "),
+                   collapse = ""
+    ))
+  }
+
+  if (length(output) == 1){
+    output <- output[[1]]
+  }
+
+  return(output)
 }

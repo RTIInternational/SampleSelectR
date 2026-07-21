@@ -25,21 +25,35 @@ test_that("Proportional - allocate throws error/warning when invalid inputs are 
   expect_error(allocate("proportional", N.h = c(10, 20, 30)),
     regexp = 'The n\\.samp parameter must be specified for allocation=="proportional"'
   )
-  expect_warning(allocate("proportional", N.h = c(10, 20, 30), n.samp = 90),
-    regexp = "sum\\(N\\.h\\) is less than n.samp"
+
+  warnings <- capture_warnings(
+    expect_error(
+      allocate("proportional", N.h = c(10, 20, 30), n.samp = 90),
+      regexp = "No feasible solution: cannot distribute remaining sample\\."
+    )
   )
+  expect_match(warnings, "sum\\(N\\.h\\) is less than n\\.samp", all = FALSE)
+
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = 5),
     regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
   )
   expect_error(allocate("proportional", N.h = numeric(), n.samp = 6),
     regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
   )
-  expect_error(allocate("proportional", N.h = c(0, 10, 20), n.samp = 6),
-    regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
+  warnings <- capture_warnings(
+    expect_error(allocate("proportional", N.h = c(0, 10, 20), n.samp = 6),
+                 regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
+    )
   )
-  expect_error(allocate("proportional", N.h = c(-10, 10, 20), n.samp = 6),
-    regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
+  expect_match(warnings, "lbound > N\\.h for at least one stratum")
+
+  warnings <- capture_warnings(
+    expect_error(allocate("proportional", N.h = c(-10, 10, 20), n.samp = 6),
+                 regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
+    )
   )
+  expect_match(warnings, "lbound > N\\.h for at least one stratum")
+
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = 0),
     regexp = "1: The n\\.samp parameter must be a positive integer of length 1\n2: lbound\\*length\\(N\\.h\\) must be less than or equal to n.samp"
   )
@@ -142,21 +156,27 @@ test_that("Power - allocate throws error/warning when invalid inputs are provide
   expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 90, power = 2),
     regexp = "The power parameter must be a positive value between 0 and 1, inclusive"
   )
-  expect_warning(allocate("power", N.h = c(10, 20, 30), n.samp = 90, power = 0.5),
-    regexp = "sum\\(N\\.h\\) is less than n.samp"
+  warnings <- capture_warnings(
+    expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 90, power = 0.5),
+                   regexp = "No feasible solution: cannot distribute remaining sample."
+                   )
   )
+
+  expect_match(warnings, "sum\\(N\\.h\\) is less than n\\.samp")
+
+
   expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 5, power = 0.5),
     regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
   )
 })
 
-test_that("Power - proportions in returned sample match the unrounded sample (when min(n.samp*N.h/sum(N.h)) > lbound and expected unrounded sample are all integers)", {
+test_that("Power - proportions in returned sample match the unrounded sample", {
   # Formula:
-  # N.h.powered <- N.h**power
+  # N.h.powered <- N.h^power
   # N.powered <- sum(N.h.powered)
   # allocations <- n.samp * N.h.powered / N.powered
   expect_equal(
-    allocate("power", power = 0.5, N.h = c(4, 4, 16), n.samp = 20),
+    allocate("power", power = 0.5, N.h = c(8, 8, 32), n.samp = 20),
     c(5, 5, 10)
   )
   expect_equal(
@@ -244,15 +264,19 @@ test_that("Neyman - allocate throws error/warning when invalid inputs are provid
   expect_error(allocate("neyman", N.h = c(10, 20, 30), n.samp = 90, S.h = c(0, 1, 2)),
     regexp = "The S\\.h parameter must be a vector of positive values \\(integers or non-integers\\) that are the same length as N\\.h"
   )
-  expect_warning(allocate("neyman", N.h = c(10, 20, 30), n.samp = 90, S.h = c(0.5, 1.5, 2.5)),
-    regexp = "sum\\(N\\.h\\) is less than n.samp"
+  warnings <- capture_warnings(
+    expect_error(allocate("neyman", N.h = c(10, 20, 30), n.samp = 90, S.h = c(0.5, 1.5, 2.5)),
+                 regexp = "No feasible solution: cannot distribute remaining sample."
+                 )
   )
+  expect_match(warnings, "sum\\(N\\.h\\) is less than n\\.samp")
+
   expect_error(allocate("neyman", N.h = c(20, 30), n.samp = 3, S.h = c(1, 2)),
     regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
   )
 })
 
-test_that("Neyman - proportions in returned sample match the unrounded sample (when min(n.samp*N.h/sum(N.h)) > lbound and expected unrounded sample are all integers)", {
+test_that("Neyman - proportions in returned sample match the unrounded sample", {
   # Formula:
   # propNum <- N.h * S.h # Numerator
   # propDen <- sum(propNum) # Denominator
@@ -270,7 +294,7 @@ test_that("Neyman - proportions in returned sample match the unrounded sample (w
     c(4, 8)
   )
   expect_equal(
-    allocate("neyman", N.h = c(25, 50, 100), n.samp = 99, S.h = c(5, 15, 2.5), lbound = 1),
+    allocate("neyman", N.h = c(50, 100, 200), n.samp = 99, S.h = c(5, 15, 2.5), lbound = 1),
     c(11, 66, 22)
   )
 })
@@ -357,7 +381,7 @@ test_that("Optimal (cost) - allocate throws error/warning when invalid inputs ar
   )
 })
 
-test_that("Optimal (cost) - proportions in returned sample match the unrounded sample (when min(n.samp*N.h/sum(N.h)) > lbound and expected unrounded sample are all integers)", {
+test_that("Optimal (cost) - proportions in returned sample match the unrounded sample", {
   # Formula:
   # propNum <- N.h * S.h / sqrt(c.h)
   # propDen <- sum(N.h * S.h * sqrt(c.h))
@@ -391,13 +415,16 @@ test_that("Optimal (cost) - does min(rounded_allocations) >= lbound?", {
     4
   )
   expect_gte(
-    min(allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5), c.h = c(1, 1, 4), cost = 100), lbound = 12),
+    min(allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5), c.h = c(1, 1, 4), cost = 100, lbound = 12)),
     12
   )
-  expect_warning(expect_gte(
-    min(allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5), c.h = c(1, 4, 4), cost = 5)),
-    2
-  ))
+
+  expect_error(
+    allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5),
+             c.h = c(1, 4, 4), cost = 5),
+    regexp = "sum\\(lbound\\*c\\.h\\) must be less than or equal to cost"
+  )
+
 })
 
 
@@ -434,19 +461,23 @@ test_that("Optimal (variance) - allocate throws error/warning when invalid input
   )
 })
 
-test_that("Optimal (variance) - proportions in returned sample match the unrounded sample (when min(n.samp*N.h/sum(N.h)) > lbound and expected unrounded sample are all integers)", {
-  # Formula:
-  # propNum <- sum(N.h * S.h * sqrt(c.h))
-  # propDen <- variance * sum(N.h)**2 + sum(N.h * S.h**2)
-  # allocations <- N.h * S.h / sqrt(c.h) * propNum / propDen
-  expect_equal(
-    allocate("optimal", N.h = c(36, 64), S.h = c(9, 9), c.h = c(4, 1), variance = 1),
-    c(11, 39)
-  )
-  expect_equal(
-    allocate("optimal", N.h = c(100, 64, 144), S.h = c(49, 36, 64), c.h = c(16, 4, 9), variance = 3.5),
-    c(51, 48, 128)
-  )
+test_that("Optimal (variance) - rounded allocation meets variance target", {
+
+ smv <- function(n.h, N.h, S.h) {
+    N <- sum(N.h); W.h <- N.h / N
+    sum(W.h^2 * (1 - n.h / N.h) * S.h^2 / n.h)
+  }
+
+  r <- allocate("optimal", N.h = c(36, 64), S.h = c(9, 9), c.h = c(4, 1), variance = 1)
+  expect_lte(smv(r, c(36, 64), c(9, 9)), 1)
+  expect_true(all(r <= c(36, 64)))
+  expect_true(all(r >= 2))
+
+  r <- allocate("optimal", N.h = c(100, 64, 144), S.h = c(49, 36, 64), c.h = c(16, 4, 9), variance = 3.5)
+  expect_lte(smv(r, c(100, 64, 144), c(49, 36, 64)), 3.5)
+  expect_true(all(r <= c(100, 64, 144)))
+  expect_true(all(r >= 2))
+
 })
 
 
@@ -460,8 +491,114 @@ test_that("Optimal (variance) - does min(rounded_allocations) >= lbound?", {
     min(allocate("optimal", N.h = c(100, 64, 144), S.h = c(49, 36, 64), c.h = c(16, 4, 9), variance = 3.5)),
     2
   )
-  expect_gte(
-    min(allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5), c.h = c(1, 4, 4), variance = 5)),
-    2
+  expect_warning(
+    result <- allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5), c.h = c(1, 4, 4), variance = 5),
+    regexp = "lower-bound allocation already satisfies"
+  )
+  expect_gte(min(result), 2)
+
+})
+
+
+#####
+# outputs parameter tests
+test_that("outputs = 'rounded' (default) returns a bare integer vector", {
+  x <- allocate("proportional", N.h = c(20, 30, 40), n.samp = 9)
+  expect_false(is.list(x))
+  expect_length(x, 3)
+  expect_type(x, "integer")
+})
+
+test_that("outputs = 'raw' returns a bare numeric vector", {
+  x <- allocate("proportional", N.h = c(20, 30, 40), n.samp = 9, outputs = "raw")
+  expect_false(is.list(x))
+  expect_length(x, 3)
+  expect_type(x, "double")
+})
+
+test_that("outputs = c('raw','adjusted','rounded') returns a named list in order", {
+  x <- allocate("proportional", N.h = c(20, 30, 40), n.samp = 9,
+                outputs = c("raw", "adjusted", "rounded"))
+  expect_type(x, "list")
+  expect_named(x, c("raw", "adjusted", "rounded"))
+  expect_length(x$raw, 3)
+  expect_length(x$adjusted, 3)
+  expect_length(x$rounded, 3)
+})
+
+test_that("outputs = c('adjusted','rounded') returns a two-element named list", {
+  x <- allocate("neyman", N.h = c(30, 60), n.samp = 12, S.h = c(1, 1),
+                outputs = c("adjusted", "rounded"))
+  expect_type(x, "list")
+  expect_named(x, c("adjusted", "rounded"))
+})
+
+test_that("outputs with invalid value errors", {
+  expect_error(
+    allocate("proportional", N.h = c(20, 30, 40), n.samp = 9, outputs = "foo"),
+    regexp = "'arg' should be one of"
+  )
+})
+
+
+######
+# Upper-bound invariant across allocation modes
+test_that("Rounded allocations never exceed N.h", {
+  # Capacity-limited proportional (n.samp equals sum(N.h))
+  r <- allocate("proportional", N.h = c(4, 4, 16), n.samp = 20)
+  expect_true(all(r <= c(4, 4, 16)))
+  expect_equal(sum(r), 20)
+
+  # Capacity-limited Neyman with a stratum forced against its cap
+  r <- allocate("neyman", N.h = c(25, 50, 100), n.samp = 99,
+                S.h = c(5, 15, 2.5), lbound = 1)
+  expect_true(all(r <= c(25, 50, 100)))
+  expect_equal(sum(r), 99)
+
+  # Capacity-limited Power
+  r <- allocate("power", N.h = c(4, 4, 16), n.samp = 20, power = 0.5)
+  expect_true(all(r <= c(4, 4, 16)))
+  expect_equal(sum(r), 20)
+})
+
+
+
+######
+# Cost-constrained: budget invariant
+test_that("Cost-constrained allocation never exceeds budget", {
+  r <- allocate("optimal", N.h = c(100, 150), S.h = c(1.5, 1),
+                c.h = c(1, 4), cost = 24)
+  expect_lte(sum(r * c(1, 4)), 24)
+
+  r <- allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5),
+                c.h = c(1, 1, 4), cost = 100)
+  expect_lte(sum(r * c(1, 1, 4)), 100)
+})
+
+######
+# lbound == N.h edge case
+test_that("lbound == N.h in one stratum is handled", {
+  r <- allocate("proportional", N.h = c(5, 20, 30), n.samp = 15, lbound = 5)
+  expect_equal(r[1], 5L)
+  expect_equal(sum(r), 15)
+  expect_true(all(r <= c(5, 20, 30)))
+  expect_true(all(r >= 5))
+})
+
+
+#####
+# Irrelevant-parameter warnings
+test_that("Irrelevant parameters trigger warnings", {
+  expect_warning(
+    allocate("proportional", N.h = c(10, 20), n.samp = 5, S.h = c(1, 2)),
+    regexp = "S\\.h parameter should be NULL"
+  )
+  expect_warning(
+    allocate("neyman", N.h = c(10, 20), n.samp = 5, S.h = c(1, 2), power = 0.5),
+    regexp = "power parameter should be NULL"
+  )
+  expect_warning(
+    allocate("proportional", N.h = c(10, 20), n.samp = 5, cost = 100),
+    regexp = "cost parameter should be NULL"
   )
 })

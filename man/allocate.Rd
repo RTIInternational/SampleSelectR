@@ -17,7 +17,8 @@ allocate(
 )
 }
 \arguments{
-\item{allocation}{type of allocation, must be one of \code{"proportional"}, \code{"power"}, \code{"neyman"}, or \code{"optimal"}.}
+\item{allocation}{type of allocation,
+must be one of \code{"proportional"}, \code{"power"}, \code{"neyman"}, or \code{"optimal"}.}
 
 \item{N.h}{vector of population stratum sizes (\eqn{N_h}, all positive values), for example \code{c(150, 600, 250)}. \cr\cr
 required for all allocation types.}
@@ -25,14 +26,16 @@ required for all allocation types.}
 \item{n.samp}{total sample size to be allocated (positive integer of length 1). \cr\cr
 required for the following allocation types: proportional, power, and Neyman, and \code{NULL} otherwise.}
 
-\item{S.h}{vector of stratum unit standard deviations (positive values same length as \code{N.h}) (\eqn{S_h}). \cr\cr
+\item{S.h}{vector of stratum unit standard deviations
+(positive values same length as \code{N.h}) (\eqn{S_h}). \cr\cr
 required for the following allocation types: Neyman, and optimal, and \code{NULL} otherwise.}
 
 \item{c.h}{vector of cost per unit in stratum h (positive values same length as \code{N.h}) (\eqn{c_h}). \cr\cr
 required for the optimal allocation only, and \code{NULL} otherwise.}
 
-\item{cost}{total variable cost (positive value) \eqn{(C - c_0)}. \cr\cr
-required for the cost-constrained optimal allocation only, and \code{NULL} otherwise.}
+\item{cost}{total variable cost (positive value) \eqn{(C – c_0)}. \cr\cr
+required for the cost-constrained optimal
+allocation only, and \code{NULL} otherwise.}
 
 \item{variance}{fixed variance target for estimated mean (positive value) (\eqn{V_0}). \cr\cr
 required for the precision-constrained optimal allocation only, and \code{NULL} otherwise.}
@@ -40,7 +43,8 @@ required for the precision-constrained optimal allocation only, and \code{NULL} 
 \item{power}{power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 required for the power allocation only, and \code{NULL} otherwise.}
 
-\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2.}
+\item{lbound}{minimum stratum-level
+(positive integer of length 1). Default value is 2.}
 }
 \value{
 Integer vector same length of N.h final allocation
@@ -68,10 +72,10 @@ where \cr
 \item Optimal allocation
 \itemize{
 \item cost-constrained [\code{N.h, S.h, c.h, cost, allocation = "optimal"}]
-\deqn{n_h = (C-c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
-where \cr
+\deqn{n_h = (C−c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
+            where \cr
 \eqn{c_h}: cost per unit in stratum \emph{h} (function input is \code{c.h}), and \cr
-\eqn{(C - c_0)}: total variable cost (function input is \code{cost})
+\eqn{(C – c_0)}: total variable cost (function input is \code{cost})
 \item precision-constrained [\code{N.h, S.h, c.h, variance, allocation = "optimal"}]
 \deqn{n_h = N_h S_h / \sqrt{c_h} \times \frac{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}{V_0 \left(\sum\limits_{h=1}^H  N_h \right)^2 + \sum\limits_{h=1}^H N_h S_h^2}}
 where \cr
@@ -81,53 +85,22 @@ where \cr
 
 The table below presents the relevant inputs for each type; when irrelevant inputs are entered, an error message will be displayed.
 
-\tabular{lllllllll}{
-\strong{allocation} \tab \strong{N.h} \tab \strong{n.samp} \tab \strong{S.h} \tab \strong{c.h} \tab \strong{cost} \tab \strong{variance} \tab \strong{lbound} \tab \strong{power} \cr
-proportional                   \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab \cr
-power                          \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab X\cr
-neyman                         \tab X \tab X \tab X \tab X \tab  \tab  \tab X \tab \cr
-optimal: cost-constrained      \tab X \tab  \tab X \tab X \tab X \tab  \tab X \tab \cr
-optimal: precision-constrained \tab X \tab  \tab X \tab X \tab  \tab X \tab X \tab
+\tabular{lllll}{
+\strong{allocation} \tab \strong{N.h} \tab \strong{n.h} \tab \strong{power} \tab \strong{lbound} \cr
+proportional \tab ✓ \tab ✓  \tab   \tab ✓\cr
+power        \tab ✓ \tab ✓  \tab ✓ \tab ✓
 }
 }
 
 \examples{
-# The first step is getting a frame summary
-#  Summarize the IPEDS dataset by OBEREG
-# - N: number of universities per region
-# - SD_ENRTOT: standard deviation of total enrollment per region
-# - Filter out rows with missing ENRTOT to ensure accurate variance estimates
-
-ipeds_summary <- ipeds |>
-  tidytable::filter(!is.na(ENRTOT)) |>
-  tidytable::group_by(OBEREG) |>
-  tidytable::summarize(
-    N = tidytable::n(),
-    SD_ENRTOT = stats::sd(ENRTOT)
-  ) |>
-  tidytable::ungroup()
-
 # Example of proportional allocation
 ipeds_summary |>
   tidytable::mutate(
     n = allocate("proportional", N.h = N, n.samp = 500)
   )
-
 # Example of power allocation
 ipeds_summary |>
   tidytable::mutate(
     n = allocate("power", N.h = N, power = 0.5, n.samp = 500)
-  )
-
-# Example of Neyman allocation
-ipeds_summary |>
-  tidytable::mutate(
-    n = allocate("neyman", N.h = N, n.samp = 500, S.h = SD_ENRTOT)
-  )
-
-# Example of Neyman allocation with a lower bound of 5
-ipeds_summary |>
-  tidytable::mutate(
-    n = allocate("neyman", N.h = N, n.samp = 500, S.h = SD_ENRTOT, lbound = 5)
   )
 }
