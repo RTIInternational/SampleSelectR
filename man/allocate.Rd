@@ -80,8 +80,8 @@ where \cr
 \item Optimal allocation
 \itemize{
 \item cost-constrained [\code{N.h, S.h, c.h, cost, allocation = "optimal"}]
-\deqn{n_h = (C−c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
-            where \cr
+\deqn{n_h = (C - c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
+where \cr
 \eqn{c_h}: cost per unit in stratum \emph{h} (function input is \code{c.h}), and \cr
 \eqn{(C - c_0)}: total variable cost (function input is \code{cost})
 \item precision-constrained [\code{N.h, S.h, c.h, variance, allocation = "optimal"}]
