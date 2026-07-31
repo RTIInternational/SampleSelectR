@@ -392,17 +392,16 @@ allocate <- function(
   # * Unrounded sample sizes
   .adjust_fixed_total <- function(weights, n.samp, lbound, N.h) {
     h <- length(weights)
-    lbound.h <- rep(lbound, length.out = h)
 
     # Raw proportional target
     raw <- n.samp * weights / sum(weights)
 
     #If raw already respects both bounds, use it directly.
-    if (all(raw >= lbound.h) && all(raw <= N.h)) {
+    if (all(raw >= lbound) && all(raw <= N.h)) {
       return(as.numeric(raw))
     }
 
-    if (sum(lbound.h) > n.samp) {
+    if ((h * lbound) > n.samp) {
       stop("No feasible solution: lbound*length(N.h) exceeds n.samp.")
     }
     if (sum(N.h) < n.samp) {
@@ -422,7 +421,7 @@ allocate <- function(
 
       proposed <- remaining * weights[active] / sum(weights[active])
 
-      below <- proposed < lbound.h[active]
+      below <- proposed < lbound
       above <- proposed > N.h[active]
 
       # No new violations among the currently-active strata: done
@@ -435,7 +434,7 @@ allocate <- function(
 
       if (any(below)) {
         idx <- active_idx[below]
-        alloc[idx] <- lbound.h[idx]
+        alloc[idx] <- lbound
         fixed[idx] <- TRUE
       }
       if (any(above)) {
