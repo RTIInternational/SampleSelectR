@@ -41,7 +41,7 @@ required for the precision-constrained optimal allocation only, and \code{NULL} 
 \item{power}{power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 required for the power allocation only, and \code{NULL} otherwise.}
 
-\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2.}
+\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.}
 
 \item{outputs}{character vector representing whether to output:\cr
 \enumerate{
