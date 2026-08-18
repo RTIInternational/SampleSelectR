@@ -32,33 +32,27 @@ test_that("Proportional - allocate throws error/warning when invalid inputs are 
    )
 
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = 5),
-    regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
+    regexp = "The requested sample size \\(n\\.samp\\) is too small to satisfy the lower-bound requirements across all strata"
   )
   expect_error(allocate("proportional", N.h = numeric(), n.samp = 6),
     regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
   )
-  warnings <- capture_warnings(
-    expect_error(allocate("proportional", N.h = c(0, 10, 20), n.samp = 6),
-                 regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
-    )
+  expect_error(allocate("proportional", N.h = c(0, 10, 20), n.samp = 6),
+               regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
   )
-  expect_match(warnings, "lbound > N\\.h for at least one stratum")
 
-  warnings <- capture_warnings(
-    expect_error(allocate("proportional", N.h = c(-10, 10, 20), n.samp = 6),
+  expect_error(allocate("proportional", N.h = c(-10, 10, 20), n.samp = 6),
                  regexp = "The N\\.h parameter must be a vector of positive values \\(integers or non-integers\\)"
-    )
   )
-  expect_match(warnings, "lbound > N\\.h for at least one stratum")
 
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = 0),
-    regexp = "1: The n\\.samp parameter must be a positive integer of length 1\n2: lbound\\*length\\(N\\.h\\) must be less than or equal to n.samp"
+    regexp = "The n\\.samp parameter must be a positive integer of length 1"
   )
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = -1),
-    regexp = "1: The n\\.samp parameter must be a positive integer of length 1\n2: lbound\\*length\\(N\\.h\\) must be less than or equal to n.samp"
+    regexp = "The n\\.samp parameter must be a positive integer of length 1"
   )
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = c(1, 10)),
-    regexp = "1: The n\\.samp parameter must be a positive integer of length 1\n2: lbound\\*length\\(N\\.h\\) must be less than or equal to n.samp"
+    regexp = "The n\\.samp parameter must be a positive integer of length 1"
   )
 })
 
@@ -157,7 +151,7 @@ test_that("Power - allocate throws error/warning when invalid inputs are provide
     regexp = "sum\\(N\\.h\\) is less than n\\.samp"
   )
   expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 5, power = 0.5),
-    regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
+    regexp = "The requested sample size \\(n\\.samp\\) is too small to satisfy the lower-bound requirements across all strata."
   )
 })
 
@@ -260,7 +254,7 @@ test_that("Neyman - allocate throws error/warning when invalid inputs are provid
   )
 
   expect_error(allocate("neyman", N.h = c(20, 30), n.samp = 3, S.h = c(1, 2)),
-    regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
+    regexp = "The requested sample size \\(n\\.samp\\) is too small to satisfy the lower-bound requirements across all strata"
   )
 })
 
@@ -410,7 +404,7 @@ test_that("Optimal (cost) - does min(rounded_allocations) >= lbound?", {
   expect_error(
     allocate("optimal", N.h = c(100, 75, 150), S.h = c(1, 1, 1.5),
              c.h = c(1, 4, 4), cost = 5),
-    regexp = "sum\\(lbound\\*c\\.h\\) must be less than or equal to cost"
+    regexp = "The specified cost limit is too small to satisfy the minimum required allocation across strata"
   )
 
 })
@@ -590,3 +584,4 @@ test_that("Irrelevant parameters trigger warnings", {
     regexp = "cost parameter should be NULL"
   )
 })
+

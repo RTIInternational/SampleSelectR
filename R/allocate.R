@@ -38,7 +38,7 @@
 #'   \strong{allocation} \tab \strong{N.h} \tab \strong{n.samp} \tab \strong{S.h} \tab \strong{c.h} \tab \strong{cost} \tab \strong{variance} \tab \strong{lbound} \tab \strong{power} \cr
 #'   proportional                   \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab \cr
 #'   power                          \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab X\cr
-#'   neyman                         \tab X \tab X \tab X \tab X \tab  \tab  \tab X \tab \cr
+#'   neyman                         \tab X \tab X \tab X \tab \tab  \tab  \tab X \tab \cr
 #'   optimal: cost-constrained      \tab X \tab  \tab X \tab X \tab X \tab  \tab X \tab \cr
 #'   optimal: precision-constrained \tab X \tab  \tab X \tab X \tab  \tab X \tab X \tab
 #' }
@@ -58,7 +58,7 @@
 #' required for the precision-constrained optimal allocation only, and \code{NULL} otherwise.
 #' @param power power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 #' required for the power allocation only, and \code{NULL} otherwise.
-#' @param lbound minimum stratum-level (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.
+#' @param lbound minimum stratum-level sample size (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.
 #' @param outputs
 #' character vector representing whether to output:\cr
 #'  \enumerate{
@@ -303,8 +303,7 @@ allocate <- function(
       !all(
         length(variance) == 1 &
           typeof(variance) %in% c("integer", "double") &
-          variance > 0 &
-          length(variance) == 1
+          variance > 0
       )
     ) {
       .problems <- .addProblem(parameter = "variance", condition = .condition)
@@ -326,11 +325,10 @@ allocate <- function(
 
   if (allocation %in% c("proportional", "power", "neyman")) {
     if (!(is.null(lbound) | is.null(N.h) | is.null(n.samp))) {
-      if (!all(lbound * length(N.h) <= n.samp)) {
-        .problems <- c(
-          .problems,
-          "lbound*length(N.h) must be less than or equal to n.samp"
-        )
+      if (length(.problems) == 0) {
+        if (sum(pmin(rep(lbound, length(N.h)), N.h)) > n.samp) {
+          .problems <- c(.problems, "The requested sample size (n.samp) is too small to satisfy the lower-bound requirements across all strata.")
+        }
       }
     }
   }
@@ -345,10 +343,10 @@ allocate <- function(
 
   if (allocation %in% c("optimal")) {
     if (!is.null(cost) & length(.problems) == 0) {
-      if (sum(lbound * c.h) > cost) {
+      if (sum(pmin(rep(lbound, length(N.h)), N.h) * c.h) > cost) {
         .problems <- c(
           .problems,
-          "sum(lbound*c.h) must be less than or equal to cost"
+          "The specified cost limit is too small to satisfy the minimum required allocation across strata."
         )
       }
     }
@@ -357,7 +355,7 @@ allocate <- function(
   if (allocation %in% c("proportional", "power", "neyman", "optimal")) {
     if (!is.null(N.h)) {
       if (any(lbound > N.h)) {
-        warning("lbound > N.h for at least one stratum")
+        message("lbound > N.h for at least one stratum")
       }
     }
   }
@@ -399,13 +397,6 @@ allocate <- function(
     #If raw already respects both bounds, use it directly.
     if (all(raw >= lbound) && all(raw <= N.h)) {
       return(as.numeric(raw))
-    }
-
-    if ((h * lbound) > n.samp) {
-      stop("No feasible solution: lbound*length(N.h) exceeds n.samp.")
-    }
-    if (sum(N.h) < n.samp) {
-      stop("No feasible solution: sum(N.h) is less than n.samp.")
     }
 
     alloc <- rep(NA_real_, h)
@@ -482,7 +473,7 @@ allocate <- function(
 
     N <- sum(N.h)
     a.h <- N.h * S.h / sqrt(c.h)
- 
+
     # Initialize strata variables
     adjusted_allocations <- rep(NA_real_, h)
     fixed <- rep(FALSE, h) #Treat stratum fixed (TRUE) vs. free (FALSE)
@@ -623,12 +614,28 @@ allocate <- function(
   ######
   # Rounding fixed-totals
 
-  .round_fixed_total <- function(adjusted_allocations) {
+  .round_fixed_total <- function(adjusted_allocations, n.samp, N.h, lbound) {
+    lbound.h <- pmin(rep(lbound, length(N.h)),N.h)
+
     # https://stackoverflow.com/questions/32544646/round-vector-of-numerics-to-integer-while-preserving-their-sum
-    low_alloc <- floor(adjusted_allocations)
+    low_alloc <- floor(adjusted_allocations + 1e-9)
     indices <- utils::tail(order(adjusted_allocations-low_alloc), round(sum(adjusted_allocations)) - sum(low_alloc))
     low_alloc[indices] <- low_alloc[indices] + 1
-    as.integer(low_alloc)
+    rounded_allocations <- as.integer(low_alloc)
+
+    if (sum(rounded_allocations) != n.samp) {
+      stop("Rounded allocation does not sum to n.samp.")
+    }
+
+    if (any(rounded_allocations < lbound.h)) {
+      stop("Rounded allocation violates effective lower bounds.")
+    }
+
+    if (any(rounded_allocations > N.h)) {
+      stop("Rounded allocation violates upper bounds.")
+    }
+
+    return(rounded_allocations)
   }
 
   ######
@@ -647,7 +654,7 @@ allocate <- function(
       N.h
     )
 
-    rounded_allocations <- .round_fixed_total(adjusted_allocations)
+    rounded_allocations <- .round_fixed_total(adjusted_allocations, n.samp, N.h, lbound)
   } else if (allocation == "power") {
     N.h.powered <- N.h^power
     raw_allocations <- n.samp * N.h.powered / sum(N.h.powered)
@@ -662,7 +669,7 @@ allocate <- function(
       N.h
     )
 
-    rounded_allocations <- .round_fixed_total(adjusted_allocations)
+    rounded_allocations <- .round_fixed_total(adjusted_allocations, n.samp, N.h, lbound)
   } else if (allocation == "neyman") {
     propNum <- N.h * S.h # Numerator
     propDen <- sum(propNum) # Denominator
@@ -678,7 +685,7 @@ allocate <- function(
       N.h
     )
 
-    rounded_allocations <- .round_fixed_total(adjusted_allocations)
+    rounded_allocations <- .round_fixed_total(adjusted_allocations, n.samp, N.h, lbound)
   } else if (allocation == "optimal") {
     if (!is.null(cost)) {
       # Cost-constrained
@@ -687,7 +694,7 @@ allocate <- function(
       raw_allocations <- cost * propNum / propDen
 
       #Lower-bound adjusted version
-      lbound.h <- rep(lbound, length(N.h))
+      lbound.h <- pmin(rep(lbound, length(N.h)), N.h)
       baseline_cost <- sum(lbound.h * c.h)
       adjusted_target <- pmax(raw_allocations, lbound.h)
       adjusted_target <- pmin(adjusted_target, N.h)
@@ -712,7 +719,6 @@ allocate <- function(
       rounded_allocations <- as.integer(rounded_allocations)
 
       remaining_budget <- cost - sum(rounded_allocations * c.h)
-      frac <- adjusted_allocations - floor(adjusted_allocations + 1e-9)
 
       repeat {
         candidates <- which(
@@ -818,7 +824,7 @@ allocate <- function(
     allocation,
     " with the relevant inputs:"
   ))
-  for (i in 1:length(inputs)) {
+  for (i in seq_along(inputs)) {
     message(paste0(
       "  ",
       names(inputs)[i],
@@ -829,7 +835,7 @@ allocate <- function(
   }
   message()
   message("Output:")
-  for (i in 1:length(output)) {
+  for (i in seq_along(output)) {
     message(paste0(
       " ",
       names(output)[i],

@@ -41,7 +41,7 @@ required for the precision-constrained optimal allocation only, and \code{NULL} 
 \item{power}{power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 required for the power allocation only, and \code{NULL} otherwise.}
 
-\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.}
+\item{lbound}{minimum stratum-level sample size (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.}
 
 \item{outputs}{character vector representing whether to output:\cr
 \enumerate{
@@ -97,7 +97,7 @@ The table below presents the relevant inputs for each type; when irrelevant inpu
 \strong{allocation} \tab \strong{N.h} \tab \strong{n.samp} \tab \strong{S.h} \tab \strong{c.h} \tab \strong{cost} \tab \strong{variance} \tab \strong{lbound} \tab \strong{power} \cr
 proportional                   \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab \cr
 power                          \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab X\cr
-neyman                         \tab X \tab X \tab X \tab X \tab  \tab  \tab X \tab \cr
+neyman                         \tab X \tab X \tab X \tab \tab  \tab  \tab X \tab \cr
 optimal: cost-constrained      \tab X \tab  \tab X \tab X \tab X \tab  \tab X \tab \cr
 optimal: precision-constrained \tab X \tab  \tab X \tab X \tab  \tab X \tab X \tab
 }
