@@ -26,13 +26,10 @@ test_that("Proportional - allocate throws error/warning when invalid inputs are 
     regexp = 'The n\\.samp parameter must be specified for allocation=="proportional"'
   )
 
-  warnings <- capture_warnings(
-    expect_error(
-      allocate("proportional", N.h = c(10, 20, 30), n.samp = 90),
-      regexp = "No feasible solution: cannot distribute remaining sample\\."
-    )
-  )
-  expect_match(warnings, "sum\\(N\\.h\\) is less than n\\.samp", all = FALSE)
+  expect_error(
+    allocate("proportional", N.h = c(10, 20, 30), n.samp = 90),
+    regexp = "sum\\(N\\.h\\) is less than n\\.samp"
+   )
 
   expect_error(allocate("proportional", N.h = c(10, 20, 30), n.samp = 5),
     regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
@@ -156,15 +153,9 @@ test_that("Power - allocate throws error/warning when invalid inputs are provide
   expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 90, power = 2),
     regexp = "The power parameter must be a positive value between 0 and 1, inclusive"
   )
-  warnings <- capture_warnings(
-    expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 90, power = 0.5),
-                   regexp = "No feasible solution: cannot distribute remaining sample."
-                   )
+  expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 90, power = 0.5),
+    regexp = "sum\\(N\\.h\\) is less than n\\.samp"
   )
-
-  expect_match(warnings, "sum\\(N\\.h\\) is less than n\\.samp")
-
-
   expect_error(allocate("power", N.h = c(10, 20, 30), n.samp = 5, power = 0.5),
     regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"
   )
@@ -264,12 +255,9 @@ test_that("Neyman - allocate throws error/warning when invalid inputs are provid
   expect_error(allocate("neyman", N.h = c(10, 20, 30), n.samp = 90, S.h = c(0, 1, 2)),
     regexp = "The S\\.h parameter must be a vector of positive values \\(integers or non-integers\\) that are the same length as N\\.h"
   )
-  warnings <- capture_warnings(
-    expect_error(allocate("neyman", N.h = c(10, 20, 30), n.samp = 90, S.h = c(0.5, 1.5, 2.5)),
-                 regexp = "No feasible solution: cannot distribute remaining sample."
-                 )
+  expect_error(allocate("neyman", N.h = c(10, 20, 30), n.samp = 90, S.h = c(0.5, 1.5, 2.5)),
+    regexp = "sum\\(N\\.h\\) is less than n\\.samp"
   )
-  expect_match(warnings, "sum\\(N\\.h\\) is less than n\\.samp")
 
   expect_error(allocate("neyman", N.h = c(20, 30), n.samp = 3, S.h = c(1, 2)),
     regexp = "lbound\\*length\\(N\\.h\\) must be less than or equal to n\\.samp"

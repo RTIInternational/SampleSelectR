@@ -41,7 +41,7 @@ required for the precision-constrained optimal allocation only, and \code{NULL} 
 \item{power}{power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 required for the power allocation only, and \code{NULL} otherwise.}
 
-\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2.}
+\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.}
 
 \item{outputs}{character vector representing whether to output:\cr
 \enumerate{
@@ -80,8 +80,8 @@ where \cr
 \item Optimal allocation
 \itemize{
 \item cost-constrained [\code{N.h, S.h, c.h, cost, allocation = "optimal"}]
-\deqn{n_h = (C−c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
-            where \cr
+\deqn{n_h = (C - c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
+where \cr
 \eqn{c_h}: cost per unit in stratum \emph{h} (function input is \code{c.h}), and \cr
 \eqn{(C - c_0)}: total variable cost (function input is \code{cost})
 \item precision-constrained [\code{N.h, S.h, c.h, variance, allocation = "optimal"}]
