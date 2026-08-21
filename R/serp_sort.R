@@ -15,6 +15,15 @@
 #'
 #' @return A copy of .data that is hierarchically sorted and, if specified, includes the sort group variables created for sorting
 #'
+#' @examples
+#' # Sort counties by Region, then Division, in a serpentine pattern
+#' county_2023 |>
+#'   serp_sort("Region", "Division")
+#'
+#' # Keep the intermediate sort-group columns (sortSerp1, sortSerp2)
+#' county_2023 |>
+#'   serp_sort("Region", "Division", sortID = TRUE)
+#'
 #' @export
 
 serp_sort <- function(.data, ..., naorder = TRUE, sortID = FALSE) {

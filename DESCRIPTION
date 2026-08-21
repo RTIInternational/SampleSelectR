@@ -7,9 +7,16 @@ Authors@R: c(
     person("Thomas", "Burkett", role = "aut"),
     person("Philip", "Lee", role = "aut"),
     person("Haby", "Sow", role = "aut"),
-    person(, "RTI International", role = "fnd")
+    person(, "RTI International", role = c("cph", "fnd"))
   )
-Description: Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.
+Description: Randomly select samples using simple random sampling (SRS),
+    systematic sampling, and various probability proportional to size
+    (PPS) methods, including systematic PPS and sequential PPS (i.e.,
+    Chromy's method). Also includes functionality to allocate sample
+    sizes across strata using proportional, power, Neyman, and optimal
+    allocation methods, and to select samples within strata. Designed to
+    make survey sample design and selection reproducible, efficient, and
+    transparent for survey statisticians and researchers.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

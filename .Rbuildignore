@@ -9,3 +9,4 @@
 ^pkgdown$
 ^\.positai$
 ^\.claude$
+^cran-comments\.md$

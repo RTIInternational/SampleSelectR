@@ -33,6 +33,12 @@ Allocation methods include:
 
 ## Installation
 
+You can install SampleSelectR from CRAN:
+
+``` r
+install.packages("SampleSelectR")
+```
+
 You can install the development version of SampleSelectR from
 [GitHub](https://github.com/RTIInternational/SampleSelectR) with either
 the `pak` or `devtools` package:
