@@ -13,7 +13,8 @@ allocate(
   cost = NULL,
   variance = NULL,
   power = NULL,
-  lbound = 2
+  lbound = 2,
+  outputs = "rounded"
 )
 }
 \arguments{
@@ -40,10 +41,21 @@ required for the precision-constrained optimal allocation only, and \code{NULL} 
 \item{power}{power value for power allocation (\eqn{0 \le \alpha \le 1}). \cr\cr
 required for the power allocation only, and \code{NULL} otherwise.}
 
-\item{lbound}{minimum stratum-level (positive integer of length 1). Default value is 2.}
+\item{lbound}{minimum stratum-level sample size (positive integer of length 1). Default value is 2. If N.h < lbound for a stratum, the sample size will be limited to N.h.}
+
+\item{outputs}{character vector representing whether to output:\cr
+\enumerate{
+\item the raw allocations before accounting for N.h, lbound, and n.samp if needed [\code{"raw"}],
+\item the continuous version after accounting for the above [\code{"adjusted"}], and/or
+\item the rounded version of the above [\code{"rounded"}]
+} \cr
+Default is to only return the final rounded version [\code{"rounded"}]. \cr
+If one version is requested, the result will be a numeric vector. Otherwise, the result will be a named list matching the requested outputs.}
 }
 \value{
-Integer vector same length of N.h final allocation
+If one output type is requested, a numeric vector of allocations.
+If multiple output types are requested, a named list containing the requested
+allocation vectors.
 }
 \description{
 Compute the proportional, power, Neyman, and optimal sample allocations.
@@ -68,7 +80,7 @@ where \cr
 \item Optimal allocation
 \itemize{
 \item cost-constrained [\code{N.h, S.h, c.h, cost, allocation = "optimal"}]
-\deqn{n_h = (C-c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
+\deqn{n_h = (C - c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}}
 where \cr
 \eqn{c_h}: cost per unit in stratum \emph{h} (function input is \code{c.h}), and \cr
 \eqn{(C - c_0)}: total variable cost (function input is \code{cost})
@@ -85,7 +97,7 @@ The table below presents the relevant inputs for each type; when irrelevant inpu
 \strong{allocation} \tab \strong{N.h} \tab \strong{n.samp} \tab \strong{S.h} \tab \strong{c.h} \tab \strong{cost} \tab \strong{variance} \tab \strong{lbound} \tab \strong{power} \cr
 proportional                   \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab \cr
 power                          \tab X \tab X \tab  \tab  \tab  \tab  \tab X \tab X\cr
-neyman                         \tab X \tab X \tab X \tab X \tab  \tab  \tab X \tab \cr
+neyman                         \tab X \tab X \tab X \tab \tab  \tab  \tab X \tab \cr
 optimal: cost-constrained      \tab X \tab  \tab X \tab X \tab X \tab  \tab X \tab \cr
 optimal: precision-constrained \tab X \tab  \tab X \tab X \tab  \tab X \tab X \tab
 }
