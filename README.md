@@ -75,14 +75,14 @@ realistic sample frames including:
 
 ``` r
 summary(ipeds)
-#>      UNITID          INSTNM             STABBR               FIPS      
-#>  Min.   :100654   Length:5914        Length:5914        Min.   : 1.00  
-#>  1st Qu.:169277   Class :character   Class :character   1st Qu.:13.00  
-#>  Median :219493   Mode  :character   Mode  :character   Median :29.00  
-#>  Mean   :284664                                         Mean   :29.19  
-#>  3rd Qu.:446954                                         3rd Qu.:42.00  
-#>  Max.   :499723                                         Max.   :78.00  
-#>                                                                        
+#>      UNITID             INSTNM           STABBR          FIPS      
+#>  Min.   :100654   Length   :5914   Length   :5914   Min.   : 1.00  
+#>  1st Qu.:169277   N.unique :5819   N.unique :  59   1st Qu.:13.00  
+#>  Median :219493   N.blank  :   0   N.blank  :   0   Median :29.00  
+#>  Mean   :284664   Min.nchar:   3   Min.nchar:   2   Mean   :29.19  
+#>  3rd Qu.:446954   Max.nchar:  91   Max.nchar:   2   3rd Qu.:42.00  
+#>  Max.   :499723                                     Max.   :78.00  
+#>                                                                    
 #>                                                         OBEREG    
 #>  Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV):1467  
 #>  Mid East (DE, DC, MD, NJ, NY, PA)                         : 971  
@@ -141,14 +141,14 @@ summary(ipeds)
 #> 
 
 summary(county_2023)
-#>     GEOID               Name              State                 Region    
-#>  Length:3144        Length:3144        Length:3144        Northeast: 218  
-#>  Class :character   Class :character   Class :character   Midwest  :1055  
-#>  Mode  :character   Mode  :character   Mode  :character   South    :1422  
-#>                                                           West     : 449  
-#>                                                                           
-#>                                                                           
-#>                                                                           
+#>        GEOID             Name            State            Region    
+#>  Length   :3144   Length   :3144   Length   :3144   Northeast: 218  
+#>  N.unique :3144   N.unique :3144   N.unique :  51   Midwest  :1055  
+#>  N.blank  :   0   N.blank  :   0   N.blank  :   0   South    :1422  
+#>  Min.nchar:   5   Min.nchar:  16   Min.nchar:   2   West     : 449  
+#>  Max.nchar:   5   Max.nchar:  59   Max.nchar:   2                   
+#>                                                                     
+#>                                                                     
 #>                Division      Pop_Tot        Pop_Pct_White_NH  Pop_Pct_Black_NH 
 #>  West North Central:618   Min.   :     43   Min.   :  2.153   Min.   : 0.0000  
 #>  South Atlantic    :588   1st Qu.:  10794   1st Qu.: 62.608   1st Qu.: 0.6574  
@@ -199,14 +199,14 @@ summary(county_2023)
 #> 
 
 summary(puma_2023)
-#>     GEOID               Name              State                 Region   
-#>  Length:2462        Length:2462        Length:2462        Northeast:423  
-#>  Class :character   Class :character   Class :character   Midwest  :506  
-#>  Mode  :character   Mode  :character   Mode  :character   South    :952  
-#>                                                           West     :581  
-#>                                                                          
-#>                                                                          
-#>                                                                          
+#>        GEOID             Name            State            Region   
+#>  Length   :2462   Length   :2462   Length   :2462   Northeast:423  
+#>  N.unique :2462   N.unique :2462   N.unique :  51   Midwest  :506  
+#>  N.blank  :   0   N.blank  :   0   N.blank  :   0   South    :952  
+#>  Min.nchar:   7   Min.nchar:  19   Min.nchar:   2   West     :581  
+#>  Max.nchar:   7   Max.nchar: 106   Max.nchar:   2                  
+#>                                                                    
+#>                                                                    
 #>                Division      Pop_Tot       Pop_Pct_White_NH  Pop_Pct_Black_NH  
 #>  South Atlantic    :496   Min.   : 94457   Min.   : 0.6772   Min.   : 0.06043  
 #>  Pacific           :392   1st Qu.:114269   1st Qu.:41.1324   1st Qu.: 2.25999  
@@ -305,7 +305,7 @@ ipeds_alloc <- ipeds_summary |>
 #>   N.h = 7, 299, 971, 851, 468, 1467, 633, 216, 870, 132
 #> 
 #> Output:
-#> 2, 25, 82, 73, 39, 124, 53, 18, 73, 11
+#>  rounded = 2, 25, 82, 72, 40, 124, 53, 18, 73, 11
 
 ipeds_alloc
 #> # A tidytable: 10 × 3
@@ -314,8 +314,8 @@ ipeds_alloc
 #>  1 U.S. Service schools                                           7           2
 #>  2 New England (CT, ME, MA, NH, RI, VT)                         299          25
 #>  3 Mid East (DE, DC, MD, NJ, NY, PA)                            971          82
-#>  4 Great Lakes (IL, IN, MI, OH, WI)                             851          73
-#>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                          468          39
+#>  4 Great Lakes (IL, IN, MI, OH, WI)                             851          72
+#>  5 Plains (IA, KS, MN, MO, NE, ND, SD)                          468          40
 #>  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)  1467         124
 #>  7 Southwest (AZ, NM, OK, TX)                                   633          53
 #>  8 Rocky Mountains (CO, ID, MT, UT, WY)                         216          18
@@ -352,7 +352,7 @@ ipeds_srs <- ipeds |>
 #> --Sample size: 2
 #> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) 
 #> --Frame size: 468
-#> --Sample size: 39
+#> --Sample size: 40
 #> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) 
 #> --Frame size: 216
 #> --Sample size: 18
@@ -364,7 +364,7 @@ ipeds_srs <- ipeds |>
 #> --Sample size: 82
 #> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
 #> --Frame size: 851
-#> --Sample size: 73
+#> --Sample size: 72
 #> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
 #> --Frame size: 132
 #> --Sample size: 11
@@ -403,68 +403,68 @@ ipeds_pps <- ipeds |>
 #> --Frame size: 1467
 #> --Sample size: 124
 #> --Sampling interval (k): 37489.19
-#> --Random start (r): 17174.08
+#> --Random start (r): 32553.02
 #> Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA) 
 #> --Frame size: 870
 #> --Sample size: 73
 #> --Sampling interval (k): 46640.48
-#> --Random start (r): 23535.96
+#> --Random start (r): 21366.36
 #> Stratum: OBEREG = Southwest (AZ, NM, OK, TX) 
 #> --Frame size: 633
 #> --Sample size: 53
 #> --Sampling interval (k): 49474.49
-#> --Random start (r): 33072.34
+#> --Random start (r): 24966.08
 #> Stratum: OBEREG = U.S. Service schools 
 #> --Frame size: 7
 #> --Sample size: 2
 #> --Sampling interval (k): 9372
-#> --Random start (r): 2483.683
+#> --Random start (r): 6264.925
 #> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) 
 #> --Frame size: 468
-#> --Sample size: 39
-#> --Sampling interval (k): 35210.1
-#> --Random start (r): 301.2639
+#> --Sample size: 40
+#> --Sampling interval (k): 34329.85
+#> --Random start (r): 9097.788
 #> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) 
 #> --Frame size: 216
 #> --Sample size: 18
 #> --Sampling interval (k): 57314.5
-#> --Random start (r): 10947.04
+#> --Random start (r): 490.3931
 #> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) 
 #> --Frame size: 299
 #> --Sample size: 25
 #> --Sampling interval (k): 44218.08
-#> --Random start (r): 6258.501
+#> --Random start (r): 8445.63
 #> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
 #> --Frame size: 971
 #> --Sample size: 82
 #> --Sampling interval (k): 33082.89
-#> --Random start (r): 11354.24
+#> --Random start (r): 4682.458
 #> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
 #> --Frame size: 851
-#> --Sample size: 73
-#> --Sampling interval (k): 35699.49
-#> --Random start (r): 3529.973
+#> --Sample size: 72
+#> --Sampling interval (k): 36195.32
+#> --Random start (r): 12422.44
 #> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
 #> --Frame size: 132
 #> --Sample size: 11
 #> --Sampling interval (k): 16320.64
-#> --Random start (r): 11469.85
+#> --Random start (r): 1613.788
 
 ipeds_pps
-#> # A tidytable: 474 × 19
+#> # A tidytable: 473 × 19
 #>    OBEREG      UNITID INSTNM STABBR  FIPS ICLEVEL SECTOR LOCALE DEGGRANT HLOFFER
 #>    <fct>        <dbl> <chr>  <chr>  <dbl> <fct>   <fct>  <fct>  <fct>    <fct>  
-#>  1 Southeast … 100663 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…
+#>  1 Southeast … 100706 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…
 #>  2 Southeast … 100751 The U… AL         1 Four o… Publi… City:… Degree-… Doctor…
 #>  3 Southeast … 100858 Aubur… AL         1 Four o… Publi… City:… Degree-… Doctor…
-#>  4 Southeast … 101480 Jacks… AL         1 Four o… Publi… Subur… Degree-… Doctor…
-#>  5 Southeast … 102368 Troy … AL         1 Four o… Publi… Town:… Degree-… Doctor…
+#>  4 Southeast … 101879 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…
+#>  5 Southeast … 106245 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…
 #>  6 Southeast … 106397 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…
-#>  7 Southeast … 106467 Arkan… AR         5 Four o… Publi… Town:… Degree-… Doctor…
-#>  8 Southeast … 132693 Easte… FL        12 Four o… Publi… City:… Degree-… Bachel…
-#>  9 Southeast … 132851 Colle… FL        12 Four o… Publi… City:… Degree-… Bachel…
-#> 10 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…
-#> # ℹ 464 more rows
+#>  7 Southeast … 106704 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…
+#>  8 Southeast … 132709 Browa… FL        12 Four o… Publi… City:… Degree-… Bachel…
+#>  9 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…
+#> 10 Southeast … 133508 Flori… FL        12 Four o… Publi… Subur… Degree-… Bachel…
+#> # ℹ 463 more rows
 #> # ℹ 9 more variables: ENRTOT <dbl>, EFUG <dbl>, EFUG1ST <dbl>, EFUGFT <dbl>,
 #> #   EFGRAD <dbl>, EFGRADFT <dbl>, SamplingWeight <dbl>, NumberHits <int>,
 #> #   ExpectedHits <dbl>
@@ -476,6 +476,10 @@ sum(ipeds_pps$NumberHits)
 
 We’d love your help to make SampleSelectR better! Here’s the workflow we
 use:
+
+- One-time setup: after cloning, run
+  `git config core.hooksPath .githooks` to enable the repo’s git hooks
+  (e.g., the check that keeps README.md in sync with README.Rmd).
 
 - Start from the dev branch
 

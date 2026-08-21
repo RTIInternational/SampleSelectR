@@ -152,6 +152,10 @@ sum(ipeds_pps$NumberHits)
 
 We’d love your help to make SampleSelectR better! Here’s the workflow we use:
 
+- One-time setup: after cloning, run `git config core.hooksPath .githooks`
+  to enable the repo's git hooks (e.g., the check that keeps README.md in
+  sync with README.Rmd).
+
 - Start from the dev branch
 
 - Always update your local copy first (git pull origin dev).
