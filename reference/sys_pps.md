@@ -57,21 +57,21 @@ sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = FALSE)
 #> Frame size: 3144
 #> Sample size: 75
 #> Sampling interval (k): 4431834
-#> Random start (r): 3657350
-#> # A tidytable: 73 × 28
+#> Random start (r): 2745497
+#> # A tidytable: 74 × 28
 #>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr> <chr>   <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>
-#>  1 01097 Mobile… AL    South  East So…  413162             55.3            35.9 
-#>  2 04013 Marico… AZ    West   Mountain 4491987             53.4             5.49
-#>  3 04021 Pinal … AZ    West   Mountain  449219             55.9             4.86
-#>  4 06001 Alamed… CA    West   Pacific  1651949             28.2             9.63
-#>  5 06029 Kern C… CA    West   Pacific   910433             30.7             4.83
-#>  6 06037 Los An… CA    West   Pacific  9848406             25.2             7.54
-#>  7 06059 Orange… CA    West   Pacific  3164063             37.7             1.52
-#>  8 06065 Rivers… CA    West   Pacific  2449909             32.0             6.12
-#>  9 06073 San Di… CA    West   Pacific  3282782             43.2             4.44
-#> 10 06077 San Jo… CA    West   Pacific   787416             27.9             6.68
-#> # ℹ 63 more rows
+#>  1 01083 Limest… AL    South  East So…  107577             73.5           12.6  
+#>  2 04013 Marico… AZ    West   Mountain 4491987             53.4            5.49 
+#>  3 04019 Pima C… AZ    West   Mountain 1049947             51.2            3.29 
+#>  4 05145 White … AR    South  West So…   77395             85.4            4.29 
+#>  5 06021 Glenn … CA    West   Pacific    28623             48.6            0.552
+#>  6 06037 Los An… CA    West   Pacific  9848406             25.2            7.54 
+#>  7 06059 Orange… CA    West   Pacific  3164063             37.7            1.52 
+#>  8 06065 Rivers… CA    West   Pacific  2449909             32.0            6.12 
+#>  9 06071 San Be… CA    West   Pacific  2187816             25.6            7.62 
+#> 10 06075 San Fr… CA    West   Pacific   836321             37.5            4.81 
+#> # ℹ 64 more rows
 #> # ℹ 20 more variables: Pop_Pct_AIAN_NH <dbl>, Pop_Pct_Asian_NH <dbl>,
 #> #   Pop_Pct_NHPI_NH <dbl>, Pop_Pct_Other_NH <dbl>, Pop_Pct_Hispanic <dbl>,
 #> #   HU_Tot <dbl>, HU_Pct_Occupied <dbl>, HU_Pct_Vacant <dbl>,
@@ -84,7 +84,7 @@ sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = TRUE)
 #> Frame size: 3144
 #> Sample size: 75
 #> Sampling interval (k): 4431834
-#> Random start (r): 3563587
+#> Random start (r): 4025448
 #> # A tidytable: 3,144 × 29
 #>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr> <chr>   <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>

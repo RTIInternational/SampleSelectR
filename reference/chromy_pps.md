@@ -78,11 +78,11 @@ county_2023 |>
 #>  3 48201 Harris County, Texas     4758579        1.07           1          0.931
 #>  4 04013 Maricopa County, Arizona 4491987        1.01           1          0.987
 #>  5 06073 San Diego County, Calif… 3282782        0.741          1          1.35 
-#>  6 06059 Orange County, Californ… 3164063        0.714          1          1.40 
-#>  7 36047 Kings County, New York   2646306        0.597          1          1.67 
-#>  8 48113 Dallas County, Texas     2603816        0.588          1          1.70 
-#>  9 06065 Riverside County, Calif… 2449909        0.553          1          1.81 
-#> 10 36081 Queens County, New York  2330124        0.526          1          1.90 
+#>  6 12086 Miami-Dade County, Flor… 2685296        0.606          1          1.65 
+#>  7 48113 Dallas County, Texas     2603816        0.588          1          1.70 
+#>  8 06065 Riverside County, Calif… 2449909        0.553          1          1.81 
+#>  9 36081 Queens County, New York  2330124        0.526          1          1.90 
+#> 10 32003 Clark County, Nevada     2293764        0.518          1          1.93 
 #> # ℹ 63 more rows
 
 county_2023 |>
@@ -94,15 +94,15 @@ county_2023 |>
 #> # A tidytable: 3,144 × 7
 #>    GEOID Name  Pop_Tot ExpectedHits NumberHits SelectionIndicator SamplingWeight
 #>    <chr> <chr>   <dbl>        <dbl>      <dbl> <lgl>                       <dbl>
-#>  1 06037 Los … 9848406        2.22           3 TRUE                        0.450
+#>  1 06037 Los … 9848406        2.22           2 TRUE                        0.450
 #>  2 17031 Cook… 5185812        1.17           1 TRUE                        0.855
 #>  3 48201 Harr… 4758579        1.07           1 TRUE                        0.931
 #>  4 04013 Mari… 4491987        1.01           1 TRUE                        0.987
-#>  5 06073 San … 3282782        0.741          1 TRUE                        1.35 
+#>  5 06073 San … 3282782        0.741          0 FALSE                      NA    
 #>  6 06059 Oran… 3164063        0.714          1 TRUE                        1.40 
 #>  7 12086 Miam… 2685296        0.606          1 TRUE                        1.65 
-#>  8 36047 King… 2646306        0.597          1 TRUE                        1.67 
-#>  9 48113 Dall… 2603816        0.588          0 FALSE                      NA    
+#>  8 36047 King… 2646306        0.597          0 FALSE                      NA    
+#>  9 48113 Dall… 2603816        0.588          1 TRUE                        1.70 
 #> 10 06065 Rive… 2449909        0.553          0 FALSE                      NA    
 #> # ℹ 3,134 more rows
 ```

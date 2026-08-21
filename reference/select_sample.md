@@ -137,7 +137,7 @@ sample_sys_eq <- ipeds |>
 #> Frame size: 5914
 #> Sample size: 250
 #> Sampling interval (k): 23.656
-#> Random start (r): 4.863354
+#> Random start (r): 4.707398
 
 # For samples taken with outall = TRUE, the sample size can be verified by summing
 # the SelectionIndicator column.
@@ -177,7 +177,7 @@ sample_sys_pps <- ipeds |>
 #> Frame size: 5914
 #> Sample size: 250
 #> Sampling interval (k): 78812
-#> Random start (r): 55339.74
+#> Random start (r): 2887.813
 
 # For pps samples, it is possible for a single sampling unit to be selected multiple times
 # due to a large mos value. This is especially true as desired sample size increases. The
@@ -188,16 +188,16 @@ sample_sys_pps
 #> # A tidytable: 246 × 19
 #>    UNITID INSTNM      STABBR  FIPS OBEREG ICLEVEL SECTOR LOCALE DEGGRANT HLOFFER
 #>     <dbl> <chr>       <chr>  <dbl> <fct>  <fct>   <fct>  <fct>  <fct>    <fct>  
-#>  1 214731 Pennsylvan… PA        42 Mid E… Four o… Publi… Subur… Degree-… Bachel…
-#>  2 177940 Lincoln Un… MO        29 Plain… Four o… Publi… City:… Degree-… Post-m…
-#>  3 196255 SUNY Downs… NY        36 Mid E… Four o… Publi… City:… Degree-… Doctor…
-#>  4 196103 SUNY Colle… NY        36 Mid E… Four o… Publi… City:… Degree-… Doctor…
-#>  5 236887 Walla Wall… WA        53 Far W… Four o… Publi… City:… Degree-… Bachel…
-#>  6 214591 Pennsylvan… PA        42 Mid E… Four o… Publi… Subur… Degree-… Master…
-#>  7 138558 Abraham Ba… GA        13 South… Four o… Publi… Town:… Degree-… Bachel…
-#>  8 165866 Framingham… MA        25 New E… Four o… Publi… City:… Degree-… Post-m…
-#>  9 151342 Indiana Un… IN        18 Great… Four o… Publi… City:… Degree-… Post-m…
-#> 10 139463 Dalton Sta… GA        13 South… Four o… Publi… City:… Degree-… Bachel…
+#>  1 241766 Puerto Ric… PR        72 Other… Four o… Publi… City:… Degree-… Master…
+#>  2 180692 The Univer… MT        30 Rocky… Four o… Publi… Town:… Degree-… Postba…
+#>  3 201432 Bowling Gr… OH        39 Great… Four o… Publi… Rural… Degree-… Bachel…
+#>  4 204006 Miami Univ… OH        39 Great… Four o… Publi… Subur… Degree-… Master…
+#>  5 243115 University… PR        72 Other… Four o… Publi… City:… Degree-… Master…
+#>  6 161873 University… MD        24 Mid E… Four o… Publi… City:… Degree-… Doctor…
+#>  7 237039 Whatcom Co… WA        53 Far W… Four o… Publi… City:… Degree-… Bachel…
+#>  8 190646 CUNY Medga… NY        36 Mid E… Four o… Publi… City:… Degree-… Bachel…
+#>  9 223506 Brazosport… TX        48 South… Four o… Publi… Subur… Degree-… Bachel…
+#> 10 168263 Westfield … MA        25 New E… Four o… Publi… Subur… Degree-… Post-m…
 #> # ℹ 236 more rows
 #> # ℹ 9 more variables: ENRTOT <dbl>, EFUG <dbl>, EFUG1ST <dbl>, EFUGFT <dbl>,
 #> #   EFGRAD <dbl>, EFGRADFT <dbl>, SamplingWeight <dbl>, NumberHits <int>,
@@ -238,16 +238,16 @@ puma_2023 |>
 #> # A tidytable: 500 × 28
 #>    Region GEOID   Name  State Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <fct>  <chr>   <chr> <chr> <fct>      <dbl>            <dbl>            <dbl>
-#>  1 South  1000102 Grea… DE    South A…  122304             36.0            41.5 
-#>  2 South  1000200 Kent… DE    South A…  185043             57.6            26.4 
-#>  3 South  1200904 Brev… FL    South A…  153070             57.2            16.4 
-#>  4 South  1201108 Brow… FL    South A…  133309             36.8            39.2 
-#>  5 South  1201115 Brow… FL    South A…  103526             32.2            25.3 
-#>  6 South  1203101 Duva… FL    South A…  158849             43.9            37.7 
-#>  7 South  1203104 Duva… FL    South A…  120322             45.6            28.3 
-#>  8 South  1205702 Hill… FL    South A…   99898             30.1            13.4 
-#>  9 South  1205707 Hill… FL    South A…  152043             38.3            18.3 
-#> 10 South  1206902 Lake… FL    South A…  136281             73.1             9.06
+#>  1 South  1100102 Dist… DC    South A…  110612            22.5             50.8 
+#>  2 South  1000200 Kent… DE    South A…  185043            57.6             26.4 
+#>  3 South  1200903 Brev… FL    South A…  135228            73.9              5.37
+#>  4 South  1201107 Brow… FL    South A…  106384             7.70            78.3 
+#>  5 South  1201110 Brow… FL    South A…  115820            41.3              8.01
+#>  6 South  1201500 Char… FL    South A…  195083            82.4              5.10
+#>  7 South  1203105 Duva… FL    South A…  145113            65.5              9.45
+#>  8 South  1204798 Hami… FL    South A…  105499            67.1             19.6 
+#>  9 South  1205701 Hill… FL    South A…  153618            25.2             37.1 
+#> 10 South  1205710 Hill… FL    South A…  123729            68.7              5.90
 #> # ℹ 490 more rows
 #> # ℹ 20 more variables: Pop_Pct_AIAN_NH <dbl>, Pop_Pct_Asian_NH <dbl>,
 #> #   Pop_Pct_NHPI_NH <dbl>, Pop_Pct_Other_NH <dbl>, Pop_Pct_Hispanic <dbl>,

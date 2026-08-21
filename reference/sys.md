@@ -70,20 +70,20 @@ puma_2023 |>
 #> Frame size: 2462
 #> Sample size: 50
 #> Sampling interval (k): 49.24
-#> Random start (r): 20.94748
+#> Random start (r): 20.47955
 #> # A tidytable: 50 × 27
 #>    GEOID   Name  State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr>   <chr> <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>
 #>  1 0920100 Nort… CT    North… New Eng…  112848             82.7            2.50 
-#>  2 2300900 Cumb… ME    North… New Eng…  143447             89.6            0.995
-#>  3 3401902 Unio… NJ    North… Middle …  101690             70.2            4.59 
+#>  2 2501103 Plym… MA    North… New Eng…  142686             92.0            0.788
+#>  3 3603312 Suff… NY    North… Middle …  101188             68.5            8.17 
 #>  4 3600704 Cayu… NY    North… Middle …  109699             88.3            2.23 
 #>  5 3401903 Unio… NJ    North… Middle …  117656             41.7           17.0  
-#>  6 4200801 Luze… PA    North… Middle …  128152             87.6            2.87 
-#>  7 3400501 Pass… NJ    North… Middle …  140397             29.5            5.08 
+#>  6 3603307 Suff… NY    North… Middle …  128073             61.7            8.00 
+#>  7 4203221 Phil… PA    North… Middle …  140214             66.7            9.43 
 #>  8 3400601 Huds… NJ    North… Middle …  158078             30.4            7.32 
 #>  9 3604112 NYC-… NY    North… Middle …  199120             20.4            7.43 
-#> 10 1802402 Mari… IN    Midwe… East No…  110681             64.7           20.6  
+#> 10 2601300 Iosc… MI    Midwe… East No…  110422             92.8            0.586
 #> # ℹ 40 more rows
 #> # ℹ 19 more variables: Pop_Pct_AIAN_NH <dbl>, Pop_Pct_Asian_NH <dbl>,
 #> #   Pop_Pct_NHPI_NH <dbl>, Pop_Pct_Other_NH <dbl>, Pop_Pct_Hispanic <dbl>,
@@ -99,7 +99,7 @@ puma_2023 |>
 #> Frame size: 2462
 #> Sample size: 50
 #> Sampling interval (k): 49.24
-#> Random start (r): 11.42111
+#> Random start (r): 30.92058
 #> # A tidytable: 2,462 × 28
 #>    GEOID   Name  State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr>   <chr> <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>

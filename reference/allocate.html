@@ -54,7 +54,8 @@
 <span>  cost <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variance <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  power <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  lbound <span class="op">=</span> <span class="fl">2</span></span>
+<span>  lbound <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  outputs <span class="op">=</span> <span class="st">"rounded"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -102,12 +103,23 @@ required for the power allocation only, and <code>NULL</code> otherwise.</p></dd
 
 
 <dt id="arg-lbound">lbound<a class="anchor" aria-label="anchor" href="#arg-lbound"></a></dt>
-<dd><p>minimum stratum-level (positive integer of length 1). Default value is 2.</p></dd>
+<dd><p>minimum stratum-level sample size (positive integer of length 1). Default value is 2. If N.h &lt; lbound for a stratum, the sample size will be limited to N.h.</p></dd>
+
+
+<dt id="arg-outputs">outputs<a class="anchor" aria-label="anchor" href="#arg-outputs"></a></dt>
+<dd><p>character vector representing whether to output:<br></p><ol><li><p>the raw allocations before accounting for N.h, lbound, and n.samp if needed [<code>"raw"</code>],</p></li>
+<li><p>the continuous version after accounting for the above [<code>"adjusted"</code>], and/or</p></li>
+<li><p>the rounded version of the above [<code>"rounded"</code>]</p></li>
+</ol><p><br>
+Default is to only return the final rounded version [<code>"rounded"</code>]. <br>
+If one version is requested, the result will be a numeric vector. Otherwise, the result will be a named list matching the requested outputs.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Integer vector same length of N.h final allocation</p>
+    <p>If one output type is requested, a numeric vector of allocations.
+If multiple output types are requested, a named list containing the requested
+allocation vectors.</p>
     </div>
     <div class="section level2">
     <h2 id="method">Method<a class="anchor" aria-label="anchor" href="#method"></a></h2>
@@ -127,7 +139,7 @@ $$n_h = n \times \frac{N_h S_h}{\sum\limits_{h=1}^H N_h S_h}$$
 where <br>
 \(S_h\):  standard deviation of stratum <em>h</em> (function input is <code>S.h</code>).</p></li>
 <li><p>Optimal allocation</p><ul><li><p>cost-constrained [<code>N.h, S.h, c.h, cost, allocation = "optimal"</code>]
-$$n_h = (C-c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}$$
+$$n_h = (C - c_0) \times \frac{N_h S_h / \sqrt{c_h}}{\sum\limits_{h=1}^H N_h S_h \sqrt{c_h}}$$
 where <br>
 \(c_h\): cost per unit in stratum <em>h</em> (function input is <code>c.h</code>), and <br>
 \((C - c_0)\): total variable cost (function input is <code>cost</code>)</p></li>
@@ -137,7 +149,7 @@ where <br>
 \(V_0\): fixed variance target for estimated mean (function input is <code>variance</code>)</p></li>
 </ul></li>
 </ol><p>The table below presents the relevant inputs for each type; when irrelevant inputs are entered, an error message will be displayed.</p>
-<table class="table table"><tr><td><strong>allocation</strong></td><td><strong>N.h</strong></td><td><strong>n.samp</strong></td><td><strong>S.h</strong></td><td><strong>c.h</strong></td><td><strong>cost</strong></td><td><strong>variance</strong></td><td><strong>lbound</strong></td><td><strong>power</strong></td></tr><tr><td>proportional</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td>X</td><td></td></tr><tr><td>power</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td>X</td><td>X</td></tr><tr><td>neyman</td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td>X</td><td></td></tr><tr><td>optimal: cost-constrained</td><td>X</td><td></td><td>X</td><td>X</td><td>X</td><td></td><td>X</td><td></td></tr><tr><td>optimal: precision-constrained</td><td>X</td><td></td><td>X</td><td>X</td><td></td><td>X</td><td>X</td><td></td></tr></table></div>
+<table class="table table"><tr><td><strong>allocation</strong></td><td><strong>N.h</strong></td><td><strong>n.samp</strong></td><td><strong>S.h</strong></td><td><strong>c.h</strong></td><td><strong>cost</strong></td><td><strong>variance</strong></td><td><strong>lbound</strong></td><td><strong>power</strong></td></tr><tr><td>proportional</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td>X</td><td></td></tr><tr><td>power</td><td>X</td><td>X</td><td></td><td></td><td></td><td></td><td>X</td><td>X</td></tr><tr><td>neyman</td><td>X</td><td>X</td><td>X</td><td></td><td></td><td></td><td>X</td><td></td></tr><tr><td>optimal: cost-constrained</td><td>X</td><td></td><td>X</td><td>X</td><td>X</td><td></td><td>X</td><td></td></tr><tr><td>optimal: precision-constrained</td><td>X</td><td></td><td>X</td><td>X</td><td></td><td>X</td><td>X</td><td></td></tr></table></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -165,7 +177,7 @@ where <br>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   N.h = 7, 299, 971, 851, 468, 1467, 633, 216, 870, 132</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Output:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2, 25, 82, 72, 39, 124, 54, 18, 73, 11</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  rounded = 2, 25, 82, 72, 40, 124, 53, 18, 73, 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OBEREG                                                      N SD_ENRTOT     n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                                                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -173,9 +185,9 @@ where <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> New England (CT, ME, MA, NH, RI, VT)                      299    <span style="text-decoration: underline;">11</span>800.    25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Mid East (DE, DC, MD, NJ, NY, PA)                         971     <span style="text-decoration: underline;">5</span>956.    82</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Great Lakes (IL, IN, MI, OH, WI)                          851     <span style="text-decoration: underline;">7</span>537.    72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Plains (IA, KS, MN, MO, NE, ND, SD)                       468     <span style="text-decoration: underline;">5</span>830.    39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Plains (IA, KS, MN, MO, NE, ND, SD)                       468     <span style="text-decoration: underline;">5</span>830.    40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA,…  <span style="text-decoration: underline;">1</span>467     <span style="text-decoration: underline;">7</span>293.   124</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Southwest (AZ, NM, OK, TX)                                633    <span style="text-decoration: underline;">11</span>149.    54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Southwest (AZ, NM, OK, TX)                                633    <span style="text-decoration: underline;">11</span>149.    53</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Rocky Mountains (CO, ID, MT, UT, WY)                      216    <span style="text-decoration: underline;">14</span>784.    18</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Far West (AK, CA, HI, NV, OR, WA)                         870     <span style="text-decoration: underline;">7</span>641.    73</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, …   132     <span style="text-decoration: underline;">2</span>981.    11</span>
@@ -190,7 +202,7 @@ where <br>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   power = 0.5</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Output:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 6, 39, 70, 66, 49, 87, 57, 33, 67, 26</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  rounded = 6, 39, 70, 66, 49, 87, 57, 33, 67, 26</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OBEREG                                                      N SD_ENRTOT     n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                                                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -215,7 +227,7 @@ where <br>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   S.h = 1680.11385668608, 11800.2993217881, 5956.31998862919, 7536.59885863143, 5830.00927558341, 7293.44943657165, 11149.0070418081, 14783.8369003426, 7641.36426053871, 2981.44889034106</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Output:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2, 38, 62, 69, 29, 115, 76, 34, 71, 4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  rounded = 2, 38, 62, 69, 29, 115, 76, 34, 71, 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OBEREG                                                      N SD_ENRTOT     n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                                                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -240,15 +252,15 @@ where <br>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   S.h = 1680.11385668608, 11800.2993217881, 5956.31998862919, 7536.59885863143, 5830.00927558341, 7293.44943657165, 11149.0070418081, 14783.8369003426, 7641.36426053871, 2981.44889034106</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Output:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 5, 38, 62, 68, 28, 114, 75, 34, 71, 5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  rounded = 5, 38, 61, 68, 29, 114, 75, 34, 71, 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    OBEREG                                                      N SD_ENRTOT     n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                                                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> U.S. Service schools                                        7     <span style="text-decoration: underline;">1</span>680.     5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> New England (CT, ME, MA, NH, RI, VT)                      299    <span style="text-decoration: underline;">11</span>800.    38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Mid East (DE, DC, MD, NJ, NY, PA)                         971     <span style="text-decoration: underline;">5</span>956.    62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Mid East (DE, DC, MD, NJ, NY, PA)                         971     <span style="text-decoration: underline;">5</span>956.    61</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Great Lakes (IL, IN, MI, OH, WI)                          851     <span style="text-decoration: underline;">7</span>537.    68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Plains (IA, KS, MN, MO, NE, ND, SD)                       468     <span style="text-decoration: underline;">5</span>830.    28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Plains (IA, KS, MN, MO, NE, ND, SD)                       468     <span style="text-decoration: underline;">5</span>830.    29</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA,…  <span style="text-decoration: underline;">1</span>467     <span style="text-decoration: underline;">7</span>293.   114</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Southwest (AZ, NM, OK, TX)                                633    <span style="text-decoration: underline;">11</span>149.    75</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Rocky Mountains (CO, ID, MT, UT, WY)                      216    <span style="text-decoration: underline;">14</span>784.    34</span>
@@ -265,7 +277,7 @@ where <br>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
