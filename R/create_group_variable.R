@@ -11,7 +11,7 @@
 #'
 #' @return A copy of the input data with the addition of the grouping ID variable
 #'
-#' @keywords internal
+#' @noRd
 
 create_group_variable <- function(.data, groupvars, groupid) {
   # Check that groupid is not a column name in .data

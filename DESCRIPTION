@@ -16,11 +16,12 @@ Description: Randomly select samples using simple random sampling (SRS),
     sizes across strata using proportional, power, Neyman, and optimal
     allocation methods, and to select samples within strata. Designed to
     make survey sample design and selection reproducible, efficient, and
-    transparent for survey statisticians and researchers.
+    transparent for survey statisticians and researchers. Sampling
+    methods follow Kalton (1983) <doi:10.4135/9781412984683> and Chromy
+    (1979) <http://www.asasrms.org/Proceedings/papers/1979_081.pdf>.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -34,3 +35,4 @@ BugReports: https://github.com/RTIInternational/SampleSelectR/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

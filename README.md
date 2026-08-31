@@ -338,34 +338,34 @@ ipeds_srs <- ipeds |>
     n = tidytable::select(ipeds_alloc, OBEREG, sample_size),
     strata = "OBEREG"
   )
-#> Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV) 
+#> Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)
 #> --Frame size: 1467
 #> --Sample size: 124
-#> Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA) 
+#> Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA)
 #> --Frame size: 870
 #> --Sample size: 73
-#> Stratum: OBEREG = Southwest (AZ, NM, OK, TX) 
+#> Stratum: OBEREG = Southwest (AZ, NM, OK, TX)
 #> --Frame size: 633
 #> --Sample size: 53
-#> Stratum: OBEREG = U.S. Service schools 
+#> Stratum: OBEREG = U.S. Service schools
 #> --Frame size: 7
 #> --Sample size: 2
-#> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) 
+#> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD)
 #> --Frame size: 468
 #> --Sample size: 40
-#> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) 
+#> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY)
 #> --Frame size: 216
 #> --Sample size: 18
-#> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) 
+#> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT)
 #> --Frame size: 299
 #> --Sample size: 25
-#> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
+#> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA)
 #> --Frame size: 971
 #> --Sample size: 82
-#> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
+#> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI)
 #> --Frame size: 851
 #> --Sample size: 72
-#> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
+#> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI)
 #> --Frame size: 132
 #> --Sample size: 11
 
@@ -399,56 +399,56 @@ ipeds_pps <- ipeds |>
     sort_vars = "SECTOR",
     sort_method = "serpentine"
   )
-#> Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV) 
+#> Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)
 #> --Frame size: 1467
 #> --Sample size: 124
-#> --Sampling interval (k): 37489.19
-#> --Random start (r): 32553.02
-#> Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA) 
+#> --Sampling interval (k): 37489.185483871
+#> --Random start (r): 32553.0152071789
+#> Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA)
 #> --Frame size: 870
 #> --Sample size: 73
-#> --Sampling interval (k): 46640.48
-#> --Random start (r): 21366.36
-#> Stratum: OBEREG = Southwest (AZ, NM, OK, TX) 
+#> --Sampling interval (k): 46640.4794520548
+#> --Random start (r): 21366.3567358216
+#> Stratum: OBEREG = Southwest (AZ, NM, OK, TX)
 #> --Frame size: 633
 #> --Sample size: 53
-#> --Sampling interval (k): 49474.49
-#> --Random start (r): 24966.08
-#> Stratum: OBEREG = U.S. Service schools 
+#> --Sampling interval (k): 49474.4905660377
+#> --Random start (r): 24966.0777293528
+#> Stratum: OBEREG = U.S. Service schools
 #> --Frame size: 7
 #> --Sample size: 2
 #> --Sampling interval (k): 9372
-#> --Random start (r): 6264.925
-#> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) 
+#> --Random start (r): 6264.92460871395
+#> Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD)
 #> --Frame size: 468
 #> --Sample size: 40
 #> --Sampling interval (k): 34329.85
-#> --Random start (r): 9097.788
-#> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) 
+#> --Random start (r): 9097.78782175722
+#> Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY)
 #> --Frame size: 216
 #> --Sample size: 18
 #> --Sampling interval (k): 57314.5
-#> --Random start (r): 490.3931
-#> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) 
+#> --Random start (r): 490.393121512723
+#> Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT)
 #> --Frame size: 299
 #> --Sample size: 25
 #> --Sampling interval (k): 44218.08
-#> --Random start (r): 8445.63
-#> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) 
+#> --Random start (r): 8445.63029531848
+#> Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA)
 #> --Frame size: 971
 #> --Sample size: 82
-#> --Sampling interval (k): 33082.89
-#> --Random start (r): 4682.458
-#> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) 
+#> --Sampling interval (k): 33082.8902439024
+#> --Random start (r): 4682.45798795425
+#> Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI)
 #> --Frame size: 851
 #> --Sample size: 72
-#> --Sampling interval (k): 36195.32
-#> --Random start (r): 12422.44
-#> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) 
+#> --Sampling interval (k): 36195.3194444444
+#> --Random start (r): 12422.441402056
+#> Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI)
 #> --Frame size: 132
 #> --Sample size: 11
-#> --Sampling interval (k): 16320.64
-#> --Random start (r): 1613.788
+#> --Sampling interval (k): 16320.6363636364
+#> --Random start (r): 1613.78791611839
 
 ipeds_pps
 #> # A tidytable: 473 × 19
