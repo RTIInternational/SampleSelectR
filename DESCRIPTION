@@ -26,9 +26,10 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     data.table,
-    stats,
     rlang,
-    tidytable
+    stats,
+    tidytable,
+    utils
 LazyData: true
 URL: https://github.com/RTIInternational/SampleSelectR, https://rtiinternational.github.io/SampleSelectR/
 BugReports: https://github.com/RTIInternational/SampleSelectR/issues
