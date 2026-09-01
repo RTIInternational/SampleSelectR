@@ -1,0 +1,19 @@
+#!/bin/bash
+README=($(git diff --cached --name-only | grep -Ei '^README\.[R]?md$'))
+RMD_STAGED=$(git diff --cached --name-only | grep -Eic '^README\.Rmd$')
+MSG="use 'git commit --no-verify' to override this check"
+
+if [[ ${#README[@]} == 0 ]]; then
+  exit 0
+fi
+
+if [[ README.Rmd -nt README.md ]]; then
+  echo -e "README.md is out of date; please re-knit README.Rmd\n$MSG"
+  exit 1
+elif [[ $RMD_STAGED -gt 0 && ${#README[@]} -lt 2 ]]; then
+  # Staging README.Rmd without README.md means the re-knit is missing.
+  # The reverse is fine: a change to R code can alter knitted output
+  # while README.Rmd itself is untouched.
+  echo -e "README.Rmd is staged without README.md; please stage the re-knit\n$MSG"
+  exit 1
+fi

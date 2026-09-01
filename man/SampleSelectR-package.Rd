@@ -6,7 +6,7 @@
 \alias{SampleSelectR-package}
 \title{SampleSelectR: Randomly Select Samples for Various Probability-Based Methods}
 \description{
-Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.
+Randomly select samples using simple random sampling (SRS), systematic sampling, and various probability proportional to size (PPS) methods, including systematic PPS and sequential PPS (i.e., Chromy's method). Also includes functionality to allocate sample sizes across strata using proportional, power, Neyman, and optimal allocation methods, and to select samples within strata. Designed to make survey sample design and selection reproducible, efficient, and transparent for survey statisticians and researchers. Sampling methods follow Kalton (1983) \doi{10.4135/9781412984683} and Chromy (1979) \url{http://www.asasrms.org/Proceedings/papers/1979_081.pdf}.
 }
 \seealso{
 Useful links:
@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Stephanie Zimmer \email{sazimmer@rti.org}
   \item John David Bunker, Jr.
   \item Thomas Burkett
   \item Philip Lee
@@ -30,7 +31,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item  RTI International [funder]
+  \item  RTI International [copyright holder, funder]
 }
 
 }

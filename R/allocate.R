@@ -65,7 +65,7 @@
 #'    \item the raw allocations before accounting for N.h, lbound, and n.samp if needed \[\code{"raw"}\],
 #'    \item the continuous version after accounting for the above \[\code{"adjusted"}\], and/or
 #'    \item the rounded version of the above \[\code{"rounded"}\]
-#'  } \cr
+#'  }
 #'  Default is to only return the final rounded version \[\code{"rounded"}\]. \cr
 #'  If one version is requested, the result will be a numeric vector. Otherwise, the result will be a named list matching the requested outputs.
 #' @return If one output type is requested, a numeric vector of allocations.

@@ -5,7 +5,7 @@
 #'
 #' @param frame An object to be validated as a sampling frame.
 #' @return Stops execution if validation fails. Invisibly returns TRUE.
-#' @keywords internal
+#' @noRd
 check_frame_type <- function(frame) {
   if (!(inherits(frame, "data.frame")) &&
     !(inherits(frame, "data.table")) &&
@@ -25,7 +25,7 @@ check_frame_type <- function(frame) {
 #' @param curstrat Optional character vector indicating the stratum.
 #' @param n_le_N Logical. Should `n` be forced to be less than or equal to `N`?
 #' @return Stops execution if validation fails or outputs a message if `n == N`. Invisibly returns TRUE.
-#' @keywords internal
+#' @noRd
 check_n <- function(n, frame, curstrat, n_le_N = FALSE) {
   N <- nrow(frame)
 
@@ -65,7 +65,7 @@ check_n <- function(n, frame, curstrat, n_le_N = FALSE) {
 #' Checks that the outall argument is a single logical value.
 #' @param outall A logical value indicating whether to return the full frame or only selected rows.
 #' @return Stops execution if validation fails. Invisibly returns TRUE.
-#' @keywords internal
+#' @noRd
 check_outall <- function(outall) {
   if (length(outall) != 1 || !is.logical(outall)) {
     stop("Argument 'outall' must be a single logical value (TRUE or FALSE).")
@@ -79,7 +79,7 @@ check_outall <- function(outall) {
 #' @param mos A string or symbol representing the column name of the measure of size.
 #' @param frame The sampling frame as a data.frame or similar object.
 #' @return Stops execution if validation fails. Invisibly returns TRUE.
-#' @keywords internal
+#' @noRd
 check_string_mos <- function(mos, frame) {
   if (!is.character(mos)) {
     stop("The `mos` parameter must be a character string.")
@@ -111,30 +111,33 @@ check_string_mos <- function(mos, frame) {
 
 
 #' Output sampling summary to the console
+#'
 #' Displays sample size, frame size, and optionally the sampling interval and random start.
+#'
 #' @param n Sample size.
 #' @param N Frame size.
 #' @param k Optional sampling interval.
 #' @param r Optional random start.
 #' @param curstrat Optional stratum label.
-#' @return Prints output to the console. Invisibly returns NULL
-#' @keywords internal
+#' @return Emits the summary as a message, so it can be silenced with
+#'  `suppressMessages()`. Invisibly returns NULL
+#' @noRd
 Sampling_Output <- function(n, N, k = NULL, r = NULL, curstrat = NULL) {
   if (!is.null(curstrat)) {
     prefix <- "--"
-    cat("Stratum:", curstrat, "\n")
+    message("Stratum: ", curstrat)
   } else {
     prefix <- ""
   }
 
-  cat(prefix, "Frame size: ", N, "\n", sep = "")
-  cat(prefix, "Sample size: ", n, "\n", sep = "")
+  message(prefix, "Frame size: ", N)
+  message(prefix, "Sample size: ", n)
 
   if (!is.null(k)) {
-    cat(prefix, "Sampling interval (k): ", k, "\n", sep = "")
+    message(prefix, "Sampling interval (k): ", k)
   }
   if (!is.null(r)) {
-    cat(prefix, "Random start (r): ", r, "\n", sep = "")
+    message(prefix, "Random start (r): ", r)
   }
 
   invisible(NULL)

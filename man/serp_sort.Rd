@@ -24,3 +24,13 @@ A copy of .data that is hierarchically sorted and, if specified, includes the so
 \description{
 Sorts the rows in a given data frame in a hierarchical fashion given a list of variables (...)
 }
+\examples{
+# Sort counties by Region, then Division, in a serpentine pattern
+county_2023 |>
+  serp_sort("Region", "Division")
+
+# Keep the intermediate sort-group columns (sortSerp1, sortSerp2)
+county_2023 |>
+  serp_sort("Region", "Division", sortID = TRUE)
+
+}

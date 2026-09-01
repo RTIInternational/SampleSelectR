@@ -78,7 +78,7 @@ chromy_pps <- function(frame, n, mos, outall = FALSE, curstrat = NULL) {
 #' @param exphits A vector of non-negative values
 #'
 #' @return Returns a vector the same length of exphits with the number of random hits for each unit
-#' @keywords internal
+#' @noRd
 #' @references Chromy, J. R. (1979). “Sequential Sample Selection Methods.”
 #' In \emph{Proceedings of the Survey Research Methods Section}, 401–406.
 #' Washington, DC: American Statistical Association.

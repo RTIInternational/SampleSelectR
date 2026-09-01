@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "r-lib@posit-dev-skills": true
+  }
+}
