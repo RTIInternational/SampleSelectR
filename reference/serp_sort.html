@@ -76,6 +76,58 @@ k variables to sort by, a set of k-1 sort group variables with names sortSerpj (
     <p>A copy of .data that is hierarchically sorted and, if specified, includes the sort group variables created for sorting</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sort counties by Region, then Division, in a serpentine pattern</span></span></span>
+<span class="r-in"><span><span class="va">county_2023</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">serp_sort</span><span class="op">(</span><span class="st">"Region"</span>, <span class="st">"Division"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 3,144 × 25</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 09110 Capito… CT    North… New Eng…  <span style="text-decoration: underline;">969</span>029             60.9            11.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 09120 Greate… CT    North… New Eng…  <span style="text-decoration: underline;">326</span>296             53.4            11.1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 09130 Lower … CT    North… New Eng…  <span style="text-decoration: underline;">174</span>983             80.0             4.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 09140 Naugat… CT    North… New Eng…  <span style="text-decoration: underline;">452</span>303             61.1            10.3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 09150 Northe… CT    North… New Eng…   <span style="text-decoration: underline;">95</span>829             87.2             1.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 09160 Northw… CT    North… New Eng…  <span style="text-decoration: underline;">112</span>848             82.7             2.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 09170 South … CT    North… New Eng…  <span style="text-decoration: underline;">566</span>803             59.6            13.0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 09180 Southe… CT    North… New Eng…  <span style="text-decoration: underline;">279</span>025             71.3             4.96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 09190 Wester… CT    North… New Eng…  <span style="text-decoration: underline;">621</span>232             59.7             9.80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 23001 Andros… ME    North… New Eng…  <span style="text-decoration: underline;">112</span>323             88.2             4.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3,134 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17 more variables: Pop_Pct_AIAN_NH &lt;dbl&gt;, Pop_Pct_Asian_NH &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_NHPI_NH &lt;dbl&gt;, Pop_Pct_Other_NH &lt;dbl&gt;, Pop_Pct_Hispanic &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   HU_Tot &lt;dbl&gt;, HU_Pct_Occupied &lt;dbl&gt;, HU_Pct_Vacant &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_0004 &lt;dbl&gt;, Pop_Pct_0509 &lt;dbl&gt;, Pop_Pct_1014 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_2544 &lt;dbl&gt;, Pop_Pct_4564 &lt;dbl&gt;, Pop_Pct_6574 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_75plus &lt;dbl&gt;, Pop_Pct_1517 &lt;dbl&gt;, Pop_Pct_1824 &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Keep the intermediate sort-group columns (sortSerp1, sortSerp2)</span></span></span>
+<span class="r-in"><span><span class="va">county_2023</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">serp_sort</span><span class="op">(</span><span class="st">"Region"</span>, <span class="st">"Division"</span>, sortID <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 3,144 × 27</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 09110 Capito… CT    North… New Eng…  <span style="text-decoration: underline;">969</span>029             60.9            11.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 09120 Greate… CT    North… New Eng…  <span style="text-decoration: underline;">326</span>296             53.4            11.1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 09130 Lower … CT    North… New Eng…  <span style="text-decoration: underline;">174</span>983             80.0             4.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 09140 Naugat… CT    North… New Eng…  <span style="text-decoration: underline;">452</span>303             61.1            10.3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 09150 Northe… CT    North… New Eng…   <span style="text-decoration: underline;">95</span>829             87.2             1.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 09160 Northw… CT    North… New Eng…  <span style="text-decoration: underline;">112</span>848             82.7             2.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 09170 South … CT    North… New Eng…  <span style="text-decoration: underline;">566</span>803             59.6            13.0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 09180 Southe… CT    North… New Eng…  <span style="text-decoration: underline;">279</span>025             71.3             4.96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 09190 Wester… CT    North… New Eng…  <span style="text-decoration: underline;">621</span>232             59.7             9.80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 23001 Andros… ME    North… New Eng…  <span style="text-decoration: underline;">112</span>323             88.2             4.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3,134 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: Pop_Pct_AIAN_NH &lt;dbl&gt;, Pop_Pct_Asian_NH &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_NHPI_NH &lt;dbl&gt;, Pop_Pct_Other_NH &lt;dbl&gt;, Pop_Pct_Hispanic &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   HU_Tot &lt;dbl&gt;, HU_Pct_Occupied &lt;dbl&gt;, HU_Pct_Vacant &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_0004 &lt;dbl&gt;, Pop_Pct_0509 &lt;dbl&gt;, Pop_Pct_1014 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_2544 &lt;dbl&gt;, Pop_Pct_4564 &lt;dbl&gt;, Pop_Pct_6574 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Pop_Pct_75plus &lt;dbl&gt;, Pop_Pct_1517 &lt;dbl&gt;, Pop_Pct_1824 &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

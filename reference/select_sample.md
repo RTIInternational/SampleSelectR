@@ -91,16 +91,16 @@ n_df_srs <- data.frame(
 
 county_2023 |>
   select_sample(method = "srs", n = n_df_srs, strata = "Region")
-#> Stratum: Region = South 
+#> Stratum: Region = South
 #> --Frame size: 1422
 #> --Sample size: 25
-#> Stratum: Region = West 
+#> Stratum: Region = West
 #> --Frame size: 449
 #> --Sample size: 25
-#> Stratum: Region = Northeast 
+#> Stratum: Region = Northeast
 #> --Frame size: 218
 #> --Sample size: 25
-#> Stratum: Region = Midwest 
+#> Stratum: Region = Midwest
 #> --Frame size: 1055
 #> --Sample size: 25
 #> # A tidytable: 100 × 27
@@ -137,7 +137,7 @@ sample_sys_eq <- ipeds |>
 #> Frame size: 5914
 #> Sample size: 250
 #> Sampling interval (k): 23.656
-#> Random start (r): 4.707398
+#> Random start (r): 4.70739763361216
 
 # For samples taken with outall = TRUE, the sample size can be verified by summing
 # the SelectionIndicator column.
@@ -177,7 +177,7 @@ sample_sys_pps <- ipeds |>
 #> Frame size: 5914
 #> Sample size: 250
 #> Sampling interval (k): 78812
-#> Random start (r): 2887.813
+#> Random start (r): 2887.81255682651
 
 # For pps samples, it is possible for a single sampling unit to be selected multiple times
 # due to a large mos value. This is especially true as desired sample size increases. The
@@ -223,16 +223,16 @@ puma_2023 |>
     method = "chromy_pps", n = n_df_chr, strata = "Region", mos = "Pop_Tot",
     sort_vars = c("Division", "State"), sort_method = "serpentine"
   )
-#> Stratum: Region = South 
+#> Stratum: Region = South
 #> --Frame size: 952
 #> --Sample size: 125
-#> Stratum: Region = West 
+#> Stratum: Region = West
 #> --Frame size: 581
 #> --Sample size: 125
-#> Stratum: Region = Northeast 
+#> Stratum: Region = Northeast
 #> --Frame size: 423
 #> --Sample size: 125
-#> Stratum: Region = Midwest 
+#> Stratum: Region = Midwest
 #> --Frame size: 506
 #> --Sample size: 125
 #> # A tidytable: 500 × 28

@@ -70,7 +70,7 @@ puma_2023 |>
 #> Frame size: 2462
 #> Sample size: 50
 #> Sampling interval (k): 49.24
-#> Random start (r): 20.47955
+#> Random start (r): 20.4795542562194
 #> # A tidytable: 50 × 27
 #>    GEOID   Name  State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr>   <chr> <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>
@@ -99,7 +99,7 @@ puma_2023 |>
 #> Frame size: 2462
 #> Sample size: 50
 #> Sampling interval (k): 49.24
-#> Random start (r): 30.92058
+#> Random start (r): 30.920575832855
 #> # A tidytable: 2,462 × 28
 #>    GEOID   Name  State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr>   <chr> <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>

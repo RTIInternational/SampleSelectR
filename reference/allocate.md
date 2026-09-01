@@ -93,7 +93,6 @@ allocate(
 
   3.  the rounded version of the above \[`"rounded"`\]
 
-    
   Default is to only return the final rounded version \[`"rounded"`\].  
   If one version is requested, the result will be a numeric vector.
   Otherwise, the result will be a named list matching the requested

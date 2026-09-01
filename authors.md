@@ -12,7 +12,7 @@
 
 - **Haby Sow**. Author.
 
-- **RTI International**. Funder.
+- **RTI International**. Copyright holder, funder.
 
 ## Citation
 

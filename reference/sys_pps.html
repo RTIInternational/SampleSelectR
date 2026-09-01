@@ -83,10 +83,10 @@
 <span class="r-in"><span><span class="co"># PPS sample of 75 counties using Pop_Tot as the measure of size</span></span></span>
 <span class="r-in"><span><span class="co"># Return only the sampled counties</span></span></span>
 <span class="r-in"><span><span class="fu">sys_pps</span><span class="op">(</span><span class="va">county_2023</span>, mos <span class="op">=</span> <span class="st">"Pop_Tot"</span>, n <span class="op">=</span> <span class="fl">75</span>, outall <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Frame size: 3144</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size: 75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sampling interval (k): 4431834</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Random start (r): 2745497</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Frame size: 3144</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sample size: 75</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling interval (k): 4431833.86666667</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Random start (r): 2745496.93897802</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 74 × 28</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -110,10 +110,10 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Return the full dataset with selection indicators</span></span></span>
 <span class="r-in"><span><span class="fu">sys_pps</span><span class="op">(</span><span class="va">county_2023</span>, mos <span class="op">=</span> <span class="st">"Pop_Tot"</span>, n <span class="op">=</span> <span class="fl">75</span>, outall <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Frame size: 3144</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size: 75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sampling interval (k): 4431834</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Random start (r): 4025448</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Frame size: 3144</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sample size: 75</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling interval (k): 4431833.86666667</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Random start (r): 4025447.65622473</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 3,144 × 29</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

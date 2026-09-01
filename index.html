@@ -12,8 +12,8 @@
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Randomly Select Samples for Various Probability-Based Methods">
-<meta name="description" content="Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.">
-<meta property="og:description" content="Randomly select samples with SRS, systematic, and various PPS methods. Also includes functionality to select within strata and allocate sample sizes.">
+<meta name="description" content="Randomly select samples using simple random sampling (SRS), systematic sampling, and various probability proportional to size (PPS) methods, including systematic PPS and sequential PPS (i.e., Chromy's method). Also includes functionality to allocate sample sizes across strata using proportional, power, Neyman, and optimal allocation methods, and to select samples within strata. Designed to make survey sample design and selection reproducible, efficient, and transparent for survey statisticians and researchers. Sampling methods follow Kalton (1983) &lt;doi:10.4135/9781412984683&gt; and Chromy (1979) &lt;http://www.asasrms.org/Proceedings/papers/1979_081.pdf&gt;.">
+<meta property="og:description" content="Randomly select samples using simple random sampling (SRS), systematic sampling, and various probability proportional to size (PPS) methods, including systematic PPS and sequential PPS (i.e., Chromy's method). Also includes functionality to allocate sample sizes across strata using proportional, power, Neyman, and optimal allocation methods, and to select samples within strata. Designed to make survey sample design and selection reproducible, efficient, and transparent for survey statisticians and researchers. Sampling methods follow Kalton (1983) &lt;doi:10.4135/9781412984683&gt; and Chromy (1979) &lt;http://www.asasrms.org/Proceedings/papers/1979_081.pdf&gt;.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -78,15 +78,18 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of SampleSelectR from <a href="https://github.com/RTIInternational/SampleSelectR" class="external-link">GitHub</a> with either the <code>pak</code> or <code>devtools</code> package:</p>
+<p>You can install SampleSelectR from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"SampleSelectR"</span><span class="op">)</span></span></code></pre></div>
+<p>You can install the development version of SampleSelectR from <a href="https://github.com/RTIInternational/SampleSelectR" class="external-link">GitHub</a> with either the <code>pak</code> or <code>devtools</code> package:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"RTIInternational/SampleSelectR"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"RTIInternational/SampleSelectR"</span><span class="op">)</span></span></code></pre></div>
 <p>Then, you can load the package.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RTIInternational/SampleSelectR" class="external-link">SampleSelectR</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -104,16 +107,16 @@
 <code>puma_2023</code> which contains a list of the Public Use Microdata Areas (PUMAs) in the United States based on data from the 2019-2023 American Community Survey with a select set of characteristics<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;U.S. Census Bureau, “American Community Survey 5-Year Estimates” 2023, &lt;a href="https://api.census.gov/data/2023/acs/acs5" class="external-link uri"&gt;https://api.census.gov/data/2023/acs/acs5&lt;/a&gt;, accessed on May 30, 2025. Tables B03002, B25002, and S0101. Note - the tidycensus package was used to download the data from the Census API. Region and division are coded based on &lt;a href="https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf" class="external-link uri"&gt;https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a>
 </li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ipeds</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      UNITID          INSTNM             STABBR               FIPS      </span></span>
-<span><span class="co">#&gt;  Min.   :100654   Length:5914        Length:5914        Min.   : 1.00  </span></span>
-<span><span class="co">#&gt;  1st Qu.:169277   Class :character   Class :character   1st Qu.:13.00  </span></span>
-<span><span class="co">#&gt;  Median :219493   Mode  :character   Mode  :character   Median :29.00  </span></span>
-<span><span class="co">#&gt;  Mean   :284664                                         Mean   :29.19  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:446954                                         3rd Qu.:42.00  </span></span>
-<span><span class="co">#&gt;  Max.   :499723                                         Max.   :78.00  </span></span>
-<span><span class="co">#&gt;                                                                        </span></span>
+<span><span class="co">#&gt;      UNITID             INSTNM           STABBR          FIPS      </span></span>
+<span><span class="co">#&gt;  Min.   :100654   Length   :5914   Length   :5914   Min.   : 1.00  </span></span>
+<span><span class="co">#&gt;  1st Qu.:169277   N.unique :5819   N.unique :  59   1st Qu.:13.00  </span></span>
+<span><span class="co">#&gt;  Median :219493   N.blank  :   0   N.blank  :   0   Median :29.00  </span></span>
+<span><span class="co">#&gt;  Mean   :284664   Min.nchar:   3   Min.nchar:   2   Mean   :29.19  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:446954   Max.nchar:  91   Max.nchar:   2   3rd Qu.:42.00  </span></span>
+<span><span class="co">#&gt;  Max.   :499723                                     Max.   :78.00  </span></span>
+<span><span class="co">#&gt;                                                                    </span></span>
 <span><span class="co">#&gt;                                                         OBEREG    </span></span>
 <span><span class="co">#&gt;  Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV):1467  </span></span>
 <span><span class="co">#&gt;  Mid East (DE, DC, MD, NJ, NY, PA)                         : 971  </span></span>
@@ -172,14 +175,14 @@
 <span><span class="co">#&gt; </span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">county_2023</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     GEOID               Name              State                 Region    </span></span>
-<span><span class="co">#&gt;  Length:3144        Length:3144        Length:3144        Northeast: 218  </span></span>
-<span><span class="co">#&gt;  Class :character   Class :character   Class :character   Midwest  :1055  </span></span>
-<span><span class="co">#&gt;  Mode  :character   Mode  :character   Mode  :character   South    :1422  </span></span>
-<span><span class="co">#&gt;                                                           West     : 449  </span></span>
-<span><span class="co">#&gt;                                                                           </span></span>
-<span><span class="co">#&gt;                                                                           </span></span>
-<span><span class="co">#&gt;                                                                           </span></span>
+<span><span class="co">#&gt;        GEOID             Name            State            Region    </span></span>
+<span><span class="co">#&gt;  Length   :3144   Length   :3144   Length   :3144   Northeast: 218  </span></span>
+<span><span class="co">#&gt;  N.unique :3144   N.unique :3144   N.unique :  51   Midwest  :1055  </span></span>
+<span><span class="co">#&gt;  N.blank  :   0   N.blank  :   0   N.blank  :   0   South    :1422  </span></span>
+<span><span class="co">#&gt;  Min.nchar:   5   Min.nchar:  16   Min.nchar:   2   West     : 449  </span></span>
+<span><span class="co">#&gt;  Max.nchar:   5   Max.nchar:  59   Max.nchar:   2                   </span></span>
+<span><span class="co">#&gt;                                                                     </span></span>
+<span><span class="co">#&gt;                                                                     </span></span>
 <span><span class="co">#&gt;                Division      Pop_Tot        Pop_Pct_White_NH  Pop_Pct_Black_NH </span></span>
 <span><span class="co">#&gt;  West North Central:618   Min.   :     43   Min.   :  2.153   Min.   : 0.0000  </span></span>
 <span><span class="co">#&gt;  South Atlantic    :588   1st Qu.:  10794   1st Qu.: 62.608   1st Qu.: 0.6574  </span></span>
@@ -230,14 +233,14 @@
 <span><span class="co">#&gt; </span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">puma_2023</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     GEOID               Name              State                 Region   </span></span>
-<span><span class="co">#&gt;  Length:2462        Length:2462        Length:2462        Northeast:423  </span></span>
-<span><span class="co">#&gt;  Class :character   Class :character   Class :character   Midwest  :506  </span></span>
-<span><span class="co">#&gt;  Mode  :character   Mode  :character   Mode  :character   South    :952  </span></span>
-<span><span class="co">#&gt;                                                           West     :581  </span></span>
-<span><span class="co">#&gt;                                                                          </span></span>
-<span><span class="co">#&gt;                                                                          </span></span>
-<span><span class="co">#&gt;                                                                          </span></span>
+<span><span class="co">#&gt;        GEOID             Name            State            Region   </span></span>
+<span><span class="co">#&gt;  Length   :2462   Length   :2462   Length   :2462   Northeast:423  </span></span>
+<span><span class="co">#&gt;  N.unique :2462   N.unique :2462   N.unique :  51   Midwest  :506  </span></span>
+<span><span class="co">#&gt;  N.blank  :   0   N.blank  :   0   N.blank  :   0   South    :952  </span></span>
+<span><span class="co">#&gt;  Min.nchar:   7   Min.nchar:  19   Min.nchar:   2   West     :581  </span></span>
+<span><span class="co">#&gt;  Max.nchar:   7   Max.nchar: 106   Max.nchar:   2                  </span></span>
+<span><span class="co">#&gt;                                                                    </span></span>
+<span><span class="co">#&gt;                                                                    </span></span>
 <span><span class="co">#&gt;                Division      Pop_Tot       Pop_Pct_White_NH  Pop_Pct_Black_NH  </span></span>
 <span><span class="co">#&gt;  South Atlantic    :496   Min.   : 94457   Min.   : 0.6772   Min.   : 0.06043  </span></span>
 <span><span class="co">#&gt;  Pacific           :392   1st Qu.:114269   1st Qu.:41.1324   1st Qu.: 2.25999  </span></span>
@@ -295,7 +298,7 @@
 <h3 id="allocation">Allocation<a class="anchor" aria-label="anchor" href="#allocation"></a>
 </h3>
 <p>First, you must have a summary of your frame. In this case, we will be specifying a sample size of 500 to be proportionally allocated across region.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">8675309</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ipeds_summary</span> <span class="op">&lt;-</span> <span class="va">ipeds</span> <span class="op">|&gt;</span></span>
@@ -328,7 +331,7 @@
 <span><span class="co">#&gt;   N.h = 7, 299, 971, 851, 468, 1467, 633, 216, 870, 132</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Output:</span></span>
-<span><span class="co">#&gt; 2, 25, 82, 73, 39, 124, 53, 18, 73, 11</span></span>
+<span><span class="co">#&gt;  rounded = 2, 25, 82, 72, 40, 124, 53, 18, 73, 11</span></span>
 <span></span>
 <span><span class="va">ipeds_alloc</span></span>
 <span><span class="co">#&gt; # A tidytable: 10 × 3</span></span>
@@ -337,8 +340,8 @@
 <span><span class="co">#&gt;  1 U.S. Service schools                                           7           2</span></span>
 <span><span class="co">#&gt;  2 New England (CT, ME, MA, NH, RI, VT)                         299          25</span></span>
 <span><span class="co">#&gt;  3 Mid East (DE, DC, MD, NJ, NY, PA)                            971          82</span></span>
-<span><span class="co">#&gt;  4 Great Lakes (IL, IN, MI, OH, WI)                             851          73</span></span>
-<span><span class="co">#&gt;  5 Plains (IA, KS, MN, MO, NE, ND, SD)                          468          39</span></span>
+<span><span class="co">#&gt;  4 Great Lakes (IL, IN, MI, OH, WI)                             851          72</span></span>
+<span><span class="co">#&gt;  5 Plains (IA, KS, MN, MO, NE, ND, SD)                          468          40</span></span>
 <span><span class="co">#&gt;  6 Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)  1467         124</span></span>
 <span><span class="co">#&gt;  7 Southwest (AZ, NM, OK, TX)                                   633          53</span></span>
 <span><span class="co">#&gt;  8 Rocky Mountains (CO, ID, MT, UT, WY)                         216          18</span></span>
@@ -349,41 +352,41 @@
 <h3 id="sampling">Sampling<a class="anchor" aria-label="anchor" href="#sampling"></a>
 </h3>
 <p>Then, we are able to select a stratified sample and demonstrate this using a SRS and systematic PPS. With the systematic and sequential sampling methods, you can specify sort variables and the sort method. Often, you want to be able to re-run sampling code and get the same sample. To do this, we also set a seed.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ipeds_srs</span> <span class="op">&lt;-</span> <span class="va">ipeds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/select_sample.html">select_sample</a></span><span class="op">(</span></span>
 <span>    method <span class="op">=</span> <span class="st">"srs"</span>,</span>
 <span>    n <span class="op">=</span> <span class="fu">tidytable</span><span class="fu">::</span><span class="fu"><a href="https://markfairbanks.github.io/tidytable/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">ipeds_alloc</span>, <span class="va">OBEREG</span>, <span class="va">sample_size</span><span class="op">)</span>,</span>
 <span>    strata <span class="op">=</span> <span class="st">"OBEREG"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)</span></span>
 <span><span class="co">#&gt; --Frame size: 1467</span></span>
 <span><span class="co">#&gt; --Sample size: 124</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA)</span></span>
 <span><span class="co">#&gt; --Frame size: 870</span></span>
 <span><span class="co">#&gt; --Sample size: 73</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Southwest (AZ, NM, OK, TX) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Southwest (AZ, NM, OK, TX)</span></span>
 <span><span class="co">#&gt; --Frame size: 633</span></span>
 <span><span class="co">#&gt; --Sample size: 53</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = U.S. Service schools </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = U.S. Service schools</span></span>
 <span><span class="co">#&gt; --Frame size: 7</span></span>
 <span><span class="co">#&gt; --Sample size: 2</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD)</span></span>
 <span><span class="co">#&gt; --Frame size: 468</span></span>
-<span><span class="co">#&gt; --Sample size: 39</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) </span></span>
+<span><span class="co">#&gt; --Sample size: 40</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY)</span></span>
 <span><span class="co">#&gt; --Frame size: 216</span></span>
 <span><span class="co">#&gt; --Sample size: 18</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT)</span></span>
 <span><span class="co">#&gt; --Frame size: 299</span></span>
 <span><span class="co">#&gt; --Sample size: 25</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA)</span></span>
 <span><span class="co">#&gt; --Frame size: 971</span></span>
 <span><span class="co">#&gt; --Sample size: 82</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI)</span></span>
 <span><span class="co">#&gt; --Frame size: 851</span></span>
-<span><span class="co">#&gt; --Sample size: 73</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) </span></span>
+<span><span class="co">#&gt; --Sample size: 72</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI)</span></span>
 <span><span class="co">#&gt; --Frame size: 132</span></span>
 <span><span class="co">#&gt; --Sample size: 11</span></span>
 <span></span>
@@ -405,7 +408,7 @@
 <span><span class="co">#&gt; # ℹ 8 more variables: ENRTOT &lt;dbl&gt;, EFUG &lt;dbl&gt;, EFUG1ST &lt;dbl&gt;, EFUGFT &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   EFGRAD &lt;dbl&gt;, EFGRADFT &lt;dbl&gt;, SelectionProbability &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   SamplingWeight &lt;dbl&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ipeds_pps</span> <span class="op">&lt;-</span> <span class="va">ipeds</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/select_sample.html">select_sample</a></span><span class="op">(</span></span>
 <span>    method <span class="op">=</span> <span class="st">"sys_pps"</span>,</span>
@@ -415,72 +418,72 @@
 <span>    sort_vars <span class="op">=</span> <span class="st">"SECTOR"</span>,</span>
 <span>    sort_method <span class="op">=</span> <span class="st">"serpentine"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV) </span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Southeast (AL, AR, FL, GA, KY, LA, MS, NC, SC, TN, VA, WV)</span></span>
 <span><span class="co">#&gt; --Frame size: 1467</span></span>
 <span><span class="co">#&gt; --Sample size: 124</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 37489.19</span></span>
-<span><span class="co">#&gt; --Random start (r): 17174.08</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA) </span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 37489.185483871</span></span>
+<span><span class="co">#&gt; --Random start (r): 32553.0152071789</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Far West (AK, CA, HI, NV, OR, WA)</span></span>
 <span><span class="co">#&gt; --Frame size: 870</span></span>
 <span><span class="co">#&gt; --Sample size: 73</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 46640.48</span></span>
-<span><span class="co">#&gt; --Random start (r): 23535.96</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Southwest (AZ, NM, OK, TX) </span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 46640.4794520548</span></span>
+<span><span class="co">#&gt; --Random start (r): 21366.3567358216</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Southwest (AZ, NM, OK, TX)</span></span>
 <span><span class="co">#&gt; --Frame size: 633</span></span>
 <span><span class="co">#&gt; --Sample size: 53</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 49474.49</span></span>
-<span><span class="co">#&gt; --Random start (r): 33072.34</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = U.S. Service schools </span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 49474.4905660377</span></span>
+<span><span class="co">#&gt; --Random start (r): 24966.0777293528</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = U.S. Service schools</span></span>
 <span><span class="co">#&gt; --Frame size: 7</span></span>
 <span><span class="co">#&gt; --Sample size: 2</span></span>
 <span><span class="co">#&gt; --Sampling interval (k): 9372</span></span>
-<span><span class="co">#&gt; --Random start (r): 2483.683</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD) </span></span>
+<span><span class="co">#&gt; --Random start (r): 6264.92460871395</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Plains (IA, KS, MN, MO, NE, ND, SD)</span></span>
 <span><span class="co">#&gt; --Frame size: 468</span></span>
-<span><span class="co">#&gt; --Sample size: 39</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 35210.1</span></span>
-<span><span class="co">#&gt; --Random start (r): 301.2639</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY) </span></span>
+<span><span class="co">#&gt; --Sample size: 40</span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 34329.85</span></span>
+<span><span class="co">#&gt; --Random start (r): 9097.78782175722</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Rocky Mountains (CO, ID, MT, UT, WY)</span></span>
 <span><span class="co">#&gt; --Frame size: 216</span></span>
 <span><span class="co">#&gt; --Sample size: 18</span></span>
 <span><span class="co">#&gt; --Sampling interval (k): 57314.5</span></span>
-<span><span class="co">#&gt; --Random start (r): 10947.04</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT) </span></span>
+<span><span class="co">#&gt; --Random start (r): 490.393121512723</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = New England (CT, ME, MA, NH, RI, VT)</span></span>
 <span><span class="co">#&gt; --Frame size: 299</span></span>
 <span><span class="co">#&gt; --Sample size: 25</span></span>
 <span><span class="co">#&gt; --Sampling interval (k): 44218.08</span></span>
-<span><span class="co">#&gt; --Random start (r): 6258.501</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA) </span></span>
+<span><span class="co">#&gt; --Random start (r): 8445.63029531848</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Mid East (DE, DC, MD, NJ, NY, PA)</span></span>
 <span><span class="co">#&gt; --Frame size: 971</span></span>
 <span><span class="co">#&gt; --Sample size: 82</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 33082.89</span></span>
-<span><span class="co">#&gt; --Random start (r): 11354.24</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI) </span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 33082.8902439024</span></span>
+<span><span class="co">#&gt; --Random start (r): 4682.45798795425</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Great Lakes (IL, IN, MI, OH, WI)</span></span>
 <span><span class="co">#&gt; --Frame size: 851</span></span>
-<span><span class="co">#&gt; --Sample size: 73</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 35699.49</span></span>
-<span><span class="co">#&gt; --Random start (r): 3529.973</span></span>
-<span><span class="co">#&gt; Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI) </span></span>
+<span><span class="co">#&gt; --Sample size: 72</span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 36195.3194444444</span></span>
+<span><span class="co">#&gt; --Random start (r): 12422.441402056</span></span>
+<span><span class="co">#&gt; Stratum: OBEREG = Other U.S. jurisdictions (AS, FM, GU, MH, MP, PR, PW, VI)</span></span>
 <span><span class="co">#&gt; --Frame size: 132</span></span>
 <span><span class="co">#&gt; --Sample size: 11</span></span>
-<span><span class="co">#&gt; --Sampling interval (k): 16320.64</span></span>
-<span><span class="co">#&gt; --Random start (r): 11469.85</span></span>
+<span><span class="co">#&gt; --Sampling interval (k): 16320.6363636364</span></span>
+<span><span class="co">#&gt; --Random start (r): 1613.78791611839</span></span>
 <span></span>
 <span><span class="va">ipeds_pps</span></span>
-<span><span class="co">#&gt; # A tidytable: 474 × 19</span></span>
+<span><span class="co">#&gt; # A tidytable: 473 × 19</span></span>
 <span><span class="co">#&gt;    OBEREG      UNITID INSTNM STABBR  FIPS ICLEVEL SECTOR LOCALE DEGGRANT HLOFFER</span></span>
 <span><span class="co">#&gt;    &lt;fct&gt;        &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;    &lt;fct&gt;  </span></span>
-<span><span class="co">#&gt;  1 Southeast … 100663 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…</span></span>
+<span><span class="co">#&gt;  1 Southeast … 100706 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…</span></span>
 <span><span class="co">#&gt;  2 Southeast … 100751 The U… AL         1 Four o… Publi… City:… Degree-… Doctor…</span></span>
 <span><span class="co">#&gt;  3 Southeast … 100858 Aubur… AL         1 Four o… Publi… City:… Degree-… Doctor…</span></span>
-<span><span class="co">#&gt;  4 Southeast … 101480 Jacks… AL         1 Four o… Publi… Subur… Degree-… Doctor…</span></span>
-<span><span class="co">#&gt;  5 Southeast … 102368 Troy … AL         1 Four o… Publi… Town:… Degree-… Doctor…</span></span>
+<span><span class="co">#&gt;  4 Southeast … 101879 Unive… AL         1 Four o… Publi… City:… Degree-… Doctor…</span></span>
+<span><span class="co">#&gt;  5 Southeast … 106245 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…</span></span>
 <span><span class="co">#&gt;  6 Southeast … 106397 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…</span></span>
-<span><span class="co">#&gt;  7 Southeast … 106467 Arkan… AR         5 Four o… Publi… Town:… Degree-… Doctor…</span></span>
-<span><span class="co">#&gt;  8 Southeast … 132693 Easte… FL        12 Four o… Publi… City:… Degree-… Bachel…</span></span>
-<span><span class="co">#&gt;  9 Southeast … 132851 Colle… FL        12 Four o… Publi… City:… Degree-… Bachel…</span></span>
-<span><span class="co">#&gt; 10 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…</span></span>
-<span><span class="co">#&gt; # ℹ 464 more rows</span></span>
+<span><span class="co">#&gt;  7 Southeast … 106704 Unive… AR         5 Four o… Publi… City:… Degree-… Doctor…</span></span>
+<span><span class="co">#&gt;  8 Southeast … 132709 Browa… FL        12 Four o… Publi… City:… Degree-… Bachel…</span></span>
+<span><span class="co">#&gt;  9 Southeast … 132903 Unive… FL        12 Four o… Publi… Subur… Degree-… Doctor…</span></span>
+<span><span class="co">#&gt; 10 Southeast … 133508 Flori… FL        12 Four o… Publi… Subur… Degree-… Bachel…</span></span>
+<span><span class="co">#&gt; # ℹ 463 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 9 more variables: ENRTOT &lt;dbl&gt;, EFUG &lt;dbl&gt;, EFUG1ST &lt;dbl&gt;, EFUGFT &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   EFGRAD &lt;dbl&gt;, EFGRADFT &lt;dbl&gt;, SamplingWeight &lt;dbl&gt;, NumberHits &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   ExpectedHits &lt;dbl&gt;</span></span>
@@ -493,6 +496,7 @@
 </h2>
 <p>We’d love your help to make SampleSelectR better! Here’s the workflow we use:</p>
 <ul>
+<li><p>One-time setup: after cloning, run <code>git config core.hooksPath .githooks</code> to enable the repo’s git hooks (e.g., the check that keeps README.md in sync with README.Rmd).</p></li>
 <li><p>Start from the dev branch</p></li>
 <li><p>Always update your local copy first (git pull origin dev).</p></li>
 <li><p>Create a new branch for your work</p></li>
@@ -538,7 +542,7 @@
 <li>Thomas Burkett <br><small class="roles"> Author </small>   </li>
 <li>Philip Lee <br><small class="roles"> Author </small>   </li>
 <li>Haby Sow <br><small class="roles"> Author </small>   </li>
-<li> RTI International <br><small class="roles"> Funder </small>   </li>
+<li> RTI International <br><small class="roles"> Copyright holder, funder </small>   </li>
 </ul>
 </div>
 

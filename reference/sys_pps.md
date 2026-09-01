@@ -56,8 +56,8 @@ probability, number of hits, etc plus all original variables.
 sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = FALSE)
 #> Frame size: 3144
 #> Sample size: 75
-#> Sampling interval (k): 4431834
-#> Random start (r): 2745497
+#> Sampling interval (k): 4431833.86666667
+#> Random start (r): 2745496.93897802
 #> # A tidytable: 74 × 28
 #>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr> <chr>   <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>
@@ -83,8 +83,8 @@ sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = FALSE)
 sys_pps(county_2023, mos = "Pop_Tot", n = 75, outall = TRUE)
 #> Frame size: 3144
 #> Sample size: 75
-#> Sampling interval (k): 4431834
-#> Random start (r): 4025448
+#> Sampling interval (k): 4431833.86666667
+#> Random start (r): 4025447.65622473
 #> # A tidytable: 3,144 × 29
 #>    GEOID Name    State Region Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH
 #>    <chr> <chr>   <chr> <fct>  <fct>      <dbl>            <dbl>            <dbl>

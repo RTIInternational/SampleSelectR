@@ -122,18 +122,18 @@ certain sampling methods.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">county_2023</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">select_sample</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"srs"</span>, n <span class="op">=</span> <span class="va">n_df_srs</span>, strata <span class="op">=</span> <span class="st">"Region"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = South </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 1422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = West </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = Northeast </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = Midwest </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 1055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = South</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 1422</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = West</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 449</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = Northeast</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 218</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = Midwest</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 1055</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 100 × 27</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Region GEOID Name    State Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -165,10 +165,10 @@ certain sampling methods.</p>
 <span class="r-in"><span>    method <span class="op">=</span> <span class="st">"sys_eq"</span>, n <span class="op">=</span> <span class="fl">250</span>, outall <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>    sort_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SECTOR"</span>, <span class="st">"ENRTOT"</span><span class="op">)</span>, sort_method <span class="op">=</span> <span class="st">"nest"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Frame size: 5914</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size: 250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sampling interval (k): 23.656</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Random start (r): 4.707398</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Frame size: 5914</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sample size: 250</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling interval (k): 23.656</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Random start (r): 4.70739763361216</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For samples taken with outall = TRUE, the sample size can be verified by summing</span></span></span>
 <span class="r-in"><span><span class="co"># the SelectionIndicator column.</span></span></span>
@@ -205,10 +205,10 @@ certain sampling methods.</p>
 <span class="r-in"><span>    method <span class="op">=</span> <span class="st">"sys_pps"</span>, n <span class="op">=</span> <span class="fl">250</span>, mos <span class="op">=</span> <span class="st">"ENRTOT"</span>,</span></span>
 <span class="r-in"><span>    sort_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SECTOR"</span>, <span class="st">"ENRTOT"</span><span class="op">)</span>, sort_method <span class="op">=</span> <span class="st">"nest"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Frame size: 5914</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample size: 250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sampling interval (k): 78812</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Random start (r): 2887.813</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Frame size: 5914</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sample size: 250</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Sampling interval (k): 78812</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Random start (r): 2887.81255682651</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For pps samples, it is possible for a single sampling unit to be selected multiple times</span></span></span>
 <span class="r-in"><span><span class="co"># due to a large mos value. This is especially true as desired sample size increases. The</span></span></span>
@@ -254,18 +254,18 @@ certain sampling methods.</p>
 <span class="r-in"><span>    method <span class="op">=</span> <span class="st">"chromy_pps"</span>, n <span class="op">=</span> <span class="va">n_df_chr</span>, strata <span class="op">=</span> <span class="st">"Region"</span>, mos <span class="op">=</span> <span class="st">"Pop_Tot"</span>,</span></span>
 <span class="r-in"><span>    sort_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Division"</span>, <span class="st">"State"</span><span class="op">)</span>, sort_method <span class="op">=</span> <span class="st">"serpentine"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = South </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 952</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = West </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = Northeast </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Stratum: Region = Midwest </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Frame size: 506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = South</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 952</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = West</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 581</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = Northeast</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 423</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Stratum: Region = Midwest</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Frame size: 506</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> --Sample size: 125</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tidytable: 500 × 28</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Region GEOID   Name  State Division Pop_Tot Pop_Pct_White_NH Pop_Pct_Black_NH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
