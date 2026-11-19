@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Stephanie Zimmer \email{sazimmer@rti.org}
   \item John David Bunker, Jr.
   \item Thomas Burkett
   \item Philip Lee
