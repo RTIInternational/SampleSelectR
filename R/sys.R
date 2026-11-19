@@ -45,7 +45,7 @@ sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
   # Sampling method
   k <- N / n # Sampling interval
 
-  r <- runif(1, 1, k) # Random start between 1 and k
+  r <- runif(1, 1, k+1) # Random start between 1 and k
 
   selectedVector <- floor(r + k * (0:(n - 1))) # Selected row indices
 

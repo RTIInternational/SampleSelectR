@@ -1,3 +1,7 @@
+# Dev version
+
+* Corrected systematic sampling algorithm start values. [#15](https://github.com/RTIInternational/SampleSelectR/issues/15)
+
 # SampleSelectR 1.0.0
 
 * Initial major version.
