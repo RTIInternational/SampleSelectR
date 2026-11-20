@@ -36,46 +36,9 @@
 
 
 sys <- function(frame, n, curstrat = NULL, outall = FALSE) {
-  check_frame_type(frame)
-  check_n(n, frame, curstrat, n_le_N = TRUE)
-  check_outall(outall)
-
-  N <- nrow(frame)
-
-  # Sampling method
-  k <- N / n # Sampling interval
-
-  r <- runif(1, 1, k+1) # Random start between 1 and k
-
-  selectedVector <- floor(r + k * (0:(n - 1))) # Selected row indices
-
-  # Make sure selected indices are within frame range
-  selectedVector <- selectedVector[selectedVector <= N]
-
-  # Create variables
-  frame <- frame |>
-    tidytable::mutate(
-      numrow = tidytable::row_number(),
-      SelectionIndicator = .data$numrow %in% .env$selectedVector,
-      SelectionProbability = .env$n / .env$N,
-      SamplingWeight = tidytable::if_else(
-        .data$SelectionIndicator,
-        .env$N / .env$n,
-        NA_real_
-      )
-    ) |>
-    tidytable::select(-tidytable::all_of("numrow"))
-
-  # Output to screen
-  Sampling_Output(n, N, k = k, r = r, curstrat = curstrat)
-  # Return only the sample or the frame with selection indicator based on value of outall
-  if (outall) {
-    return(frame)
-  } else {
-    sample_output <- frame |>
-      tidytable::filter(.data$SelectionIndicator) |>
-      tidytable::select(-tidytable::all_of("SelectionIndicator"))
-
-    return(sample_output)
-  }
+  mosvar <- make.names(c(names(frame), "mos"), unique = TRUE)[ncol(frame) + 1]
+  frame[mosvar] <- 1
+  outdat <- sys_pps(frame, n = n, mos = mosvar, outall = outall, curstrat = curstrat)
+  outdat[[mosvar]] <- NULL
+  return(outdat)
 }

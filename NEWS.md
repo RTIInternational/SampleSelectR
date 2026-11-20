@@ -1,6 +1,6 @@
 # Dev version
 
-* Corrected systematic sampling algorithm start values. [#15](https://github.com/RTIInternational/SampleSelectR/issues/15)
+* Systematic sampling `sys()` is now a wrapper for `sys_pps()` with equal measure of size.
 
 # SampleSelectR 1.0.0
 
